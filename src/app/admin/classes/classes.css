@@ -1,0 +1,2635 @@
+/* Admin Classes Page - Barizta Theme */
+.classes-page {
+  padding: 1.5rem;
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+/* Stats Summary */
+.stats-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  background: linear-gradient(135deg, rgba(139, 69, 19, 0.3), rgba(62, 39, 35, 0.4));
+  border: 1px solid rgba(212, 165, 116, 0.2);
+  border-radius: 12px;
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(212, 165, 116, 0.15);
+  border-color: rgba(212, 165, 116, 0.4);
+}
+
+.stat-icon {
+  font-size: 2.5rem;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(212, 165, 116, 0.1);
+  border-radius: 12px;
+}
+
+.stat-info {
+  flex: 1;
+}
+
+.stat-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #d4a574;
+  margin: 0;
+}
+
+.stat-label {
+  color: #a1887f;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+/* Tabs */
+.tabs-container {
+  background: linear-gradient(135deg, rgba(139, 69, 19, 0.2), rgba(62, 39, 35, 0.3));
+  border: 1px solid rgba(212, 165, 116, 0.2);
+  border-radius: 12px;
+  padding: 0.5rem;
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.tab-button {
+  flex: 1;
+  padding: 0.75rem 1.5rem;
+  background: transparent;
+  border: none;
+  color: #a1887f;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.tab-button:hover {
+  background: rgba(212, 165, 116, 0.1);
+  color: #d4a574;
+  transform: translateY(-1px);
+}
+
+.tab-button.active {
+  background: linear-gradient(135deg, rgba(139, 69, 19, 0.5), rgba(212, 165, 116, 0.3));
+  color: #d4a574;
+  box-shadow: 0 4px 12px rgba(212, 165, 116, 0.2);
+  transform: translateY(0);
+}
+
+/* Classes Grid */
+.classes-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.classes-header h2 {
+  color: #d4a574;
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+.btn-add {
+  background: linear-gradient(135deg, rgba(139, 69, 19, 0.4), rgba(212, 165, 116, 0.3));
+  border: 1px solid #8B4513;
+  color: #D4A574;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s;
+  box-shadow: 0 2px 8px rgba(139, 69, 19, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-add::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.btn-add:hover::before {
+  left: 100%;
+}
+
+.btn-add:hover {
+  background: linear-gradient(135deg, rgba(139, 69, 19, 0.6), rgba(212, 165, 116, 0.5));
+  border-color: #D4A574;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(139, 69, 19, 0.4);
+}
+
+.btn-add:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(139, 69, 19, 0.2);
+}
+
+.classes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.class-card {
+  background: linear-gradient(135deg, rgba(42, 24, 16, 0.8), rgba(31, 20, 16, 0.9));
+  border: 1px solid rgba(212, 165, 116, 0.2);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.class-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(212, 165, 116, 0.2);
+  border-color: rgba(212, 165, 116, 0.4);
+}
+
+.class-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  background: rgba(62, 39, 35, 0.5);
+}
+
+.class-badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.badge-active {
+  background: rgba(76, 175, 80, 0.2);
+  color: #4caf50;
+  border: 1px solid #4caf50;
+}
+
+.badge-inactive {
+  background: rgba(158, 158, 158, 0.2);
+  color: #9e9e9e;
+  border: 1px solid #9e9e9e;
+}
+
+.class-content {
+  padding: 1.5rem;
+}
+
+.class-header {
+  margin-bottom: 1rem;
+}
+
+.class-title {
+  color: #d4a574;
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+}
+
+.class-level {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  background: rgba(212, 165, 116, 0.15);
+  color: #d4a574;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.class-description {
+  color: #a1887f;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  margin: 1rem 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Training Package Info */
+.training-package-info {
+  background: linear-gradient(135deg, rgba(139, 69, 19, 0.2), rgba(62, 39, 35, 0.25));
+  border: 1px solid rgba(212, 165, 116, 0.25);
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+}
+
+.training-package-info .package-label {
+  display: block;
+  font-size: 0.8rem;
+  color: #d4a574;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.training-package-info .package-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.training-package-info .package-item {
+  font-size: 0.85rem;
+  color: #e8d5c4;
+  padding: 0.35rem 0.65rem;
+  background: rgba(212, 165, 116, 0.1);
+  border-radius: 6px;
+}
+
+.class-info {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+  margin: 1rem 0;
+  padding: 1rem 0;
+  border-top: 1px solid rgba(212, 165, 116, 0.1);
+  border-bottom: 1px solid rgba(212, 165, 116, 0.1);
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #e6d5c3;
+  font-size: 0.85rem;
+}
+
+.info-icon {
+  font-size: 1.1rem;
+}
+
+.class-price {
+  color: #d4a574;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 1rem 0;
+}
+
+.class-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.btn-edit, .btn-schedule, .btn-delete {
+  flex: 1;
+  padding: 0.6rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-edit::before,
+.btn-schedule::before,
+.btn-delete::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.btn-edit:hover::before,
+.btn-schedule:hover::before,
+.btn-delete:hover::before {
+  left: 100%;
+}
+
+.btn-edit {
+  background: rgba(33, 150, 243, 0.2);
+  color: #2196f3;
+  border: 1px solid rgba(33, 150, 243, 0.3);
+}
+
+.btn-edit:hover {
+  background: rgba(33, 150, 243, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(33, 150, 243, 0.3);
+}
+
+.btn-edit:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(33, 150, 243, 0.2);
+}
+
+.btn-schedule {
+  background: rgba(255, 152, 0, 0.2);
+  color: #ff9800;
+  border: 1px solid rgba(255, 152, 0, 0.3);
+}
+
+.btn-schedule:hover {
+  background: rgba(255, 152, 0, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 152, 0, 0.3);
+}
+
+.btn-schedule:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(255, 152, 0, 0.2);
+}
+
+.btn-delete {
+  background: rgba(244, 67, 54, 0.2);
+  color: #f44336;
+  border: 1px solid rgba(244, 67, 54, 0.3);
+}
+
+.btn-delete:hover {
+  background: rgba(244, 67, 54, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(244, 67, 54, 0.3);
+}
+
+.btn-delete:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(244, 67, 54, 0.2);
+}
+
+/* Enrollments Table */
+.enrollments-section {
+  background: linear-gradient(135deg, rgba(42, 24, 16, 0.8), rgba(31, 20, 16, 0.9));
+  border: 1px solid rgba(212, 165, 116, 0.2);
+  border-radius: 16px;
+  padding: 1.5rem;
+}
+
+.enrollments-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.search-filter {
+  display: flex;
+  gap: 1rem;
+  flex: 1;
+  flex-wrap: wrap;
+}
+
+.search-box {
+  flex: 1;
+  min-width: 250px;
+  position: relative;
+}
+
+.search-box input {
+  width: 100%;
+  padding: 0.75rem 1rem 0.75rem 2.5rem;
+  background: rgba(62, 39, 35, 0.5);
+  border: 1px solid rgba(212, 165, 116, 0.2);
+  border-radius: 8px;
+  color: #e6d5c3;
+  font-size: 0.9rem;
+}
+
+.search-box input:focus {
+  outline: none;
+  border-color: #d4a574;
+  box-shadow: 0 0 0 3px rgba(212, 165, 116, 0.1);
+}
+
+.search-icon {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #a1887f;
+  font-size: 1.1rem;
+}
+
+.filter-select {
+  padding: 0.75rem 1rem;
+  background: rgba(62, 39, 35, 0.5);
+  border: 1px solid rgba(212, 165, 116, 0.2);
+  border-radius: 8px;
+  color: #e6d5c3;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.filter-select:focus {
+  outline: none;
+  border-color: #d4a574;
+}
+
+.table-container {
+  overflow-x: auto;
+  border-radius: 12px;
+  border: 1px solid rgba(212, 165, 116, 0.1);
+}
+
+/* Override shared-admin.css styling for consistent Barizta theme */
+.classes-page .data-table,
+.classes-page .barizta-table,
+.enrollments-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: auto;
+  min-width: 900px;
+}
+
+/* Unified Table Header - BARIZTA Premium Theme */
+.classes-page .data-table thead,
+.classes-page .barizta-table thead,
+.enrollments-table thead {
+  background: linear-gradient(135deg, #3b231b 0%, #2f1812 55%, #24100b 100%);
+  position: relative;
+}
+
+.classes-page .data-table thead::after,
+.classes-page .barizta-table thead::after,
+.enrollments-table thead::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, 
+    rgba(198, 124, 78, 0.3) 0%, 
+    #c67c4e 20%, 
+    #d4a574 50%, 
+    #c67c4e 80%, 
+    rgba(198, 124, 78, 0.3) 100%
+  );
+  box-shadow: 0 0 8px rgba(212, 165, 116, 0.4),
+              0 0 16px rgba(198, 124, 78, 0.2);
+}
+
+.classes-page .data-table th,
+.classes-page .barizta-table th,
+.enrollments-table th {
+  padding: 1.15rem 1.25rem;
+  text-align: left;
+  color: #dcb072;
+  font-weight: 700;
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  white-space: nowrap;
+  position: relative;
+  background: linear-gradient(160deg, rgba(70, 44, 34, 0.95) 0%, rgba(47, 28, 22, 0.9) 55%, rgba(32, 18, 13, 0.9) 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 203, 164, 0.08);
+  border-bottom: none;
+}
+
+.classes-page .data-table th:first-child,
+.classes-page .barizta-table th:first-child,
+.enrollments-table th:first-child {
+  border-top-left-radius: 14px;
+}
+
+.classes-page .data-table th:last-child,
+.classes-page .barizta-table th:last-child,
+.enrollments-table th:last-child {
+  border-top-right-radius: 14px;
+}
+
+.classes-page .data-table th + th,
+.classes-page .barizta-table th + th,
+.enrollments-table th + th {
+  box-shadow: inset 1px 0 0 rgba(198, 124, 78, 0.25), inset 0 1px 0 rgba(255, 203, 164, 0.08);
+}
+
+.classes-page .data-table tbody tr,
+.classes-page .barizta-table tbody tr,
+.enrollments-table tbody tr {
+  transition: all 0.3s ease;
+}
+
+.classes-page .data-table tbody tr:hover,
+.classes-page .barizta-table tbody tr:hover,
+.enrollments-table tbody tr:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+/* ============================================================
+   CELL CONTENT STYLING - Prevent Overlap
+   ============================================================ */
+.classes-page .data-table td,
+.classes-page .barizta-table td,
+.enrollments-table td {
+  vertical-align: middle;
+  line-height: 1.5;
+  padding: 1rem 0.75rem;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: nowrap;
+  color: #e6d5c3;
+  border-bottom: 1px solid rgba(255, 215, 168, 0.08);
+}
+
+/* Email column - allow text to wrap */
+.classes-page .data-table td:nth-child(2),
+.classes-page .barizta-table td:nth-child(2),
+.enrollments-table td:nth-child(2) {
+  white-space: normal;
+  word-break: break-all;
+  max-width: 200px;
+}
+
+/* Program column - allow text to wrap */
+.classes-page .data-table td:nth-child(3),
+.classes-page .barizta-table td:nth-child(3),
+.enrollments-table td:nth-child(3) {
+  white-space: normal;
+  word-break: break-word;
+  max-width: 180px;
+}
+
+/* Keep Barizta gradient rows scoped to classes page to avoid clashes elsewhere */
+.classes-page .enrollments-section .barizta-table tbody tr {
+  background: linear-gradient(135deg, rgba(32, 18, 12, 0.96), rgba(45, 23, 14, 0.94));
+}
+
+.classes-page .enrollments-section .barizta-table tbody tr:hover {
+  background: linear-gradient(135deg, rgba(54, 32, 24, 0.96), rgba(37, 21, 14, 0.94));
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+/* OLD STATUS STYLES REMOVED - Use .kelas-edukasi-status-* classes instead */
+
+.action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  align-items: flex-start;
+}
+
+/* Sertifikat column actions: stack vertically to save horizontal space */
+.classes-page .certificate-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  align-items: flex-start;
+}
+
+.classes-page .certificate-actions > button {
+  width: 100%;
+  justify-content: center;
+}
+
+/* Softer success buttons (e.g., Download) - scoped to Classes page only */
+.classes-page .btn-success-barizta {
+  background: linear-gradient(135deg, rgba(20, 51, 42, 0.35), rgba(10, 31, 24, 0.45));
+  border: 1px solid rgba(34, 197, 94, 0.45);
+  color: rgba(255, 255, 255, 0.88);
+  box-shadow: 0 2px 10px rgba(34, 197, 94, 0.12);
+}
+
+.classes-page .btn-success-barizta:hover:not(:disabled) {
+  background: linear-gradient(135deg, rgba(26, 64, 53, 0.45), rgba(15, 41, 32, 0.55));
+  border-color: rgba(74, 222, 128, 0.6);
+  box-shadow: 0 6px 16px rgba(34, 197, 94, 0.18);
+}
+
+/* Softer base/danger/secondary buttons (Edit/Hapus/Cancel) - scoped to Classes page only */
+.classes-page .btn-barizta {
+  background: linear-gradient(135deg, rgba(42, 24, 16, 0.55), rgba(62, 39, 35, 0.55)) !important;
+  border: 1px solid rgba(212, 165, 116, 0.55) !important;
+  color: rgba(255, 215, 168, 0.9) !important;
+  box-shadow: 0 2px 10px rgba(77, 46, 25, 0.18) !important;
+}
+
+.classes-page .btn-barizta::before {
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.18), transparent) !important;
+}
+
+.classes-page .btn-barizta:hover:not(:disabled) {
+  background: linear-gradient(135deg, rgba(59, 36, 24, 0.6), rgba(31, 19, 11, 0.6)) !important;
+  border-color: rgba(255, 223, 181, 0.6) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 6px 16px rgba(77, 46, 25, 0.22) !important;
+}
+
+.classes-page .btn-danger-barizta {
+  background: linear-gradient(135deg, rgba(59, 26, 26, 0.35), rgba(36, 11, 11, 0.45));
+  border: 1px solid rgba(248, 113, 113, 0.5);
+  color: rgba(255, 255, 255, 0.88);
+  box-shadow: 0 2px 10px rgba(220, 38, 38, 0.12);
+}
+
+.classes-page .btn-danger-barizta::before {
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.18), transparent);
+}
+
+.classes-page .btn-danger-barizta:hover:not(:disabled) {
+  background: linear-gradient(135deg, rgba(74, 32, 32, 0.45), rgba(45, 16, 16, 0.55));
+  border-color: rgba(254, 202, 202, 0.65);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(220, 38, 38, 0.18);
+}
+
+.classes-page .btn-secondary-barizta {
+  background: linear-gradient(135deg, rgba(47, 47, 47, 0.35), rgba(31, 31, 31, 0.45));
+  border: 1px solid rgba(203, 213, 245, 0.55);
+  color: rgba(255, 255, 255, 0.88);
+  box-shadow: 0 2px 10px rgba(71, 85, 105, 0.12);
+}
+
+.classes-page .btn-secondary-barizta::before {
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.18), transparent);
+}
+
+.classes-page .btn-secondary-barizta:hover:not(:disabled) {
+  background: linear-gradient(135deg, rgba(58, 58, 58, 0.45), rgba(41, 41, 41, 0.55));
+  border-color: rgba(226, 232, 240, 0.65);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(71, 85, 105, 0.18);
+}
+
+.classes-page .btn-info-barizta {
+  background: linear-gradient(135deg, rgba(26, 39, 68, 0.35), rgba(15, 26, 46, 0.45));
+  border: 1px solid rgba(96, 165, 250, 0.5);
+  color: rgba(255, 255, 255, 0.88);
+  box-shadow: 0 2px 10px rgba(37, 99, 235, 0.12);
+}
+
+.classes-page .btn-info-barizta::before {
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.18), transparent);
+}
+
+.classes-page .btn-info-barizta:hover:not(:disabled) {
+  background: linear-gradient(135deg, rgba(30, 48, 80, 0.45), rgba(21, 34, 56, 0.55));
+  border-color: rgba(191, 219, 254, 0.65);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.18);
+}
+
+/* OLD .btn-action STYLES REMOVED - Use kelas-edukasi-btn-* classes */
+
+/* ============================================================
+   DEPRECATED OLD BUTTON STYLES - DO NOT USE
+   Use .kelas-edukasi-btn classes instead
+   These are commented out to prevent conflicts
+   ============================================================ */
+
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.modal-container {
+  background: linear-gradient(135deg, #2a1810 0%, #1f1410 100%);
+  border: 1px solid rgba(212, 165, 116, 0.3);
+  border-radius: 16px;
+  max-width: 800px;
+  width: 100%;
+  max-height: 90vh;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+}
+
+.payment-modal {
+  max-width: 700px;
+}
+
+.payment-modal .modal-body {
+  padding: 2rem;
+  background: #1a0f0a;
+  border-radius: 8px;
+  margin: 1rem;
+}
+
+.modal-header {
+  padding: 1.5rem;
+  border-bottom: 1px solid rgba(212, 165, 116, 0.2);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+  background: linear-gradient(135deg, #2a1810 0%, #1f1410 100%);
+}
+
+.modal-header h2 {
+  color: #d4a574;
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+.modal-close {
+  background: rgba(244, 67, 54, 0.2);
+  border: none;
+  color: #f44336;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-close:hover {
+  background: rgba(244, 67, 54, 0.3);
+  transform: rotate(90deg);
+}
+
+.modal-body {
+  padding: 1.5rem;
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  min-height: 0;
+}
+
+/* Modal Body Scrollbar */
+.modal-body::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modal-body::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 4px;
+}
+
+.modal-body::-webkit-scrollbar-thumb {
+  background: rgba(212, 165, 116, 0.5);
+  border-radius: 4px;
+}
+
+.modal-body::-webkit-scrollbar-thumb:hover {
+  background: rgba(212, 165, 116, 0.7);
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  color: #d4a574;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+  width: 100%;
+  padding: 0.75rem;
+  background: rgba(62, 39, 35, 0.5);
+  border: 1px solid rgba(212, 165, 116, 0.2);
+  border-radius: 8px;
+  color: #e6d5c3;
+  font-size: 0.9rem;
+  font-family: inherit;
+}
+
+/* File input - simple seperti upload bukti transfer */
+.form-group input[type="file"] {
+  padding: 0.6rem;
+  background: rgba(139, 69, 19, 0.15);
+  border: 1px dashed #5d4037;
+  border-radius: 6px;
+  color: #b8956f;
+  cursor: pointer;
+}
+
+.form-group input[type="file"]::file-selector-button {
+  padding: 0.4rem 0.8rem;
+  background: linear-gradient(135deg, #8B4513, #D4A574);
+  border: none;
+  border-radius: 4px;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  margin-right: 0.75rem;
+  font-size: 0.8rem;
+}
+
+/* Date and Time Input Styling */
+.form-group input[type="date"],
+.form-group input[type="time"] {
+  color-scheme: dark;
+  cursor: pointer;
+}
+
+.form-group input[type="date"]::-webkit-calendar-picker-indicator,
+.form-group input[type="time"]::-webkit-calendar-picker-indicator {
+  filter: invert(0.7) sepia(0.5) saturate(2) hue-rotate(10deg);
+  cursor: pointer;
+}
+
+.form-group small {
+  display: block;
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  color: #a1887f;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #d4a574;
+  box-shadow: 0 0 0 3px rgba(212, 165, 116, 0.1);
+}
+
+.form-group textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+/* Image Upload Styling */
+.image-upload-container {
+  width: 100%;
+}
+
+.image-upload-label {
+  display: block;
+  cursor: pointer;
+  border: 2px dashed rgba(212, 165, 116, 0.3);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.image-upload-label:hover {
+  border-color: #d4a574;
+  box-shadow: 0 4px 12px rgba(212, 165, 116, 0.2);
+}
+
+.image-upload-placeholder {
+  padding: 3rem 2rem;
+  text-align: center;
+  background: rgba(62, 39, 35, 0.3);
+}
+
+.image-upload-placeholder .upload-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+.image-upload-placeholder p {
+  color: #d4a574;
+  font-weight: 600;
+  margin: 0.5rem 0;
+}
+
+.image-upload-placeholder small {
+  color: #a1887f;
+  font-size: 0.85rem;
+}
+
+.image-preview-wrapper {
+  position: relative;
+  width: 100%;
+  height: 250px;
+}
+
+.image-preview {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.image-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.image-preview-wrapper:hover .image-overlay {
+  opacity: 1;
+}
+
+.image-overlay span {
+  color: #d4a574;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+/* Custom Checkbox - Enhanced */
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  cursor: pointer;
+  padding: 1.25rem;
+  background: rgba(38, 24, 18, 0.85);
+  border: 1px solid rgba(212, 165, 116, 0.25);
+  border-radius: 10px;
+  transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.checkbox-label:hover {
+  background: rgba(40, 25, 18, 0.95);
+  border-color: rgba(212, 165, 116, 0.4);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+}
+
+.checkbox-input {
+  display: none;
+}
+
+
+.checkbox-custom {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  flex-shrink: 0;
+  border: 2px solid rgba(212, 165, 116, 0.4);
+  border-radius: 8px;
+  background: #2a1a14;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+
+.checkbox-input:checked + .checkbox-custom {
+  background: #d4a574;
+  border-color: #d4a574;
+}
+
+.checkbox-input:checked + .checkbox-custom::after {
+  content: '✓';
+  font-size: 18px;
+  font-weight: 700;
+  color: #2a1a14;
+}
+
+@keyframes checkBounce {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+}
+
+/* Compact Checkbox for simple toggles */
+.checkbox-label.compact {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  padding: 0.45rem 0.85rem;
+  background: rgba(0, 0, 0, 0.16);
+  border: 1px solid #3e2723;
+  border-radius: 8px;
+  color: #d4a574;
+}
+
+.checkbox-label.compact:hover {
+  border-color: #d4a574;
+}
+
+.checkbox-label.compact input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #d4a574;
+}
+
+.checkbox-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.checkbox-title {
+  color: #d4a574;
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+.checkbox-status {
+  font-size: 0.9rem;
+  font-weight: 500;
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  width: fit-content;
+}
+
+.checkbox-status.active {
+  color: #4caf50;
+  background: rgba(76, 175, 80, 0.12);
+  border: 1px solid rgba(76, 175, 80, 0.2);
+}
+
+.checkbox-status.inactive {
+  color: #f44336;
+  background: rgba(244, 67, 54, 0.12);
+  border: 1px solid rgba(244, 67, 54, 0.2);
+}
+
+.image-upload {
+  border: 2px dashed rgba(212, 165, 116, 0.3);
+  border-radius: 8px;
+  padding: 2rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.image-upload:hover {
+  border-color: #d4a574;
+  background: rgba(212, 165, 116, 0.05);
+}
+
+.image-upload input {
+  display: none;
+}
+
+.upload-icon {
+  font-size: 3rem;
+  color: #d4a574;
+  margin-bottom: 1rem;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 1rem;
+  padding: 1.5rem;
+  border-top: 1px solid rgba(212, 165, 116, 0.2);
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  flex-shrink: 0;
+  background: linear-gradient(135deg, #2a1810 0%, #1f1410 100%);
+}
+
+.modal-actions .btn-approve {
+  flex: 0 1 auto;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.95rem;
+}
+
+.modal-actions .btn-reject {
+  flex: 0 1 auto;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.95rem;
+}
+
+.modal-actions .btn-cancel {
+  flex: 0 1 auto;
+  padding: 0.75rem 1.5rem;
+}
+
+.btn-cancel, .btn-save {
+  flex: 1;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-size: 0.95rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-cancel::before,
+.btn-save::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.btn-cancel:hover:not(:disabled)::before,
+.btn-save:hover:not(:disabled)::before {
+  left: 100%;
+}
+
+.btn-cancel {
+  background: rgba(158, 158, 158, 0.2);
+  color: #9e9e9e;
+  border: 1px solid rgba(158, 158, 158, 0.3);
+}
+
+.btn-cancel:hover:not(:disabled) {
+  background: rgba(158, 158, 158, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(158, 158, 158, 0.2);
+}
+
+.btn-cancel:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 4px rgba(158, 158, 158, 0.1);
+}
+
+.btn-save {
+  background: linear-gradient(135deg, rgba(139, 69, 19, 0.4), rgba(212, 165, 116, 0.3));
+  border: 1px solid #8B4513;
+  color: #D4A574;
+  box-shadow: 0 2px 8px rgba(139, 69, 19, 0.2);
+}
+
+.btn-save:hover:not(:disabled) {
+  background: linear-gradient(135deg, rgba(139, 69, 19, 0.6), rgba(212, 165, 116, 0.5));
+  border-color: #D4A574;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(139, 69, 19, 0.4);
+}
+
+.btn-save:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(139, 69, 19, 0.2);
+}
+
+.btn-save:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.btn-save:disabled::before {
+  display: none;
+}
+
+/* Required field indicator */
+.required {
+  color: #f44336;
+  margin-left: 0.25rem;
+}
+
+/* Optional field indicator */
+.optional {
+  color: #a1887f;
+  font-size: 0.85rem;
+  font-weight: 400;
+  margin-left: 0.25rem;
+}
+
+/* Form hints */
+.form-hint {
+  display: block;
+  color: #a1887f;
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+}
+
+/* Fixed Schedule Info */
+.fixed-schedule-info {
+  background: linear-gradient(135deg, rgba(139, 69, 19, 0.15), rgba(62, 39, 35, 0.2));
+  border: 1px solid rgba(212, 165, 116, 0.2);
+  border-radius: 10px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.fixed-schedule-info .schedule-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  background: rgba(212, 165, 116, 0.08);
+  border-radius: 8px;
+  font-size: 0.95rem;
+  color: #e8d5c4;
+}
+
+.fixed-schedule-info .schedule-item.break {
+  background: rgba(139, 69, 19, 0.2);
+  border-left: 3px solid #d4a574;
+}
+
+.fixed-schedule-info .schedule-icon {
+  font-size: 1.1rem;
+}
+
+/* File selected indicator */
+.file-selected {
+  display: block;
+  color: #4caf50;
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+}
+
+/* Image wrapper for badge positioning */
+.class-image-wrapper {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  border-radius: 12px 12px 0 0;
+}
+
+.class-image-wrapper .class-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.class-image-wrapper .class-badge {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+}
+
+/* Loading */
+.loading {
+  text-align: center;
+  padding: 3rem;
+  color: #a1887f;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(212, 165, 116, 0.2);
+  border-top-color: #d4a574;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 1rem;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+}
+
+.empty-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+.empty-state h3 {
+  color: #d4a574;
+  margin-bottom: 0.5rem;
+}
+
+.empty-state p {
+  color: #a1887f;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .classes-grid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+  
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .classes-page {
+    padding: 1rem;
+  }
+  
+  .stats-summary {
+    grid-template-columns: 1fr;
+  }
+  
+  .classes-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .classes-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .tabs-container {
+    flex-direction: column;
+  }
+  
+  .search-filter {
+    flex-direction: column;
+  }
+  
+  .table-container {
+    font-size: 0.85rem;
+  }
+  
+  .enrollments-table th,
+  .enrollments-table td {
+    padding: 0.75rem 0.5rem;
+  }
+  
+  .modal-actions {
+    flex-direction: column;
+  }
+}
+
+/* ============================================================
+   ALERTS - Consistent with shared-admin.css
+   ============================================================ */
+.alert {
+  padding: 1rem 1.25rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  animation: alertFadeIn 0.3s ease;
+}
+
+@keyframes alertFadeIn {
+  from { 
+    opacity: 0; 
+    transform: translateY(-10px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+}
+
+.alert-success {
+  background: rgba(76, 175, 80, 0.15);
+  border: 1px solid #4caf50;
+  color: #81c784;
+}
+
+.alert-error {
+  background: rgba(244, 67, 54, 0.15);
+  border: 1px solid #f44336;
+  color: #ef5350;
+}
+
+.alert-warning {
+  background: rgba(255, 152, 0, 0.15);
+  border: 1px solid #ff9800;
+  color: #ffb74d;
+}
+
+.alert-info {
+  background: rgba(33, 150, 243, 0.15);
+  border: 1px solid #2196f3;
+  color: #64b5f6;
+}
+
+/* ============================================================
+   GENERATE CERTIFICATE MODAL
+   ============================================================ */
+.generate-cert-modal {
+  max-width: 650px;
+}
+
+.cert-preview-info {
+  background: rgba(62, 39, 35, 0.5);
+  border-radius: 12px;
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid rgba(255, 215, 168, 0.1);
+  gap: 1rem;
+}
+
+.info-row:last-child {
+  border-bottom: none;
+}
+
+.info-label {
+  color: rgba(212, 165, 116, 0.8);
+  font-weight: 500;
+  min-width: 130px;
+  flex-shrink: 0;
+}
+
+.info-value {
+  color: #ffd7a8;
+  font-weight: 600;
+}
+
+.info-value.cert-code {
+  font-family: 'Courier New', monospace;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+.cert-form-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(212, 165, 116, 0.4), transparent);
+  margin: 1rem 0;
+}
+
+.cert-form-section-title {
+  color: #d4a574;
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-bottom: 0.75rem;
+}
+
+.cert-input-field {
+  flex: 1;
+  background: rgba(46, 29, 24, 0.8);
+  border: 1px solid rgba(255, 215, 168, 0.2);
+  border-radius: 8px;
+  padding: 0.6rem 0.85rem;
+  color: #e6d5c3;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+}
+
+.cert-input-field:focus {
+  outline: none;
+  border-color: #d4a574;
+  box-shadow: 0 0 0 2px rgba(212, 165, 116, 0.15);
+}
+
+.cert-input-field::placeholder {
+  color: rgba(161, 136, 127, 0.6);
+}
+
+/* Signature Upload Styles */
+.signature-upload-row {
+  align-items: flex-start !important;
+}
+
+.signature-upload-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  position: relative;
+}
+
+.signature-file-input {
+  display: none;
+}
+
+.signature-upload-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 60px;
+  border: 2px dashed rgba(212, 165, 116, 0.3);
+  border-radius: 8px;
+  background: rgba(46, 29, 24, 0.5);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.signature-upload-label:hover {
+  border-color: #d4a574;
+  background: rgba(46, 29, 24, 0.7);
+}
+
+.signature-placeholder {
+  color: rgba(161, 136, 127, 0.8);
+  font-size: 0.85rem;
+  padding: 0.5rem 1rem;
+}
+
+.signature-preview {
+  max-width: 150px;
+  max-height: 55px;
+  object-fit: contain;
+  padding: 4px;
+}
+
+.signature-remove-btn {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgba(220, 53, 69, 0.8);
+  color: white;
+  border: none;
+  font-size: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.signature-remove-btn:hover {
+  background: rgba(220, 53, 69, 1);
+  transform: scale(1.1);
+}
+
+.date-input-cert {
+  background: rgba(46, 29, 24, 0.8);
+  border: 1px solid rgba(255, 215, 168, 0.2);
+  border-radius: 8px;
+  padding: 0.5rem 0.75rem;
+  color: #e6d5c3;
+  font-size: 0.95rem;
+}
+
+.date-input-cert:focus {
+  outline: none;
+  border-color: #d4a574;
+}
+
+.template-preview-section {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+  padding: 1rem;
+  text-align: center;
+}
+
+.template-label {
+  color: rgba(212, 165, 116, 0.8);
+  font-size: 0.9rem;
+  margin-bottom: 0.75rem;
+}
+
+.template-img {
+  max-width: 100%;
+  height: auto;
+  max-height: 250px;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.template-note {
+  color: rgba(212, 165, 116, 0.6);
+  font-size: 0.8rem;
+  font-style: italic;
+  margin-top: 0.75rem;
+}
+
+/* Certificate Preview Modal */
+.cert-preview-modal {
+  max-width: 900px;
+}
+
+.generated-cert-preview {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 12px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.generated-cert-img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+}
+
+.cert-info-box {
+  background: rgba(62, 39, 35, 0.5);
+  border-radius: 12px;
+  padding: 1.25rem;
+}
+
+.modal-footer {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 215, 168, 0.1);
+  margin-top: 1rem;
+}
+
+.btn-secondary-barizta {
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  background: rgba(100, 100, 100, 0.2);
+  border: 1px solid rgba(150, 150, 150, 0.22);
+  color: rgba(255, 255, 255, 0.65);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-secondary-barizta:hover {
+  background: rgba(100, 100, 100, 0.3);
+  color: rgba(255, 255, 255, 0.78);
+}
+
+/* ===============================================
+   KELOLA PESERTA - Enhanced Features
+   =============================================== */
+
+/* Peserta Stats Grid */
+.peserta-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.peserta-stat-card {
+  background: linear-gradient(145deg, rgba(62, 39, 35, 0.7), rgba(46, 29, 24, 0.8));
+  border: 1px solid rgba(255, 215, 168, 0.12);
+  border-radius: 12px;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  transition: all 0.3s ease;
+}
+
+.peserta-stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.peserta-stat-card.approved {
+  border-color: rgba(33, 150, 243, 0.4);
+}
+
+.peserta-stat-card.completed {
+  border-color: rgba(76, 175, 80, 0.4);
+}
+
+.peserta-stat-icon {
+  font-size: 1.75rem;
+}
+
+.peserta-stat-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.peserta-stat-number {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #ffd7a8;
+}
+
+.peserta-stat-label {
+  font-size: 0.8rem;
+  color: rgba(212, 165, 116, 0.7);
+}
+
+/* Row Completed Highlight */
+.row-completed {
+  background: rgba(76, 175, 80, 0.05) !important;
+}
+
+.row-completed:hover {
+  background: rgba(76, 175, 80, 0.1) !important;
+}
+
+/* Button Complete */
+.btn-complete-barizta {
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  background: linear-gradient(135deg, rgba(76, 175, 80, 0.2), rgba(56, 142, 60, 0.15));
+  border: 1px solid rgba(76, 175, 80, 0.4);
+  color: #81c784;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-complete-barizta:hover:not(:disabled) {
+  background: linear-gradient(135deg, rgba(76, 175, 80, 0.3), rgba(56, 142, 60, 0.25));
+  transform: translateY(-1px);
+}
+
+.btn-complete-barizta:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Button Warning */
+.btn-warning-barizta {
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  background: linear-gradient(135deg, rgba(255, 152, 0, 0.2), rgba(245, 124, 0, 0.15));
+  border: 1px solid rgba(255, 152, 0, 0.4);
+  color: #ffb74d;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-warning-barizta:hover:not(:disabled) {
+  background: linear-gradient(135deg, rgba(255, 152, 0, 0.3), rgba(245, 124, 0, 0.25));
+}
+
+/* Detail Modal Full */
+.detail-modal-full {
+  max-width: 700px;
+  width: 95%;
+}
+
+/* Status Banner in Detail Modal */
+.detail-status-banner {
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  text-align: center;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  font-size: 1rem;
+}
+
+.detail-status-banner.status-waiting {
+  background: linear-gradient(135deg, rgba(255, 152, 0, 0.15), rgba(255, 152, 0, 0.1));
+  border: 1px solid rgba(255, 152, 0, 0.4);
+  color: #ffb74d;
+}
+
+.detail-status-banner.status-approved {
+  background: linear-gradient(135deg, rgba(33, 150, 243, 0.15), rgba(33, 150, 243, 0.1));
+  border: 1px solid rgba(33, 150, 243, 0.4);
+  color: #64b5f6;
+}
+
+.detail-status-banner.status-completed {
+  background: linear-gradient(135deg, rgba(76, 175, 80, 0.15), rgba(76, 175, 80, 0.1));
+  border: 1px solid rgba(76, 175, 80, 0.4);
+  color: #81c784;
+}
+
+.detail-status-banner.status-rejected {
+  background: linear-gradient(135deg, rgba(244, 67, 54, 0.15), rgba(244, 67, 54, 0.1));
+  border: 1px solid rgba(244, 67, 54, 0.4);
+  color: #ef9a9a;
+}
+
+/* Detail Section */
+.detail-section {
+  background: rgba(62, 39, 35, 0.3);
+  border: 1px solid rgba(255, 215, 168, 0.1);
+  border-radius: 12px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.detail-section h3 {
+  color: #ffd7a8;
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0 0 1rem 0;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(255, 215, 168, 0.1);
+}
+
+/* Detail Grid */
+.detail-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.detail-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.detail-item.full-width {
+  grid-column: span 2;
+}
+
+.detail-item label {
+  font-size: 0.8rem;
+  color: rgba(212, 165, 116, 0.7);
+  font-weight: 500;
+}
+
+.detail-item span {
+  color: #e6d5c3;
+  font-size: 0.95rem;
+}
+
+/* WhatsApp Link */
+.whatsapp-link {
+  color: #25d366 !important;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.whatsapp-link:hover {
+  color: #128c7e !important;
+  text-decoration: underline;
+}
+
+/* Program Highlight */
+.program-highlight {
+  background: linear-gradient(135deg, rgba(212, 165, 116, 0.15), rgba(196, 148, 100, 0.1));
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  border: 1px solid rgba(212, 165, 116, 0.3);
+  color: #ffd7a8 !important;
+  font-weight: 500;
+  display: inline-block;
+}
+
+/* Packages List */
+.packages-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+.package-tag {
+  background: rgba(156, 39, 176, 0.15);
+  border: 1px solid rgba(156, 39, 176, 0.3);
+  color: #ce93d8;
+  padding: 0.3rem 0.6rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+}
+
+/* No Payment Warning */
+.no-payment-warning {
+  padding: 1rem;
+  background: rgba(244, 67, 54, 0.1);
+  border: 1px solid rgba(244, 67, 54, 0.3);
+  border-radius: 8px;
+  color: #f44336;
+  margin-top: 0.5rem;
+}
+
+/* Admin Notes */
+.admin-notes {
+  background: rgba(62, 39, 35, 0.4);
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 215, 168, 0.1);
+  color: #e6d5c3;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ============================================================
+   RESPONSIVE - Mobile HP Layout
+   ============================================================ */
+
+/* Tablet */
+@media (max-width: 1200px) {
+  .peserta-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .classes-page {
+    padding: 0.75rem;
+  }
+
+  /* Stats Summary Mobile */
+  .stats-summary {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
+  
+  .stat-card {
+    padding: 1rem;
+    flex-direction: column;
+    text-align: center;
+    gap: 0.5rem;
+  }
+  
+  .stat-icon {
+    width: 45px;
+    height: 45px;
+    font-size: 1.75rem;
+  }
+  
+  .stat-value {
+    font-size: 1.5rem;
+  }
+  
+  .stat-label {
+    font-size: 0.75rem;
+  }
+
+  /* Peserta Stats Mobile */
+  .peserta-stats-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
+  
+  .peserta-stat-card {
+    padding: 0.75rem;
+    flex-direction: column;
+    text-align: center;
+    gap: 0.3rem;
+  }
+  
+  .peserta-stat-icon {
+    font-size: 1.5rem;
+  }
+  
+  .peserta-stat-number {
+    font-size: 1.25rem;
+  }
+  
+  .peserta-stat-label {
+    font-size: 0.7rem;
+  }
+
+  /* Tabs Mobile */
+  .tabs-container {
+    flex-direction: row;
+    padding: 0.25rem;
+    gap: 0.25rem;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .tab-button {
+    padding: 0.6rem 0.75rem;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    min-width: auto;
+    flex: none;
+  }
+
+  /* Search & Filter Mobile */
+  .enrollments-header {
+    margin-bottom: 1rem;
+  }
+  
+  .search-filter {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .search-box {
+    width: 100%;
+  }
+  
+  .search-box input {
+    font-size: 16px; /* Prevent zoom on iOS */
+  }
+  
+  .filter-select {
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 16px;
+  }
+
+  /* Table Mobile - Convert to Cards */
+  .table-container {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    overflow: visible;
+  }
+  
+  .enrollments-table {
+    display: block;
+  }
+  
+  .enrollments-table thead {
+    display: none;
+  }
+  
+  .enrollments-table tbody {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .enrollments-table tr {
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(135deg, rgba(62, 39, 35, 0.6), rgba(46, 29, 24, 0.7));
+    border: 1px solid rgba(255, 215, 168, 0.12);
+    border-radius: 12px;
+    padding: 1rem;
+    gap: 0.5rem;
+  }
+  
+  .enrollments-table tr.row-completed {
+    background: linear-gradient(135deg, rgba(76, 175, 80, 0.1), rgba(62, 39, 35, 0.6));
+    border-color: rgba(76, 175, 80, 0.3);
+  }
+  
+  .enrollments-table td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.4rem 0;
+    border: none;
+  }
+  
+  .enrollments-table td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #d4a574;
+    font-size: 0.8rem;
+    flex-shrink: 0;
+    margin-right: 1rem;
+  }
+
+  /* Action Buttons Mobile */
+  .action-buttons {
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 0.5rem;
+  }
+  
+  .btn-barizta-sm {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8rem;
+  }
+
+  /* Modal Mobile */
+  .modal-container {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    border-radius: 0;
+    min-height: 100vh;
+    max-height: 100vh;
+    overflow-y: auto;
+  }
+  
+  .modal-header {
+    position: sticky;
+    top: 0;
+    background: linear-gradient(135deg, rgba(62, 39, 35, 1), rgba(46, 29, 24, 1));
+    z-index: 10;
+    padding: 1rem;
+    border-bottom: 1px solid rgba(255, 215, 168, 0.15);
+  }
+  
+  .modal-header h2 {
+    font-size: 1.1rem;
+  }
+  
+  .modal-body {
+    padding: 1rem;
+  }
+  
+  .modal-actions {
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1rem;
+    position: sticky;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(62, 39, 35, 1), rgba(46, 29, 24, 1));
+    border-top: 1px solid rgba(255, 215, 168, 0.15);
+  }
+  
+  .modal-actions button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Detail Modal Mobile */
+  .detail-modal-full {
+    width: 100%;
+    max-width: none;
+    border-radius: 0;
+    height: 100vh;
+    max-height: 100vh;
+  }
+  
+  .detail-status-banner {
+    padding: 0.75rem;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+  }
+  
+  .detail-section {
+    margin-bottom: 1.25rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(255, 215, 168, 0.1);
+  }
+  
+  .detail-section h3 {
+    font-size: 0.95rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  .detail-grid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+  
+  .detail-item {
+    padding: 0.5rem 0;
+  }
+  
+  .detail-item label {
+    font-size: 0.75rem;
+    margin-bottom: 0.25rem;
+  }
+  
+  .detail-item span {
+    font-size: 0.9rem;
+  }
+  
+  .detail-item.full-width {
+    grid-column: span 1;
+  }
+
+  /* Form Groups Mobile */
+  .form-group {
+    margin-bottom: 1rem;
+  }
+  
+  .form-group label {
+    font-size: 0.85rem;
+  }
+  
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    font-size: 16px; /* Prevent zoom on iOS */
+    padding: 0.75rem;
+  }
+  
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  /* Classes Grid Mobile */
+  .classes-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .class-card {
+    padding: 1rem;
+  }
+  
+  .class-card-header h3 {
+    font-size: 1rem;
+  }
+  
+  .class-card-footer {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .class-card-footer .btn-barizta,
+  .class-card-footer .btn-secondary-barizta {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Empty State Mobile */
+  .empty-state {
+    padding: 2rem 1rem;
+  }
+  
+  .empty-state .empty-icon {
+    font-size: 3rem;
+  }
+  
+  .empty-state h3 {
+    font-size: 1.1rem;
+  }
+
+  /* Payment Modal Mobile */
+  .payment-modal .modal-body img {
+    max-height: 60vh;
+    object-fit: contain;
+  }
+
+  /* Certificate Modal Mobile */
+  .generate-cert-modal,
+  .cert-preview-modal {
+    width: 100%;
+    max-width: none;
+  }
+  
+  .cert-preview-info {
+    padding: 1rem;
+  }
+  
+  .info-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.3rem;
+  }
+  
+  .cert-input-field {
+    width: 100%;
+  }
+  
+  .template-img,
+  .generated-cert-img {
+    max-height: 200px;
+  }
+}
+
+/* Small Mobile */
+@media (max-width: 480px) {
+  .stats-summary {
+    grid-template-columns: 1fr;
+  }
+  
+  .peserta-stats-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .tabs-container {
+    flex-direction: column;
+  }
+  
+  .tab-button {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .action-buttons {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .action-buttons button {
+    width: 100%;
+  }
+  
+  .packages-list {
+    flex-direction: column;
+  }
+  
+  .package-tag {
+    text-align: center;
+  }
+}
+
+/* ============================================================
+   KELAS EDUKASI BUTTON STYLES - ISOLATED & LOCKED
+   ============================================================
+   These styles are ISOLATED and will NOT be affected by:
+   - Table header (thead) changes
+   - Global table styles
+   - Admin shared styles
+   ============================================================ */
+
+/* Base Button Style - High Specificity */
+.kelas-edukasi-btn {
+  padding: 0.5rem 1rem !important;
+  border: none !important;
+  border-radius: 8px !important;
+  font-size: 0.85rem !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.4rem !important;
+  text-decoration: none !important;
+  white-space: nowrap !important;
+  min-width: auto !important;
+  height: auto !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+/* Shimmer Effect */
+.kelas-edukasi-btn::before {
+  content: '' !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: -100% !important;
+  width: 100% !important;
+  height: 100% !important;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.12), transparent) !important;
+  transition: left 0.5s !important;
+}
+
+.kelas-edukasi-btn:hover::before {
+  left: 100% !important;
+}
+
+/* Detail Button - Dark Blue with Blue Border */
+.kelas-edukasi-btn.btn-detail,
+.kelas-edukasi-btn-detail {
+  padding: 0.5rem 1rem !important;
+  border-radius: 8px !important;
+  font-size: 0.85rem !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.4rem !important;
+  text-decoration: none !important;
+  white-space: nowrap !important;
+  background: linear-gradient(135deg, rgba(26, 39, 68, 0.55), rgba(15, 26, 46, 0.65)) !important;
+  color: rgba(255, 255, 255, 0.92) !important;
+  border: 1px solid rgba(59, 130, 246, 0.55) !important;
+  box-shadow: 0 2px 10px rgba(59, 130, 246, 0.12) !important;
+}
+
+.kelas-edukasi-btn.btn-detail:hover,
+.kelas-edukasi-btn-detail:hover {
+  background: linear-gradient(135deg, rgba(30, 48, 80, 0.65), rgba(21, 34, 56, 0.75)) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 16px rgba(59, 130, 246, 0.18) !important;
+  border-color: rgba(96, 165, 250, 0.7) !important;
+}
+
+/* Approve/Terima Button - Dark Green with Green Border */
+.kelas-edukasi-btn.btn-approve,
+.kelas-edukasi-btn-approve {
+  padding: 0.5rem 1rem !important;
+  border-radius: 8px !important;
+  font-size: 0.85rem !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.4rem !important;
+  text-decoration: none !important;
+  white-space: nowrap !important;
+  background: linear-gradient(135deg, rgba(20, 51, 42, 0.55), rgba(10, 31, 24, 0.65)) !important;
+  color: rgba(255, 255, 255, 0.92) !important;
+  border: 1px solid rgba(34, 197, 94, 0.55) !important;
+  box-shadow: 0 2px 10px rgba(34, 197, 94, 0.12) !important;
+}
+
+.kelas-edukasi-btn.btn-approve:hover,
+.kelas-edukasi-btn-approve:hover {
+  background: linear-gradient(135deg, rgba(26, 64, 53, 0.65), rgba(15, 41, 32, 0.75)) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 16px rgba(34, 197, 94, 0.18) !important;
+  border-color: rgba(74, 222, 128, 0.7) !important;
+}
+
+/* Reject/Tolak Button - Dark Red with Red Border */
+.kelas-edukasi-btn.btn-reject,
+.kelas-edukasi-btn-reject {
+  padding: 0.5rem 1rem !important;
+  border-radius: 8px !important;
+  font-size: 0.85rem !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.4rem !important;
+  text-decoration: none !important;
+  white-space: nowrap !important;
+  background: linear-gradient(135deg, rgba(59, 26, 26, 0.55), rgba(42, 15, 15, 0.65)) !important;
+  color: rgba(255, 255, 255, 0.92) !important;
+  border: 1px solid rgba(239, 68, 68, 0.55) !important;
+  box-shadow: 0 2px 10px rgba(239, 68, 68, 0.12) !important;
+}
+
+.kelas-edukasi-btn.btn-reject:hover,
+.kelas-edukasi-btn-reject:hover {
+  background: linear-gradient(135deg, rgba(74, 32, 32, 0.65), rgba(53, 21, 21, 0.75)) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 16px rgba(239, 68, 68, 0.18) !important;
+  border-color: rgba(248, 113, 113, 0.7) !important;
+}
+
+/* View Proof/Lihat Bukti Button - Blue (Consistent with Detail) */
+.classes-page .kelas-edukasi-btn.btn-view-proof,
+.classes-page .kelas-edukasi-btn-proof,
+.kelas-edukasi-btn.btn-view-proof,
+.kelas-edukasi-btn-proof {
+  padding: 0.5rem 1rem !important;
+  border-radius: 8px !important;
+  font-size: 0.85rem !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.4rem !important;
+  text-decoration: none !important;
+  white-space: nowrap !important;
+  background: linear-gradient(135deg, rgba(26, 39, 68, 0.55), rgba(15, 26, 46, 0.65)) !important;
+  color: rgba(255, 255, 255, 0.92) !important;
+  border: 1px solid rgba(59, 130, 246, 0.55) !important;
+  box-shadow: 0 2px 10px rgba(59, 130, 246, 0.12) !important;
+}
+
+.classes-page .kelas-edukasi-btn.btn-view-proof:hover,
+.classes-page .kelas-edukasi-btn-proof:hover,
+.kelas-edukasi-btn.btn-view-proof:hover,
+.kelas-edukasi-btn-proof:hover {
+  background: linear-gradient(135deg, rgba(30, 48, 80, 0.65), rgba(21, 34, 56, 0.75)) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 16px rgba(59, 130, 246, 0.18) !important;
+  border-color: rgba(96, 165, 250, 0.7) !important;
+}
+
+/* Download Sertifikat (PDF) Button - Green */
+.classes-page .kelas-edukasi-btn.btn-download,
+.kelas-edukasi-btn.btn-download {
+  padding: 0.5rem 1rem !important;
+  border-radius: 8px !important;
+  font-size: 0.85rem !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.4rem !important;
+  text-decoration: none !important;
+  white-space: nowrap !important;
+  background: linear-gradient(135deg, rgba(22, 101, 52, 0.55), rgba(20, 83, 45, 0.65)) !important;
+  color: rgba(167, 243, 208, 0.95) !important;
+  border: 1px solid rgba(34, 197, 94, 0.55) !important;
+  box-shadow: 0 2px 10px rgba(34, 197, 94, 0.12) !important;
+}
+
+.classes-page .kelas-edukasi-btn.btn-download:hover,
+.kelas-edukasi-btn.btn-download:hover {
+  background: linear-gradient(135deg, rgba(26, 64, 53, 0.65), rgba(15, 41, 32, 0.75)) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 16px rgba(34, 197, 94, 0.18) !important;
+  border-color: rgba(74, 222, 128, 0.7) !important;
+}
+
+/* Status Badge - Menunggu (Orange) */
+.kelas-edukasi-status-waiting {
+  background: linear-gradient(135deg, rgba(255, 152, 0, 0.2), rgba(245, 124, 0, 0.15)) !important;
+  border: 1px solid rgba(255, 152, 0, 0.4) !important;
+  color: #ffb74d !important;
+  padding: 0.5rem 1rem !important;
+  border-radius: 8px !important;
+  font-size: 0.85rem !important;
+  font-weight: 600 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.4rem !important;
+  white-space: nowrap !important;
+  box-shadow: 0 2px 8px rgba(255, 152, 0, 0.2) !important;
+}
+
+/* Status Badge - Approved (Green) */
+.kelas-edukasi-status-approved {
+  background: linear-gradient(135deg, rgba(76, 175, 80, 0.2), rgba(56, 142, 60, 0.15)) !important;
+  border: 1px solid rgba(76, 175, 80, 0.4) !important;
+  color: #81c784 !important;
+  padding: 0.5rem 1rem !important;
+  border-radius: 8px !important;
+  font-size: 0.85rem !important;
+  font-weight: 600 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.4rem !important;
+  white-space: nowrap !important;
+  box-shadow: 0 2px 8px rgba(76, 175, 80, 0.2) !important;
+}
+
+/* Status Badge - Rejected (Red) */
+.kelas-edukasi-status-rejected {
+  background: linear-gradient(135deg, rgba(244, 67, 54, 0.2), rgba(198, 40, 40, 0.15)) !important;
+  border: 1px solid rgba(244, 67, 54, 0.4) !important;
+  color: #e57373 !important;
+  padding: 0.5rem 1rem !important;
+  border-radius: 8px !important;
+  font-size: 0.85rem !important;
+  font-weight: 600 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.4rem !important;
+  white-space: nowrap !important;
+  box-shadow: 0 2px 8px rgba(244, 67, 54, 0.2) !important;
+}
+
+/* Status Badge - Completed (Blue) */
+.kelas-edukasi-status-completed {
+  background: linear-gradient(135deg, rgba(33, 150, 243, 0.2), rgba(21, 101, 192, 0.15)) !important;
+  border: 1px solid rgba(33, 150, 243, 0.4) !important;
+  color: #64b5f6 !important;
+  padding: 0.5rem 1rem !important;
+  border-radius: 8px !important;
+  font-size: 0.85rem !important;
+  font-weight: 600 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.4rem !important;
+  white-space: nowrap !important;
+  box-shadow: 0 2px 8px rgba(33, 150, 243, 0.2) !important;
+}
+
+/* Disabled State */
+.kelas-edukasi-btn:disabled {
+  opacity: 0.6 !important;
+  cursor: not-allowed !important;
+  transform: none !important;
+}
+
+.kelas-edukasi-btn:disabled:hover {
+  transform: none !important;
+}
+
+/* ============================================================
+   END KELAS EDUKASI BUTTON STYLES
+   ============================================================ */

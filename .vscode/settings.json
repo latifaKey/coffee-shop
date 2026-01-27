@@ -1,0 +1,39 @@
+{
+  // Gunakan TypeScript versi dari node_modules agar cocok dengan Next.js
+  "typescript.tsdk": "node_modules/typescript/lib",
+
+  // Matikan auto type acquisition yang tidak perlu di project Next.js
+  "typescript.disableAutomaticTypeAcquisition": true,
+
+  // Batasi ukuran project yang dianalisis TS agar tidak scan folder berat
+  "typescript.tsserver.maxTsServerMemory": 4096,
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/.next": true,
+    "**/.turbo": true,
+    "**/dist": true
+  },
+  "files.watcherExclude": {
+    "**/node_modules/**": true,
+    "**/.next/**": true,
+    "**/.turbo/**": true,
+    "**/dist/**": true
+  },
+
+  // Matikan beberapa validasi duplikat dari VS Code karena sudah ditangani Next/ESLint
+  "javascript.validate.enable": false,
+  "typescript.validate.enable": true,
+
+  // ESLint hanya jalan saat save agar tidak berat
+  "eslint.run": "onSave",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+
+  // Nonaktifkan preview editor untuk mengurangi tab tidak perlu
+  "workbench.editor.enablePreview": false,
+
+  // Theme & UI ringan
+  "workbench.tree.indent": 12,
+  "editor.minimap.enabled": false
+}

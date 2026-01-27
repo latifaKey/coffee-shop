@@ -1,0 +1,117 @@
+/* Menu Skeleton Loading Animation */
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    #f0f0f0 25%,
+    #e0e0e0 50%,
+    #f0f0f0 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s ease-in-out infinite;
+  border-radius: 8px;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Skeleton Variants */
+.skeleton-title {
+  height: 24px;
+  width: 60%;
+  margin-bottom: 12px;
+}
+
+.skeleton-text {
+  height: 16px;
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+.skeleton-input {
+  height: 42px;
+  width: 100%;
+  margin-top: 12px;
+}
+
+.skeleton-checkbox {
+  height: 20px;
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+.skeleton-select {
+  height: 36px;
+  border-radius: 6px;
+}
+
+.skeleton-checkboxes {
+  margin-top: 16px;
+}
+
+/* Product Card Skeleton */
+.product-card-skeleton {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.skeleton-image {
+  width: 100%;
+  aspect-ratio: 4/3;
+  border-radius: 0;
+}
+
+.product-card-skeleton .skeleton-title {
+  margin: 16px 16px 8px 16px;
+  width: 70%;
+}
+
+.product-card-skeleton .skeleton-text {
+  margin: 0 16px 8px 16px;
+}
+
+.product-card-skeleton__footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  margin-top: auto;
+}
+
+.skeleton-price {
+  height: 22px;
+  width: 80px;
+}
+
+.skeleton-button {
+  height: 36px;
+  width: 80px;
+  border-radius: 6px;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .skeleton {
+    background: linear-gradient(
+      90deg,
+      #2a2a2a 25%,
+      #1a1a1a 50%,
+      #2a2a2a 75%
+    );
+  }
+
+  .product-card-skeleton {
+    background: #1e1e1e;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  }
+}

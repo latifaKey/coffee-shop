@@ -1,0 +1,478 @@
+/* Hubungi Kami Page Styles */
+.kontak-page {
+  background: var(--bg);
+}
+
+/* Hero Section */
+.kontak-hero {
+  position: relative;
+  height: 450px;
+  background: linear-gradient(135deg, #2c1810 0%, #3e2723 50%, #4e342e 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.kontak-hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 20% 30%, rgba(255, 107, 53, 0.15), transparent 40%),
+    radial-gradient(circle at 80% 70%, rgba(212, 165, 116, 0.1), transparent 40%);
+  animation: kontakHeroGlow 8s ease-in-out infinite;
+}
+
+@keyframes kontakHeroGlow {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+.kontak-hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to bottom, rgba(44, 24, 16, 0.6), rgba(44, 24, 16, 0.85));
+}
+
+.kontak-hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  color: white;
+  padding: 0 2rem;
+  animation: kontakFadeInDown 0.8s ease-out;
+}
+
+@keyframes kontakFadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.kontak-breadcrumb {
+  font-size: 0.95rem;
+  color: #d4a574;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.kontak-breadcrumb a {
+  color: #d4a574;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.kontak-breadcrumb a:hover {
+  color: #ffd7a8;
+}
+
+.kontak-breadcrumb .separator {
+  margin: 0 0.5rem;
+}
+
+.kontak-breadcrumb .active {
+  color: #ffd7a8;
+}
+
+.kontak-hero-content h1 {
+  font-size: 3rem;
+  font-weight: 700;
+  margin: 0.5rem 0;
+  color: #ffd7a8;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
+}
+
+.kontak-hero-content p {
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.9);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .kontak-hero {
+    height: 350px;
+  }
+  
+  .kontak-hero-content h1 {
+    font-size: 2rem;
+  }
+  
+  .kontak-hero-content p {
+    font-size: 1rem;
+  }
+}
+
+.kontak-content {
+  padding: 5rem 0;
+}
+
+.kontak-content .container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+/* Grid Layout */
+.kontak-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+
+/* Contact Info Side */
+.kontak-info h2 {
+  font-size: 2rem;
+  color: var(--text);
+  margin: 0 0 0.5rem;
+  font-weight: 700;
+}
+
+.info-subtitle {
+  color: var(--muted);
+  font-size: 1rem;
+  margin: 0 0 2rem;
+  line-height: 1.7;
+}
+
+/* Info Cards */
+.info-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.info-card {
+  display: flex;
+  gap: 1.25rem;
+  padding: 1.5rem;
+  background: var(--surface);
+  border: 1px solid var(--glass);
+  border-radius: 14px;
+  transition: all 0.3s ease;
+}
+
+.info-card:hover {
+  transform: translateX(5px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.info-card.clickable {
+  cursor: pointer;
+}
+
+.info-card.clickable:hover {
+  border-color: var(--primary);
+  background: linear-gradient(135deg, rgba(139, 69, 19, 0.05), rgba(212, 180, 140, 0.03));
+}
+
+.info-icon {
+  font-size: 1.5rem;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgba(139, 69, 19, 0.12), rgba(212, 180, 140, 0.08));
+  border-radius: 12px;
+  flex-shrink: 0;
+}
+
+.info-content {
+  flex: 1;
+}
+
+.info-content h3 {
+  font-size: 0.85rem;
+  color: var(--muted);
+  font-weight: 600;
+  margin: 0 0 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.info-content p {
+  font-size: 0.95rem;
+  color: var(--text);
+  margin: 0;
+  line-height: 1.6;
+}
+
+.info-content .highlight {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--primary-2);
+}
+
+.link-hint {
+  font-size: 0.8rem;
+  color: var(--primary-2);
+  margin-top: 0.35rem;
+  display: block;
+  font-weight: 500;
+}
+
+.email-link,
+.kontak-ig-link {
+  color: var(--primary-2);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s;
+  background: none !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  display: inline !important;
+}
+
+.email-link:hover,
+.kontak-ig-link:hover {
+  color: var(--primary);
+  text-decoration: underline;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* Location Card */
+.location-card {
+  background: linear-gradient(135deg, rgba(139, 69, 19, 0.08), rgba(212, 180, 140, 0.05));
+  border: 1px solid var(--glass);
+  border-radius: 16px;
+  padding: 1.75rem;
+  margin-top: 1.5rem;
+}
+
+.location-card h3 {
+  font-size: 0.85rem;
+  color: var(--muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0 0 0.75rem;
+}
+
+.address-detail {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.address-detail .icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.address-detail p {
+  font-size: 0.95rem;
+  color: var(--text);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Button styling dihapus - sekarang menggunakan btn-barizta dari globals.css */
+
+/* Map Container (Legacy) */
+.map-container {
+  margin-top: 2rem;
+}
+
+.map-container h3 {
+  font-size: 1.1rem;
+  color: var(--text);
+  margin: 0 0 1rem;
+  font-weight: 600;
+}
+
+.map-embed {
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+}
+
+/* Contact Form Side */
+.kontak-form-wrapper {
+  background: var(--surface);
+  border: 1px solid var(--glass);
+  border-radius: 18px;
+  padding: 2.5rem;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+}
+
+.form-header {
+  margin-bottom: 2rem;
+}
+
+.form-header h2 {
+  font-size: 1.75rem;
+  color: var(--text);
+  margin: 0 0 0.5rem;
+  font-weight: 700;
+}
+
+.form-header p {
+  color: var(--muted);
+  font-size: 0.95rem;
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* Form Styles */
+.kontak-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-group label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.form-group input,
+.form-group textarea {
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--glass);
+  border-radius: 12px;
+  font-size: 1rem;
+  background: var(--bg);
+  color: var(--text);
+  transition: all 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(139, 69, 19, 0.1);
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: var(--muted);
+  opacity: 0.6;
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 140px;
+}
+
+/* Form Status */
+.form-status {
+  padding: 1rem 1.25rem;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.form-status.success {
+  background: rgba(34, 197, 94, 0.1);
+  border: 1px solid rgba(34, 197, 94, 0.25);
+  color: #22c55e;
+}
+
+.form-status.error {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  color: #ef4444;
+}
+
+/* Submit Button - Gradasi sesuai brand */
+/* Button styling dihapus - sekarang menggunakan btn-barizta dari globals.css */
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .kontak-grid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  .kontak-info {
+    order: 2;
+  }
+
+  .kontak-form-wrapper {
+    order: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .kontak-content {
+    padding: 3rem 0;
+  }
+
+  .kontak-form-wrapper {
+    padding: 1.75rem;
+  }
+
+  .kontak-info h2,
+  .form-header h2 {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .kontak-content {
+    padding: 2.5rem 0;
+  }
+
+  .kontak-form-wrapper {
+    padding: 1.5rem;
+  }
+
+  .info-card {
+    padding: 1.25rem;
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .info-icon {
+    width: 48px;
+    height: 48px;
+    font-size: 1.3rem;
+    margin: 0 auto;
+  }
+
+  .info-content h3 {
+    margin-top: 0.5rem;
+  }
+
+  .location-card {
+    padding: 1.25rem;
+    text-align: center;
+  }
+
+  .address-detail {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .btn-location {
+    width: 100%;
+    justify-content: center;
+  }
+}

@@ -1,0 +1,1151 @@
+/* Barizta To Go Page Styles */
+.togo-page {
+  width: 100%;
+  background: var(--bg);
+}
+
+/* Hero */
+.togo-hero {
+  position: relative;
+  height: 450px;
+  background: linear-gradient(135deg, #2c1810 0%, #3e2723 50%, #4e342e 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.togo-hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 20% 30%, rgba(255, 107, 53, 0.15), transparent 40%),
+    radial-gradient(circle at 80% 70%, rgba(212, 165, 116, 0.1), transparent 40%);
+  animation: togoHeroGlow 8s ease-in-out infinite;
+}
+
+@keyframes togoHeroGlow {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+.togo-hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to bottom, rgba(44, 24, 16, 0.6), rgba(44, 24, 16, 0.85));
+}
+
+.togo-hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  color: white;
+  padding: 0 2rem;
+  animation: togoFadeInDown 0.8s ease-out;
+}
+
+@keyframes togoFadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.togo-hero-content .breadcrumb {
+  font-size: 0.95rem;
+  color: #d4a574;
+  margin-bottom: 1rem;
+  display: block;
+  font-weight: 500;
+}
+
+.togo-hero-content .breadcrumb a {
+  color: #d4a574;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.togo-hero-content .breadcrumb a:hover {
+  color: #ffd7a8;
+}
+
+.togo-hero-content .breadcrumb .active {
+  color: #ffd7a8;
+  font-weight: 600;
+}
+
+.togo-hero-content h1 {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #ffd7a8;
+  margin: 0.5rem 0;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+}
+
+.togo-hero-content p {
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* About Section */
+.togo-about {
+  padding: 5rem 0;
+  background: var(--bg);
+}
+
+.togo-about .container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+.section-label {
+  display: inline-block;
+  background: linear-gradient(135deg, rgba(139, 69, 19, 0.15), rgba(212, 180, 140, 0.1));
+  color: var(--primary-2);
+  padding: 0.5rem 1.25rem;
+  border-radius: 50px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  margin-bottom: 1rem;
+  border: 1px solid rgba(139, 69, 19, 0.2);
+}
+
+.about-content h2 {
+  font-size: 2.2rem;
+  color: var(--text);
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+
+.about-content p {
+  font-size: 1.05rem;
+  color: var(--muted);
+  line-height: 1.8;
+  margin-bottom: 1.5rem;
+}
+
+.feature-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.feature-list li {
+  padding: 0.6rem 0;
+  color: var(--text);
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.about-image {
+  position: relative;
+}
+
+/* Image Grid 2 Columns */
+.image-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  align-items: stretch;
+}
+
+.image-item {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.image-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+}
+
+.image-item.logo-display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: 
+    radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.06) 0%, transparent 40%),
+    radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0.1) 0%, transparent 70%),
+    linear-gradient(135deg, #C17D3C 0%, #D4A574 50%, #B8703A 100%);
+  padding: 1.5rem;
+  min-height: 260px;
+  position: relative;
+  overflow: hidden;
+}
+
+.image-item.logo-display::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: 
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 30px,
+      rgba(255, 255, 255, 0.02) 30px,
+      rgba(255, 255, 255, 0.02) 60px
+    );
+  animation: subtleShine 8s linear infinite;
+  pointer-events: none;
+}
+
+.image-item.logo-display::after {
+  content: '☕';
+  position: absolute;
+  font-size: 8rem;
+  opacity: 0.04;
+  bottom: -1rem;
+  right: -1rem;
+  transform: rotate(-15deg);
+  pointer-events: none;
+}
+
+@keyframes subtleShine {
+  0% {
+    transform: translateX(-30%) translateY(-30%);
+  }
+  100% {
+    transform: translateX(30%) translateY(30%);
+  }
+}
+
+.image-item.booth-photo {
+  background: var(--surface);
+  min-height: 260px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.image-item.booth-photo img,
+.image-item.booth-photo .booth-image {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.image-item.booth-photo .image-badge {
+  z-index: 10;
+}
+
+.booth-image {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+}
+
+.image-placeholder {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+}
+
+.image-placeholder.logo-display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgba(44, 24, 16, 0.95), rgba(30, 18, 12, 0.98));
+  padding: 2rem;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+}
+
+.togo-logo {
+  width: 200px !important;
+  height: auto !important;
+  filter: drop-shadow(0 10px 25px rgba(0, 0, 0, 0.35));
+  transition: transform 0.4s ease, filter 0.4s ease;
+  position: relative;
+  z-index: 2;
+}
+
+.togo-logo:hover {
+  transform: scale(1.05) rotate(2deg);
+  filter: drop-shadow(0 15px 35px rgba(0, 0, 0, 0.4));
+}
+
+.image-placeholder img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.image-badge {
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  background: linear-gradient(135deg, var(--primary), var(--primary-2));
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  box-shadow: 0 4px 15px rgba(139, 69, 19, 0.3);
+  z-index: 10;
+}
+
+/* Menu Section */
+.togo-menu {
+  padding: 4rem 0;
+  background: var(--surface);
+}
+
+.togo-menu .container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.section-header .label {
+  display: inline-block;
+  background: linear-gradient(135deg, rgba(139, 69, 19, 0.15), rgba(212, 180, 140, 0.1));
+  color: var(--primary-2);
+  padding: 0.5rem 1.25rem;
+  border-radius: 50px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  margin-bottom: 1rem;
+  border: 1px solid rgba(139, 69, 19, 0.2);
+}
+
+.section-header h2 {
+  font-size: 2rem;
+  color: var(--text);
+  margin: 0;
+  font-weight: 700;
+}
+
+.menu-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.menu-card {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  background: var(--bg);
+  border: 1px solid var(--glass);
+  border-radius: 14px;
+  padding: 1.25rem 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.menu-card:hover {
+  border-color: var(--primary);
+  transform: translateX(8px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.menu-icon {
+  font-size: 2rem;
+  width: 55px;
+  height: 55px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgba(139, 69, 19, 0.12), rgba(212, 180, 140, 0.08));
+  border-radius: 12px;
+  flex-shrink: 0;
+}
+
+.menu-info {
+  flex: 1;
+}
+
+.menu-info h3 {
+  font-size: 1.15rem;
+  color: var(--text);
+  margin: 0 0 0.3rem 0;
+  font-weight: 600;
+}
+
+.menu-info p {
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.menu-price {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--primary-2);
+  white-space: nowrap;
+}
+
+/* Compact Info Section */
+.togo-info-compact {
+  padding: 2rem 0;
+  background: var(--surface);
+  border-top: 1px solid var(--glass);
+  border-bottom: 1px solid var(--glass);
+}
+
+.togo-info-compact .container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.info-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  flex-wrap: wrap;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 2rem;
+}
+
+.info-item .info-icon {
+  font-size: 1.5rem;
+}
+
+.info-item .info-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.info-item .info-text strong {
+  font-size: 0.85rem;
+  color: var(--primary-2);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.info-item .info-text span {
+  font-size: 0.95rem;
+  color: var(--text);
+}
+
+.info-item .info-text a {
+  color: var(--primary-2);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.info-item .info-text a:hover {
+  text-decoration: underline;
+}
+
+.info-item.highlight {
+  background: linear-gradient(135deg, rgba(139, 69, 19, 0.1), rgba(212, 180, 140, 0.05));
+  border-radius: 12px;
+}
+
+.info-divider {
+  width: 1px;
+  height: 40px;
+  background: var(--glass);
+}
+
+/* Legacy Info Section - Keep for backwards compatibility */
+.togo-info {
+  padding: 4rem 0;
+  background: var(--bg);
+}
+
+.togo-info .container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.info-card {
+  background: var(--surface);
+  border: 1px solid var(--glass);
+  border-radius: 14px;
+  padding: 2rem 1.5rem;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.info-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+}
+
+.info-card h3 {
+  font-size: 1.1rem;
+  color: var(--text);
+  margin: 0 0 1.25rem 0;
+  font-weight: 600;
+}
+
+.info-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.info-card li {
+  padding: 0.5rem 0;
+  color: var(--muted);
+  font-size: 1rem;
+}
+
+.info-card.highlight {
+  background: linear-gradient(135deg, rgba(139, 69, 19, 0.1), rgba(212, 180, 140, 0.08));
+  border-color: var(--primary);
+}
+
+.time-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.time-info .time {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--primary-2);
+}
+
+.time-info .day {
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.location-text {
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin: 0 0 1.25rem 0;
+}
+
+.ig-link {
+  display: inline-block;
+  background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045);
+  color: white;
+  padding: 0.6rem 1.25rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.ig-link:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(253, 29, 29, 0.25);
+}
+
+/* Gallery */
+.togo-gallery {
+  padding: 4rem 0;
+  background: var(--surface);
+}
+
+.togo-gallery .container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  grid-template-rows: repeat(2, 1fr);
+  gap: 1rem;
+  height: 420px;
+}
+
+.gallery-item {
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.gallery-item.large {
+  grid-row: span 2;
+}
+
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.gallery-item:hover img {
+  transform: scale(1.08);
+}
+
+/* CTA */
+.togo-cta {
+  padding: 4rem 0;
+  background: linear-gradient(135deg, #2c1810 0%, #3e2723 50%, #4e342e 100%);
+}
+
+.togo-cta .container {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.cta-content {
+  text-align: center;
+  color: white;
+}
+
+.cta-content h2 {
+  font-size: 2.2rem;
+  margin-bottom: 0.75rem;
+  font-weight: 700;
+}
+
+.cta-content p {
+  font-size: 1.1rem;
+  opacity: 0.9;
+  margin-bottom: 2rem;
+}
+
+/* Button styling dihapus - sekarang menggunakan btn-barizta dari globals.css */
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .about-grid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  .about-image {
+    order: -1;
+  }
+
+  .image-grid-2 {
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .togo-hero {
+    height: 380px;
+  }
+
+  .togo-hero-content h1 {
+    font-size: 2.2rem;
+  }
+
+  .info-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .image-grid-2 {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .image-item.logo-display {
+    min-height: 200px;
+    padding: 1.5rem;
+  }
+
+  .image-item.booth-photo {
+    height: 220px;
+  }
+
+  .togo-logo {
+    width: 160px !important;
+  }
+
+  /* Compact info responsive */
+  .info-row {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .info-item {
+    width: 100%;
+    justify-content: center;
+    padding: 1rem;
+    border-bottom: 1px solid var(--glass);
+  }
+
+  .info-item:last-child {
+    border-bottom: none;
+  }
+
+  .info-divider {
+    display: none;
+  }
+
+  .gallery-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    height: auto;
+  }
+
+  .gallery-item.large {
+    grid-row: auto;
+  }
+
+  .gallery-item {
+    height: 200px;
+  }
+
+  .togo-about,
+  .togo-menu,
+  .togo-info,
+  .togo-info-compact,
+  .togo-gallery,
+  .togo-cta {
+    padding: 2.5rem 0;
+  }
+
+  .menu-card {
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+    padding: 1.5rem;
+  }
+
+  .menu-card:hover {
+    transform: translateY(-5px);
+  }
+
+  .section-header h2,
+  .about-content h2 {
+    font-size: 1.75rem;
+  }
+
+  .cta-content h2 {
+    font-size: 1.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .togo-hero-content h1 {
+    font-size: 1.8rem;
+  }
+
+  .togo-hero-content p {
+    font-size: 0.95rem;
+  }
+
+  .btn-order {
+    padding: 0.875rem 2rem;
+    font-size: 1rem;
+  }
+
+  .info-item {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.5rem;
+  }
+}
+
+/* Loading Container */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  gap: 1rem;
+}
+
+.loading-spinner {
+  font-size: 3rem;
+  animation: spinCoffee 1s ease-in-out infinite;
+}
+
+@keyframes spinCoffee {
+  0% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(180deg) scale(1.1); }
+  100% { transform: rotate(360deg) scale(1); }
+}
+
+.loading-container p {
+  color: var(--gold);
+  font-size: 1.1rem;
+}
+
+/* ==============================================
+   JADWAL LOKASI SECTION - Public Page
+   Card style dengan goldish-orange glow (seperti tombol Logout)
+   ============================================== */
+.togo-schedules {
+  padding: 5rem 0;
+  background: linear-gradient(180deg, var(--bg) 0%, rgba(42, 24, 16, 0.95) 100%);
+}
+
+.togo-schedules .section-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.togo-schedules .section-desc {
+  color: var(--muted);
+  font-size: 1.05rem;
+  margin-top: 0.5rem;
+}
+
+/* Grid untuk schedule cards */
+.schedule-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 2rem;
+}
+
+/* Schedule Card - Mengikuti tema coklat-gold Barizta */
+.schedule-card {
+  background: linear-gradient(135deg, rgba(62, 39, 35, 0.9), rgba(42, 24, 16, 0.95));
+  border-radius: 20px;
+  border: 1px solid rgba(139, 69, 19, 0.4);
+  overflow: hidden;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  position: relative;
+}
+
+/* Glow effect - seperti tombol Logout */
+.schedule-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 20px;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(212, 165, 116, 0.3), rgba(139, 69, 19, 0.2));
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  -webkit-mask-composite: xor;
+  pointer-events: none;
+  opacity: 0.5;
+  transition: opacity 0.3s ease;
+}
+
+.schedule-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 
+    0 8px 30px rgba(0, 0, 0, 0.4),
+    0 0 20px rgba(212, 165, 116, 0.15);
+  border-color: rgba(212, 165, 116, 0.5);
+}
+
+.schedule-card:hover::before {
+  opacity: 1;
+}
+
+/* Header Card - Tanggal dan Badge */
+.schedule-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem 1.5rem;
+  background: linear-gradient(135deg, rgba(139, 69, 19, 0.25), rgba(42, 24, 16, 0.4));
+  border-bottom: 1px solid rgba(139, 69, 19, 0.3);
+}
+
+.schedule-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: #ffd7a8;
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+}
+
+.brand-icon {
+  font-size: 1.2rem;
+}
+
+.brand-text {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+/* Badge Status Stay - mengikuti style logout button */
+.schedule-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.4rem 0.9rem;
+  border-radius: 50px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  transition: all 0.25s ease-in-out;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Shimmer effect untuk badge */
+.schedule-badge::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.schedule-badge:hover::before {
+  left: 100%;
+}
+
+/* Badge Active (Sudah Stay) - Biru Soft */
+.badge-active {
+  background: linear-gradient(135deg, rgba(52, 152, 219, 0.4), rgba(41, 128, 185, 0.5));
+  border: 1px solid rgba(52, 152, 219, 0.6);
+  color: #85c5f7;
+  box-shadow: 0 2px 10px rgba(52, 152, 219, 0.3);
+}
+
+.badge-active:hover {
+  background: linear-gradient(135deg, rgba(52, 152, 219, 0.55), rgba(41, 128, 185, 0.65));
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4);
+}
+
+/* Badge Pending (Belum Stay) - Abu-Gold Elegan */
+.badge-pending {
+  background: linear-gradient(135deg, rgba(139, 69, 19, 0.3), rgba(212, 165, 116, 0.25));
+  border: 1px solid rgba(139, 69, 19, 0.5);
+  color: #d4a574;
+  box-shadow: 0 2px 10px rgba(139, 69, 19, 0.2);
+}
+
+.badge-pending:hover {
+  background: linear-gradient(135deg, rgba(139, 69, 19, 0.45), rgba(212, 165, 116, 0.4));
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(139, 69, 19, 0.35);
+}
+
+/* Body Card */
+.schedule-card-body {
+  padding: 1.5rem;
+}
+
+.schedule-location {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  color: #ffd7a8;
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0 0 1rem 0;
+  line-height: 1.4;
+}
+
+.location-icon {
+  font-size: 1.3rem;
+  flex-shrink: 0;
+}
+
+.schedule-time {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #e6d5c3;
+  font-size: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.time-icon {
+  font-size: 1rem;
+}
+
+.schedule-notes {
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  margin: 0;
+  padding: 0.75rem;
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  border-left: 3px solid rgba(212, 165, 116, 0.5);
+}
+
+/* Google Maps Embed */
+.schedule-map {
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+}
+
+.schedule-map iframe {
+  width: 100%;
+  height: 100%;
+  filter: grayscale(30%) contrast(1.05);
+  transition: filter 0.3s ease;
+}
+
+.schedule-card:hover .schedule-map iframe {
+  filter: grayscale(0%) contrast(1);
+}
+
+/* Footer Card dengan CTA Button */
+.schedule-card-footer {
+  padding: 1rem 1.5rem 1.5rem;
+}
+
+/* Button CTA - STYLE SAMA DENGAN TOMBOL LOGOUT */
+.btn-schedule-order {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: linear-gradient(135deg, rgba(139, 69, 19, 0.4), rgba(212, 165, 116, 0.3));
+  border: 1px solid #8B4513;
+  color: #D4A574;
+  padding: 0.9rem 1.5rem;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease-in-out;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(139, 69, 19, 0.25);
+}
+
+/* Shimmer effect - SAMA dengan logout-btn */
+.btn-schedule-order::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.btn-schedule-order:hover::before {
+  left: 100%;
+}
+
+/* Hover - SAMA dengan logout-btn */
+.btn-schedule-order:hover {
+  background: linear-gradient(135deg, rgba(139, 69, 19, 0.6), rgba(212, 165, 116, 0.5));
+  border-color: #D4A574;
+  transform: translateY(-2px);
+  box-shadow: 
+    0 4px 15px rgba(139, 69, 19, 0.4),
+    0 0 15px rgba(212, 165, 116, 0.15);
+  color: #ffd7a8;
+}
+
+.btn-schedule-order:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(139, 69, 19, 0.3);
+}
+
+.btn-schedule-order:disabled,
+.btn-schedule-order:disabled:hover,
+.btn-schedule-order:disabled:active {
+  cursor: not-allowed;
+  opacity: 0.45;
+  transform: none;
+  box-shadow: none;
+  color: rgba(212, 165, 116, 0.7);
+  background: rgba(139, 69, 19, 0.25);
+  border-color: rgba(139, 69, 19, 0.4);
+}
+
+.btn-schedule-order:disabled::before {
+  display: none;
+}
+
+/* Responsive untuk schedule cards */
+@media (max-width: 768px) {
+  .schedule-cards {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .schedule-card-header {
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: flex-start;
+  }
+
+  .schedule-location {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .togo-schedules {
+    padding: 3rem 0;
+  }
+
+  .schedule-card-body {
+    padding: 1.25rem;
+  }
+
+  .schedule-card-footer {
+    padding: 0.75rem 1.25rem 1.25rem;
+  }
+
+  .btn-schedule-order {
+    padding: 0.8rem 1.25rem;
+    font-size: 0.9rem;
+  }
+}

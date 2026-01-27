@@ -1,0 +1,655 @@
+/* Kolaborasi Admin Page - Integrated Partner Styles */
+@import '../shared-admin.css';
+
+/* Tabs - Like Kelas Edukasi */
+.kolaborasi-tabs-container {
+  background: linear-gradient(135deg, rgba(139, 69, 19, 0.2), rgba(62, 39, 35, 0.3));
+  border: 1px solid rgba(212, 165, 116, 0.2);
+  border-radius: 12px;
+  padding: 0.5rem;
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.kolaborasi-tab-button {
+  flex: 1;
+  padding: 0.75rem 1.5rem;
+  background: transparent;
+  border: none;
+  color: #a1887f;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.kolaborasi-tab-button:hover {
+  background: rgba(212, 165, 116, 0.1);
+  color: #d4a574;
+  transform: translateY(-1px);
+}
+
+.kolaborasi-tab-button.active {
+  background: linear-gradient(135deg, rgba(139, 69, 19, 0.5), rgba(212, 165, 116, 0.3));
+  color: #d4a574;
+  box-shadow: 0 4px 12px rgba(212, 165, 116, 0.2);
+  transform: translateY(0);
+}
+
+/* Section Header - Like Kelas Edukasi */
+.kolaborasi-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.kolaborasi-section-header h2 {
+  color: #d4a574;
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+/* Uses global .btn-barizta button system (globals.css) */
+
+/* Partner Stats Grid */
+.partner-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  margin: 1.5rem 0;
+}
+
+.partner-stat-card {
+  background: linear-gradient(145deg, rgba(62, 39, 35, 0.8), rgba(46, 29, 24, 0.9));
+  border: 1px solid rgba(255, 215, 168, 0.12);
+  border-radius: 16px;
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.partner-stat-card:hover {
+  background: linear-gradient(145deg, rgba(70, 45, 40, 0.9), rgba(50, 32, 26, 0.95));
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.35);
+  border-color: rgba(212, 165, 116, 0.25);
+}
+
+.partner-stat-info h3 {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #ffd7a8;
+}
+
+.partner-stat-info p {
+  margin: 0.35rem 0 0 0;
+  color: #d4a574;
+  font-size: 0.9rem;
+}
+
+/* Partner Filter Section */
+.partner-filter-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  align-items: center;
+}
+
+.partner-search-box {
+  flex: 1;
+  min-width: 250px;
+}
+
+.partner-search-box input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid rgba(255, 215, 168, 0.15);
+  border-radius: 10px;
+  background: rgba(62, 39, 35, 0.6);
+  color: #e6d5c3;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+}
+
+.partner-search-box input:focus {
+  outline: none;
+  border-color: rgba(212, 165, 116, 0.4);
+  background: rgba(62, 39, 35, 0.8);
+  box-shadow: 0 0 0 3px rgba(212, 165, 116, 0.1);
+}
+
+.partner-filter-group {
+  min-width: 160px;
+}
+
+.partner-filter-group select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid rgba(255, 215, 168, 0.15);
+  border-radius: 10px;
+  background: rgba(62, 39, 35, 0.6);
+  color: #e6d5c3;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.partner-filter-group select:focus {
+  outline: none;
+  border-color: rgba(212, 165, 116, 0.4);
+}
+
+/* Partners Table Container */
+.partner-table-container {
+  margin-top: 1.5rem;
+  background: linear-gradient(145deg, rgba(62, 39, 35, 0.6), rgba(46, 29, 24, 0.7));
+  border: 1px solid rgba(255, 215, 168, 0.12);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+}
+
+.partner-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: visible;
+  -webkit-overflow-scrolling: touch;
+}
+
+.partner-table-wrapper::-webkit-scrollbar {
+  height: 8px;
+}
+
+.partner-table-wrapper::-webkit-scrollbar-track {
+  background: rgba(255, 215, 168, 0.05);
+  border-radius: 4px;
+}
+
+.partner-table-wrapper::-webkit-scrollbar-thumb {
+  background: rgba(212, 165, 116, 0.3);
+  border-radius: 4px;
+}
+
+.partner-table-wrapper::-webkit-scrollbar-thumb:hover {
+  background: rgba(212, 165, 116, 0.5);
+}
+
+/* Partners Table */
+.partners-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.partners-table thead {
+  background: linear-gradient(135deg, #3b231b 0%, #2f1812 55%, #24100b 100%);
+  position: relative;
+}
+
+.partners-table thead::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, 
+    rgba(198, 124, 78, 0.3) 0%, 
+    #c67c4e 20%, 
+    #d4a574 50%, 
+    #c67c4e 80%, 
+    rgba(198, 124, 78, 0.3) 100%
+  );
+  box-shadow: 0 0 8px rgba(212, 165, 116, 0.4),
+              0 0 16px rgba(198, 124, 78, 0.2);
+}
+
+.partners-table th {
+  padding: 1.15rem 1.25rem;
+  text-align: left;
+  color: #dcb072;
+  font-weight: 700;
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  white-space: nowrap;
+  position: relative;
+  background: linear-gradient(160deg, rgba(70, 44, 34, 0.95) 0%, rgba(47, 28, 22, 0.9) 55%, rgba(32, 18, 13, 0.9) 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 203, 164, 0.08);
+  border-bottom: none;
+}
+
+.partners-table th:first-child {
+  border-top-left-radius: 14px;
+}
+
+.partners-table th:last-child {
+  border-top-right-radius: 14px;
+}
+
+.partners-table th + th {
+  box-shadow: inset 1px 0 0 rgba(198, 124, 78, 0.25), inset 0 1px 0 rgba(255, 203, 164, 0.08);
+}
+
+.partners-table td {
+  padding: 1rem;
+  color: #e6d5c3;
+  border-bottom: 1px solid rgba(255, 215, 168, 0.08);
+  vertical-align: middle;
+}
+
+.partners-table tbody tr {
+  transition: all 0.3s ease;
+}
+
+.partners-table tbody tr:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+/* Table Logo */
+.partner-table-logo {
+  width: 55px;
+  height: 55px;
+  border-radius: 10px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.partner-table-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Table Title Cell */
+.partner-table-title-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.partner-table-title {
+  color: #ffd7a8;
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.partner-table-description {
+  color: rgba(230, 213, 195, 0.7);
+  font-size: 0.85rem;
+}
+
+/* Email Cell */
+.partner-email-cell {
+  font-size: 0.9rem;
+  word-break: break-word;
+  max-width: 180px;
+}
+
+/* Type Badge */
+.partner-type-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.4rem 0.85rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  /* Hapus color: white; karena sekarang warna teks menyesuaikan tipe */
+}
+
+/* Supplier: Blue Theme (#2196f3 / RGB: 33, 150, 243) */
+.partner-type-supplier {
+  background: linear-gradient(135deg, rgba(33, 150, 243, 0.2), rgba(33, 150, 243, 0.15));
+  color: #2196f3;
+  border: 1px solid rgba(33, 150, 243, 0.4);
+}
+
+/* Investor: Orange Theme (#ff9800 / RGB: 255, 152, 0) */
+.partner-type-investor {
+  background: linear-gradient(135deg, rgba(255, 152, 0, 0.2), rgba(255, 152, 0, 0.15));
+  color: #ff9800;
+  border: 1px solid rgba(255, 152, 0, 0.4);
+}
+
+/* Franchise: Green Theme (#4caf50 / RGB: 76, 175, 80) */
+.partner-type-franchise {
+  background: linear-gradient(135deg, rgba(76, 175, 80, 0.2), rgba(76, 175, 80, 0.15));
+  color: #4caf50;
+  border: 1px solid rgba(76, 175, 80, 0.4);
+}
+
+/* Other: Purple Theme (#9c27b0 / RGB: 156, 39, 176) */
+.partner-type-other {
+  background: linear-gradient(135deg, rgba(156, 39, 176, 0.2), rgba(156, 39, 176, 0.15));
+  color: #9c27b0;
+  border: 1px solid rgba(156, 39, 176, 0.4);
+}
+/* Status Pills */
+.partner-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.4rem 0.85rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.partner-status-active {
+  background: linear-gradient(135deg, rgba(76, 175, 80, 0.2), rgba(76, 175, 80, 0.15));
+  color: #4caf50;
+  border: 1px solid rgba(76, 175, 80, 0.4);
+}
+
+.partner-status-inactive {
+  background: linear-gradient(135deg, rgba(158, 158, 158, 0.2), rgba(158, 158, 158, 0.15));
+  color: #bdbdbd;
+  border: 1px solid rgba(158, 158, 158, 0.4);
+}
+
+/* Partner Detail Grid */
+.partner-detail-grid {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 2rem;
+}
+
+.partner-detail-image {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.partner-detail-image img {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+.partner-detail-info h3 {
+  margin: 0 0 1rem 0;
+  color: #ffd7a8;
+  font-size: 1.4rem;
+}
+
+.partner-detail-row {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+  align-items: flex-start;
+}
+
+.partner-detail-label {
+  font-weight: 600;
+  color: #d4a574;
+  min-width: 120px;
+}
+
+.partner-detail-value {
+  color: #e6d5c3;
+}
+
+.partner-detail-description {
+  margin-top: 0.5rem;
+  color: #e6d5c3;
+  line-height: 1.6;
+}
+
+/* Partner Header Actions */
+.partner-header-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.partner-header-actions h3 {
+  margin: 0;
+  color: #ffd7a8;
+  font-size: 1.2rem;
+}
+
+/* Partner Empty State */
+.partner-empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: #d4a574;
+  background: linear-gradient(145deg, rgba(62, 39, 35, 0.4), rgba(46, 29, 24, 0.5));
+  border-radius: 16px;
+  margin: 2rem 0;
+}
+
+.partner-empty-state h3 {
+  margin: 0 0 0.75rem 0;
+  color: #ffd7a8;
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+.partner-empty-state p {
+  font-size: 1.1rem;
+  margin: 0;
+  color: rgba(212, 165, 116, 0.8);
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .partner-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .partner-email-cell {
+    max-width: 150px;
+  }
+}
+
+@media (max-width: 992px) {
+  .partner-filter-section {
+    flex-direction: column;
+  }
+
+  .partner-search-box {
+    width: 100%;
+  }
+
+  .partner-filter-group {
+    width: 100%;
+  }
+
+  .partner-header-actions {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+  }
+}
+
+@media (max-width: 768px) {
+  .partners-table {
+    min-width: 900px;
+    font-size: 0.9rem;
+  }
+  
+  .partners-table th,
+  .partners-table td {
+    padding: 0.8rem 0.7rem;
+  }
+
+  .partner-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+  
+  .partner-stat-card {
+    padding: 1.2rem;
+  }
+  
+  .partner-stat-info h3 {
+    font-size: 1.6rem;
+  }
+  
+  .partner-stat-info p {
+    font-size: 0.85rem;
+  }
+  
+  .partner-table-logo {
+    width: 45px;
+    height: 45px;
+  }
+  
+  .partner-table-title {
+    font-size: 0.9rem;
+  }
+  
+  .partner-table-description {
+    font-size: 0.8rem;
+  }
+  
+  .partner-type-badge,
+  .partner-status-pill {
+    padding: 0.3rem 0.65rem;
+    font-size: 0.75rem;
+  }
+
+  .partner-detail-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .partner-detail-image {
+    text-align: center;
+  }
+  
+  .partner-detail-image img {
+    max-width: 150px !important;
+    height: auto !important;
+  }
+  
+  .partner-empty-state {
+    padding: 2.5rem 1.5rem;
+  }
+  
+  .partner-empty-state h3 {
+    font-size: 1.2rem;
+  }
+  
+  .partner-empty-state p {
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .partner-stats-grid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+  
+  .partner-stat-card {
+    padding: 1rem;
+  }
+  
+  .partner-stat-info h3 {
+    font-size: 1.4rem;
+  }
+  
+  .partner-stat-info p {
+    font-size: 0.8rem;
+  }
+  
+  .partners-table {
+    min-width: 800px;
+    font-size: 0.85rem;
+  }
+  
+  .partners-table th,
+  .partners-table td {
+    padding: 0.7rem 0.5rem;
+  }
+  
+  .partner-table-logo {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .partner-table-title {
+    font-size: 0.85rem;
+  }
+  
+  .partner-table-description {
+    font-size: 0.75rem;
+  }
+  
+  .partner-type-badge,
+  .partner-status-pill {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.7rem;
+  }
+
+  /* Add scroll hint indicator for mobile */
+  .partner-table-container::after {
+    content: "← Geser untuk melihat lebih banyak →";
+    display: block;
+    text-align: center;
+    padding: 0.75rem;
+    font-size: 0.75rem;
+    color: rgba(212, 165, 116, 0.6);
+    background: rgba(62, 39, 35, 0.5);
+    border-top: 1px solid rgba(255, 215, 168, 0.08);
+  }
+
+  /* Tabs responsive for mobile */
+  .kolaborasi-tabs-container {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .kolaborasi-tab-button {
+    padding: 0.6rem 1rem;
+    font-size: 0.85rem;
+  }
+
+  .kolaborasi-section-header {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+  }
+
+  .kolaborasi-section-header h2 {
+    font-size: 1.25rem;
+  }
+
+  .kolaborasi-section-header .btn-barizta,
+  .empty-state .btn-barizta,
+  .partner-empty-state .btn-barizta {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* Tablet responsive */
+@media (max-width: 768px) {
+  .kolaborasi-tabs-container {
+    flex-wrap: wrap;
+  }
+
+  .kolaborasi-tab-button {
+    flex: 1 1 calc(50% - 0.25rem);
+    min-width: calc(50% - 0.25rem);
+  }
+}

@@ -1,0 +1,415 @@
+/* Register Page Styles */
+.register-page {
+  width: 100%;
+  background: var(--bg);
+  min-height: 100vh;
+}
+
+/* Hero */
+.register-hero {
+  position: relative;
+  height: 300px;
+  background: linear-gradient(135deg, #2c1810 0%, #3e2723 50%, #4e342e 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.register-hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to bottom, rgba(44, 24, 16, 0.8), rgba(44, 24, 16, 0.95));
+}
+
+.register-hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  color: white;
+  padding: 0 2rem;
+}
+
+.register-hero-content .breadcrumb {
+  font-size: 0.9rem;
+  color: #d4a574;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.register-hero-content .breadcrumb a {
+  color: #d4a574;
+  text-decoration: none;
+  margin: 0 0.3rem;
+}
+
+.register-hero-content .breadcrumb a:hover {
+  color: #ffd7a8;
+}
+
+.register-hero-content .breadcrumb .active {
+  color: #ffd7a8;
+}
+
+.register-hero-content h1 {
+  font-size: 2.5rem;
+  color: #ffd7a8;
+  margin: 0.5rem 0;
+}
+
+.register-hero-content p {
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Form Section */
+.register-form-section {
+  padding: 3rem 0 5rem;
+}
+
+.register-form-section .container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.form-layout {
+  display: grid;
+  grid-template-columns: 1fr 350px;
+  gap: 2rem;
+  align-items: start;
+}
+
+/* Main Form */
+.form-main {
+  background: var(--surface);
+  border-radius: 16px;
+  border: 1px solid var(--glass);
+  overflow: hidden;
+}
+
+.form-section {
+  padding: 2rem;
+  border-bottom: 1px solid var(--glass);
+}
+
+.form-section:last-of-type {
+  border-bottom: none;
+}
+
+.form-section-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.section-icon {
+  font-size: 1.5rem;
+}
+
+.form-section-header h2 {
+  font-size: 1.3rem;
+  color: var(--text);
+  margin: 0;
+}
+
+.form-group {
+  margin-bottom: 1.25rem;
+}
+
+.form-group:last-child {
+  margin-bottom: 0;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 0.5rem;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  background: var(--bg);
+  border: 1px solid var(--glass);
+  border-radius: 8px;
+  font-size: 1rem;
+  color: var(--text);
+  transition: all 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(139, 69, 19, 0.1);
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: var(--muted);
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.form-hint {
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin-top: 0.5rem;
+}
+
+/* Payment Info */
+.payment-info {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+  padding: 1.5rem;
+  background: rgba(139, 69, 19, 0.05);
+  border-radius: 12px;
+  border: 1px dashed var(--primary);
+}
+
+.bank-info h4,
+.qris-info h4 {
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin: 0 0 0.75rem 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.bank-details {
+  background: var(--surface);
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid var(--glass);
+}
+
+.bank-details p {
+  margin: 0.25rem 0;
+  color: var(--text);
+}
+
+.account-number {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--primary) !important;
+  font-family: monospace;
+}
+
+.qris-placeholder {
+  background: white;
+  padding: 1rem;
+  border-radius: 8px;
+  display: inline-block;
+}
+
+/* File Upload */
+.file-upload {
+  position: relative;
+}
+
+.file-upload input[type="file"] {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.file-upload-label {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  background: var(--bg);
+  border: 2px dashed var(--glass);
+  border-radius: 8px;
+  color: var(--muted);
+  transition: all 0.3s ease;
+}
+
+.file-upload:hover .file-upload-label {
+  border-color: var(--primary);
+  background: rgba(139, 69, 19, 0.05);
+}
+
+.upload-icon {
+  font-size: 1.5rem;
+}
+
+/* Form Actions */
+.form-actions {
+  padding: 2rem;
+  background: rgba(139, 69, 19, 0.03);
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+/* Button styling dihapus - sekarang menggunakan btn-barizta dari globals.css */
+
+/* Button styling dihapus - sekarang menggunakan btn-barizta dari globals.css */
+
+/* Sidebar */
+.form-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  position: sticky;
+  top: 100px;
+}
+
+.sidebar-card {
+  background: var(--surface);
+  border: 1px solid var(--glass);
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
+.sidebar-card h3 {
+  font-size: 1.1rem;
+  color: var(--text);
+  margin: 0 0 0.75rem 0;
+}
+
+.sidebar-card p {
+  color: var(--muted);
+  font-size: 0.95rem;
+  margin: 0 0 1rem 0;
+}
+
+.contact-info p {
+  margin: 0.5rem 0;
+  font-size: 0.9rem;
+}
+
+.facility-list,
+.tips-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.facility-list li,
+.tips-list li {
+  padding: 0.5rem 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+  border-bottom: 1px solid var(--glass);
+}
+
+.facility-list li:last-child,
+.tips-list li:last-child {
+  border-bottom: none;
+}
+
+.sidebar-card.highlight {
+  background: linear-gradient(135deg, rgba(139, 69, 19, 0.08), rgba(212, 165, 116, 0.1));
+  border-color: var(--primary);
+}
+
+/* Success Container */
+.success-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.success-content {
+  text-align: center;
+  max-width: 500px;
+}
+
+.success-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+.success-content h1 {
+  font-size: 2rem;
+  color: var(--text);
+  margin-bottom: 1rem;
+}
+
+.success-content p {
+  color: var(--muted);
+  font-size: 1.1rem;
+  line-height: 1.7;
+  margin-bottom: 2rem;
+}
+
+.success-actions {
+  display: flex;
+  justify-content: center;
+}
+
+/* Button styling dihapus - sekarang menggunakan btn-barizta dari globals.css */
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .form-layout {
+    grid-template-columns: 1fr;
+  }
+  
+  .form-sidebar {
+    position: static;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  
+  .sidebar-card {
+    flex: 1;
+    min-width: 250px;
+  }
+}
+
+@media (max-width: 768px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+  
+  .payment-info {
+    grid-template-columns: 1fr;
+  }
+  
+  .form-actions {
+    flex-direction: column;
+  }
+  
+  .btn-submit {
+    width: 100%;
+  }
+  
+  .btn-cancel {
+    justify-content: center;
+  }
+  
+  .form-sidebar {
+    flex-direction: column;
+  }
+  
+  .sidebar-card {
+    min-width: auto;
+  }
+}

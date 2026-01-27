@@ -1,0 +1,302 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model category {
+  id          Int       @id @default(autoincrement())
+  name        String
+  slug        String    @unique(map: "Category_slug_key")
+  type        String
+  imageFolder String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  product     product[]
+}
+
+/// This model has been renamed to 'Renamedclass' during introspection, because the original name 'class' is reserved.
+model Renamedclass {
+  id              Int          @id @default(autoincrement())
+  title           String
+  description     String       @db.Text
+  instructor      String
+  schedule        DateTime?    @db.DateTime(0)
+  duration        String       @default("02:00")
+  location        String       @default("Barizta Coffee Shop")
+  level           String       @default("Pemula")
+  price           Int
+  maxParticipants Int
+  enrolledCount   Int          @default(0)
+  status          String       @default("active")
+  isActive        Boolean      @default(true)
+  image           String
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  totalSessions   Int          @default(4)
+  enrollment      enrollment[]
+
+  @@map("class")
+}
+
+model enrollment {
+  id             Int          @id @default(autoincrement())
+  classId        Int
+  userId         Int?
+  studentName    String
+  email          String
+  phone          String
+  paymentStatus  String       @default("pending")
+  certificateUrl String?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  Renamedclass   Renamedclass @relation(fields: [classId], references: [id], onDelete: Cascade, map: "Enrollment_classId_fkey")
+  user           user?        @relation(fields: [userId], references: [id])
+
+  @@index([classId], map: "Enrollment_classId_fkey")
+  @@index([userId])
+}
+
+model media {
+  id        Int      @id @default(autoincrement())
+  name      String
+  path      String
+  type      String
+  folder    String   @default("gallery")
+  size      Int      @default(0)
+  caption   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model message {
+  id        Int       @id @default(autoincrement())
+  name      String
+  email     String
+  subject   String
+  message   String
+  isRead    Boolean   @default(false)
+  reply     String?
+  replyDate DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model milestone {
+  id          Int      @id @default(autoincrement())
+  year        String
+  title       String
+  description String
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model news {
+  id          Int      @id @default(autoincrement())
+  title       String
+  category    String
+  content     String
+  excerpt     String?
+  image       String
+  author      String   @default("Admin")
+  publishDate DateTime @default(now())
+  status      String   @default("draft")
+  views       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model notification {
+  id        Int      @id @default(autoincrement())
+  title     String
+  message   String   @db.Text
+  type      String   @default("info")
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  target    String   @default("admin")
+  url       String?
+  userId    Int?
+
+  @@index([userId])
+  @@index([target])
+  @@index([isRead])
+}
+
+model partnership {
+  id            Int      @id @default(autoincrement())
+  name          String
+  type          String
+  contactPerson String
+  email         String
+  phone         String
+  address       String
+  status        String   @default("active")
+  startDate     DateTime
+  description   String
+  logo          String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model product {
+  id          Int       @id @default(autoincrement())
+  name        String
+  slug        String    @unique(map: "Product_slug_key")
+  description String?   @db.Text
+  price       Int
+  image       String
+  isAvailable Boolean   @default(true)
+  categoryId  Int?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  category    category? @relation(fields: [categoryId], references: [id], map: "Product_categoryId_fkey")
+
+  @@index([categoryId], map: "Product_categoryId_fkey")
+}
+
+model schedule {
+  id              Int      @id @default(autoincrement())
+  date            DateTime
+  location        String
+  startTime       String
+  endTime         String
+  status          String   @default("scheduled")
+  notes           String?
+  contactWhatsapp String   @map("coordinator")
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  mapsUrl         String?
+  statusStay      String   @default("BELUM_STAY")
+}
+
+model team {
+  id        Int      @id @default(autoincrement())
+  name      String
+  position  String
+  photo     String
+  bio       String
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model user {
+  id                Int                 @id @default(autoincrement())
+  name              String
+  email             String              @unique(map: "User_email_key")
+  password          String
+  phone             String?
+  role              String              @default("member")
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  resetToken        String?
+  resetTokenExpiry  DateTime?
+  classregistration classregistration[]
+  enrollment        enrollment[]
+}
+
+model websitesetting {
+  id        Int      @id @default(autoincrement())
+  key       String   @unique(map: "WebsiteSetting_key_key")
+  value     String   @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model classregistration {
+  id                 Int      @id @default(autoincrement())
+  userId             Int
+  programId          String
+  programName        String
+  fullName           String
+  birthDate          DateTime
+  gender             String
+  address            String   @db.Text
+  whatsapp           String
+  email              String?
+  selectedPackages   String   @db.Text
+  schedulePreference String
+  experience         String
+  previousTraining   Boolean  @default(false)
+  trainingDetails    String?  @db.Text
+  status             String   @default("waiting")
+  adminNotes         String?  @db.Text
+  certificateUrl     String?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+  paymentStatus      String   @default("pending")
+  paymentProof       Bytes?
+  user               user     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([status])
+  @@index([programId])
+}
+
+model togomenu {
+  id          Int      @id @default(autoincrement())
+  name        String
+  price       Int
+  description String?
+  icon        String   @default("☕")
+  isActive    Boolean  @default(true)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model togogallery {
+  id        Int      @id @default(autoincrement())
+  image     String
+  caption   String?
+  isLarge   Boolean  @default(false)
+  order     Int      @default(0)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model togofeature {
+  id        Int      @id @default(autoincrement())
+  text      String
+  order     Int      @default(0)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model togosetting {
+  id        Int      @id @default(autoincrement())
+  key       String   @unique
+  value     String   @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model kolaborasisetting {
+  id        Int      @id @default(autoincrement())
+  key       String   @unique
+  value     String   @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model kolaborasitype {
+  id            Int      @id @default(autoincrement())
+  icon          String   @default("?")
+  title         String
+  titleEn       String?
+  type          String
+  description   String   @db.Text
+  descriptionEn String?  @db.Text
+  image         String?
+  order         Int      @default(0)
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}

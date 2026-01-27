@@ -1,0 +1,434 @@
+/* Layanan Paket Page Styles */
+.layanan-page {
+  width: 100%;
+  background: var(--bg);
+}
+
+/* Hero */
+.layanan-hero {
+  position: relative;
+  height: 400px;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-2) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.layanan-hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1200') center/cover;
+  opacity: 0.15;
+}
+
+.layanan-hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to bottom, rgba(44, 24, 16, 0.7), rgba(44, 24, 16, 0.9));
+}
+
+.layanan-hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  color: white;
+  padding: 0 2rem;
+}
+
+.layanan-hero-content .breadcrumb {
+  font-size: 0.9rem;
+  color: var(--primary-2);
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.layanan-hero-content .breadcrumb a {
+  color: var(--primary-2);
+  text-decoration: none;
+}
+
+.layanan-hero-content .breadcrumb a:hover {
+  color: white;
+}
+
+.layanan-hero-content .breadcrumb .active {
+  color: white;
+}
+
+.layanan-hero-content .hero-badge {
+  display: inline-block;
+  background: var(--primary);
+  color: white;
+  padding: 0.5rem 1.5rem;
+  border-radius: 50px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  margin-bottom: 1rem;
+}
+
+.layanan-hero-content h1 {
+  font-size: 3rem;
+  color: white;
+  margin: 0.5rem 0;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+}
+
+.layanan-hero-content p {
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* Intro */
+.layanan-intro {
+  padding: 5rem 0;
+  background: var(--bg);
+}
+
+.layanan-intro .container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.intro-content {
+  text-align: center;
+}
+
+.section-label {
+  display: inline-block;
+  background: rgba(212, 165, 116, 0.15);
+  color: var(--primary);
+  padding: 0.4rem 1rem;
+  border-radius: 50px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  margin-bottom: 1rem;
+}
+
+.intro-content h2 {
+  font-size: 2rem;
+  color: var(--text);
+  margin-bottom: 1rem;
+}
+
+.intro-content p {
+  font-size: 1.1rem;
+  color: var(--muted);
+  line-height: 1.8;
+  max-width: 600px;
+  margin: 0 auto 2rem;
+}
+
+.stats-row {
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+  margin-top: 2rem;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stat-number {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.stat-label {
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+/* Section Header */
+.section-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.section-header .label {
+  display: inline-block;
+  background: rgba(212, 165, 116, 0.15);
+  color: var(--primary);
+  padding: 0.4rem 1rem;
+  border-radius: 50px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  margin-bottom: 1rem;
+}
+
+.section-header h2 {
+  font-size: 2rem;
+  color: var(--text);
+  margin: 0;
+}
+
+/* Layanan List */
+.layanan-list {
+  padding: 4rem 0;
+  background: var(--surface);
+}
+
+.layanan-list .container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.layanan-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+}
+
+.layanan-card {
+  background: var(--bg);
+  border: 1px solid var(--glass);
+  border-radius: 16px;
+  padding: 2rem;
+  transition: all 0.3s ease;
+}
+
+.layanan-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+  border-color: var(--primary);
+}
+
+.layanan-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.layanan-card h3 {
+  font-size: 1.4rem;
+  color: var(--text);
+  margin: 0 0 0.75rem 0;
+}
+
+.layanan-desc {
+  color: var(--muted);
+  font-size: 0.95rem;
+  margin: 0 0 1.5rem 0;
+  line-height: 1.6;
+}
+
+.feature-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.5rem 0;
+}
+
+.feature-list li {
+  padding: 0.4rem 0;
+  color: var(--text);
+  font-size: 0.9rem;
+}
+
+.layanan-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--glass);
+}
+
+.price {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+/* Button styling dihapus - sekarang menggunakan btn-barizta dari globals.css */
+
+/* Proses */
+.layanan-proses {
+  padding: 4rem 0;
+  background: var(--bg);
+}
+
+.layanan-proses .container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.proses-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+}
+
+.proses-item {
+  text-align: center;
+  padding: 1.5rem 1rem;
+}
+
+.step-number {
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-2));
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin: 0 auto 1rem;
+}
+
+.proses-item h4 {
+  font-size: 1.1rem;
+  color: var(--text);
+  margin: 0 0 0.5rem 0;
+}
+
+.proses-item p {
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* CTA */
+.layanan-cta {
+  padding: 4rem 0;
+  background: var(--surface);
+}
+
+.layanan-cta .container {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.cta-box {
+  background: linear-gradient(135deg, var(--primary), var(--primary-2));
+  border-radius: 20px;
+  padding: 3rem;
+  text-align: center;
+  color: white;
+}
+
+.cta-box h2 {
+  font-size: 1.8rem;
+  margin: 0 0 0.75rem 0;
+}
+
+.cta-box p {
+  font-size: 1rem;
+  opacity: 0.9;
+  margin: 0 0 1.5rem 0;
+}
+
+/* Button styling dihapus - sekarang menggunakan btn-barizta dari globals.css */
+
+/* Related */
+.layanan-related {
+  padding: 4rem 0;
+  background: var(--bg);
+}
+
+.layanan-related .container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.layanan-related h3 {
+  text-align: center;
+  font-size: 1.3rem;
+  color: var(--text);
+  margin-bottom: 2rem;
+}
+
+.related-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.related-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 1.5rem;
+  background: var(--surface);
+  border: 1px solid var(--glass);
+  border-radius: 12px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.related-card:hover {
+  border-color: var(--primary);
+  transform: translateY(-3px);
+}
+
+.related-icon {
+  font-size: 2rem;
+  margin-bottom: 0.75rem;
+}
+
+.related-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 0.25rem;
+}
+
+.related-desc {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .layanan-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .layanan-hero-content h1 {
+    font-size: 2.2rem;
+  }
+  
+  .stats-row {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .proses-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .related-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .cta-box {
+    padding: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .proses-grid {
+    grid-template-columns: 1fr;
+  }
+}

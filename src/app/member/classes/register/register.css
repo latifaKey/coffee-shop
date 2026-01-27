@@ -1,0 +1,336 @@
+/* Member Class Registration Page Styles */
+.member-register-page {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.register-header {
+  margin-bottom: 2rem;
+}
+
+.register-header .back-link {
+  display: inline-block;
+  color: var(--primary);
+  text-decoration: none;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+.register-header .back-link:hover {
+  text-decoration: underline;
+}
+
+.register-header h1 {
+  font-size: 1.8rem;
+  color: var(--text);
+  margin: 0 0 0.5rem;
+}
+
+.register-header p {
+  color: var(--muted);
+  margin: 0;
+}
+
+/* Form Sections */
+.form-section {
+  background: var(--surface);
+  border: 1px solid var(--glass);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.form-section h2 {
+  font-size: 1.1rem;
+  color: var(--text);
+  margin: 0 0 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--glass);
+}
+
+/* Class Options */
+.class-options {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.class-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1rem;
+  background: var(--bg);
+  border: 2px solid var(--glass);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.class-option:hover {
+  border-color: var(--primary);
+}
+
+.class-option.selected {
+  border-color: var(--primary);
+  background: rgba(212, 165, 116, 0.1);
+}
+
+.class-option input[type="radio"] {
+  margin-top: 0.25rem;
+  width: 18px;
+  height: 18px;
+  accent-color: var(--primary);
+}
+
+.class-option-content {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.class-info h3 {
+  font-size: 1.05rem;
+  color: var(--text);
+  margin: 0 0 0.5rem;
+}
+
+.class-info p {
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin: 0.25rem 0;
+}
+
+.class-info .instructor {
+  color: var(--primary);
+}
+
+.class-info .slots {
+  font-weight: 500;
+  color: var(--text);
+}
+
+.class-price {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--primary);
+  white-space: nowrap;
+}
+
+/* Form Grid */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-group.full-width {
+  grid-column: 1 / -1;
+}
+
+.form-group label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.form-group input,
+.form-group textarea {
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--glass);
+  border-radius: 8px;
+  font-size: 1rem;
+  background: var(--bg);
+  color: var(--text);
+  transition: border-color 0.2s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+/* Payment Info */
+.payment-box {
+  background: var(--bg);
+  border: 1px dashed var(--primary);
+  border-radius: 10px;
+  padding: 1.25rem;
+}
+
+.payment-box p {
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin: 0 0 1rem;
+}
+
+.bank-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  background: rgba(212, 165, 116, 0.1);
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.bank-info strong {
+  color: var(--text);
+  font-size: 1rem;
+}
+
+.account-number {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--primary);
+  font-family: monospace;
+  letter-spacing: 1px;
+}
+
+.account-name {
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.payment-note {
+  font-size: 0.85rem !important;
+  color: var(--text) !important;
+  margin: 0 !important;
+}
+
+/* Error Alert */
+.error-alert {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #ef4444;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+}
+
+/* Form Actions */
+.form-actions {
+  display: flex;
+  justify-content: center;
+}
+
+.btn-submit {
+  padding: 1rem 3rem;
+  background: linear-gradient(135deg, var(--primary), var(--primary-2));
+  color: white;
+  border: none;
+  border-radius: 50px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-submit:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(212, 165, 116, 0.3);
+}
+
+.btn-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Success Container */
+.success-container {
+  text-align: center;
+  padding: 4rem 2rem;
+}
+
+.success-icon {
+  font-size: 4rem;
+  margin-bottom: 1.5rem;
+}
+
+.success-container h1 {
+  font-size: 1.8rem;
+  color: var(--text);
+  margin: 0 0 1rem;
+}
+
+.success-container p {
+  color: var(--muted);
+  max-width: 400px;
+  margin: 0 auto 2rem;
+  line-height: 1.6;
+}
+
+.success-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.success-actions .btn-primary,
+.success-actions .btn-secondary {
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.success-actions .btn-primary {
+  background: var(--primary);
+  color: white;
+}
+
+.success-actions .btn-secondary {
+  background: var(--surface);
+  border: 1px solid var(--glass);
+  color: var(--text);
+}
+
+/* Loading & Empty States */
+.loading-text,
+.empty-text {
+  text-align: center;
+  color: var(--muted);
+  padding: 2rem;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .member-register-page {
+    padding: 1rem;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .class-option-content {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .class-price {
+    align-self: flex-start;
+  }
+
+  .success-actions {
+    flex-direction: column;
+  }
+}

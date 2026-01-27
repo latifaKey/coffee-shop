@@ -1,0 +1,239 @@
+/* ==================== LOADING SPINNER COMPONENT ==================== */
+/* Reusable loading component untuk seluruh website Barizta */
+
+/* Base Container */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  gap: 1rem;
+}
+
+/* Fullscreen Overlay */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  backdrop-filter: blur(4px);
+}
+
+.loading-overlay.loading-dark {
+  background: rgba(26, 15, 10, 0.95);
+}
+
+.loading-overlay.loading-light {
+  background: rgba(255, 255, 255, 0.95);
+}
+
+/* Page Loading (untuk halaman yang loading) */
+.page-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  width: 100%;
+  background: linear-gradient(135deg, #1a0f0a 0%, #2d1810 100%);
+}
+
+.loading-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+/* Spinner */
+.loading-spinner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.coffee-icon {
+  display: inline-block;
+  animation: spinCoffee 1.2s ease-in-out infinite, floatCoffee 2s ease-in-out infinite;
+  filter: drop-shadow(0 4px 15px rgba(212, 165, 116, 0.4));
+}
+
+/* Size Variants */
+.loading-sm .coffee-icon {
+  font-size: 1.5rem;
+}
+
+.loading-md .coffee-icon {
+  font-size: 2.5rem;
+}
+
+.loading-lg .coffee-icon {
+  font-size: 4rem;
+}
+
+/* Loading Text */
+.loading-text {
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin: 0;
+  animation: fadeInOut 1.5s ease-in-out infinite;
+}
+
+.loading-dark .loading-text {
+  color: #d4a574;
+}
+
+.loading-light .loading-text {
+  color: #5d4037;
+}
+
+.page-loading .loading-text {
+  color: #d4a574;
+}
+
+/* Button Loader (inline) */
+.button-loader {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 0.5rem;
+}
+
+.coffee-icon-inline {
+  display: inline-block;
+  animation: spinCoffee 1s linear infinite;
+}
+
+.loader-sm .coffee-icon-inline {
+  font-size: 1rem;
+}
+
+.loader-md .coffee-icon-inline {
+  font-size: 1.25rem;
+}
+
+/* ==================== ANIMATIONS ==================== */
+
+@keyframes spinCoffee {
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+  25% {
+    transform: rotate(90deg) scale(1.05);
+  }
+  50% {
+    transform: rotate(180deg) scale(1.1);
+  }
+  75% {
+    transform: rotate(270deg) scale(1.05);
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
+  }
+}
+
+@keyframes floatCoffee {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes fadeInOut {
+  0%, 100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* ==================== LOADING DOTS (Alternative) ==================== */
+
+.loading-dots {
+  display: inline-flex;
+  gap: 0.25rem;
+}
+
+.loading-dots span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #d4a574;
+  animation: dotPulse 1.4s ease-in-out infinite;
+}
+
+.loading-dots span:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.loading-dots span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.loading-dots span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes dotPulse {
+  0%, 80%, 100% {
+    transform: scale(0.6);
+    opacity: 0.5;
+  }
+  40% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* ==================== SKELETON LOADER ==================== */
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(62, 39, 35, 0.6) 25%,
+    rgba(93, 64, 55, 0.8) 50%,
+    rgba(62, 39, 35, 0.6) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 8px;
+}
+
+.skeleton-text {
+  height: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.skeleton-title {
+  height: 1.5rem;
+  width: 60%;
+  margin-bottom: 1rem;
+}
+
+.skeleton-image {
+  height: 200px;
+  width: 100%;
+}
+
+.skeleton-button {
+  height: 40px;
+  width: 120px;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}

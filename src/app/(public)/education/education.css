@@ -1,0 +1,640 @@
+/* Education Page Styles */
+.education-page {
+  width: 100%;
+  background: var(--bg);
+}
+
+/* Hero Section */
+.edu-hero {
+  position: relative;
+  height: 450px;
+  background: linear-gradient(135deg, #2c1810 0%, #3e2723 50%, #4e342e 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.edu-hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 20% 30%, rgba(255, 107, 53, 0.15), transparent 40%),
+    radial-gradient(circle at 80% 70%, rgba(212, 165, 116, 0.1), transparent 40%);
+  animation: eduHeroGlow 8s ease-in-out infinite;
+}
+
+@keyframes eduHeroGlow {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+.edu-hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to bottom, rgba(44, 24, 16, 0.6), rgba(44, 24, 16, 0.85));
+}
+
+.edu-hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  color: white;
+  padding: 0 2rem;
+  animation: eduFadeInDown 0.8s ease-out;
+}
+
+@keyframes eduFadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.edu-breadcrumb {
+  font-size: 0.95rem;
+  color: #d4a574;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.edu-breadcrumb a {
+  color: #d4a574;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.edu-breadcrumb a:hover {
+  color: #ffd7a8;
+}
+
+.edu-breadcrumb .separator {
+  margin: 0 0.5rem;
+}
+
+.edu-breadcrumb .active {
+  color: #ffd7a8;
+}
+
+.edu-hero-content h1 {
+  font-size: 3rem;
+  font-weight: 700;
+  margin: 0.5rem 0;
+  color: #ffd7a8;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
+}
+
+.edu-hero-content p {
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.9);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Intro Section */
+.edu-intro {
+  padding: 4rem 0;
+  text-align: center;
+  background: var(--bg);
+}
+
+.edu-intro .container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.intro-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, rgba(139, 69, 19, 0.1), rgba(212, 165, 116, 0.15));
+  color: var(--primary);
+  padding: 0.5rem 1.5rem;
+  border-radius: 50px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  margin-bottom: 1.5rem;
+  border: 1px solid rgba(139, 69, 19, 0.2);
+}
+
+.edu-intro h2 {
+  font-size: 2.5rem;
+  color: var(--text);
+  margin-bottom: 1rem;
+}
+
+.edu-intro p {
+  font-size: 1.15rem;
+  color: var(--muted);
+  line-height: 1.8;
+}
+
+/* Programs Section */
+.edu-programs {
+  padding: 4rem 0;
+  background: var(--surface);
+}
+
+.edu-programs .container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.section-header .label {
+  display: inline-block;
+  background: rgba(139, 69, 19, 0.1);
+  color: var(--primary);
+  padding: 0.4rem 1rem;
+  border-radius: 50px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  margin-bottom: 1rem;
+}
+
+.section-header h2 {
+  font-size: 2.2rem;
+  color: var(--text);
+  margin: 0;
+}
+
+.programs-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+  grid-auto-rows: auto; /* allow cards to grow independently so only clicked card expands */
+}
+
+.program-card {
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), var(--bg));
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.03);
+  transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
+  display: flex; /* column layout so price and actions align */
+  flex-direction: column;
+  height: auto; /* allow card to adjust height individually */
+}
+
+.program-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.45);
+  border-color: rgba(255,160,80,0.12);
+}
+
+.program-image {
+  position: relative;
+  height: 220px;
+  overflow: hidden;
+}
+
+.program-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.35s ease;
+}
+
+.program-card:hover .program-image img {
+  transform: scale(1.05);
+}
+
+.program-badge {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  padding: 0.4rem 1rem;
+  border-radius: 50px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.program-badge.gold {
+  background: linear-gradient(135deg, #f4a020, #d4a574);
+  color: #1a0f0a;
+}
+
+.program-badge.blue {
+  background: linear-gradient(135deg, #3b82f6, #60a5fa);
+  color: white;
+}
+
+.program-badge.purple {
+  background: linear-gradient(135deg, #8b5cf6, #a78bfa);
+  color: white;
+}
+
+.program-badge.green {
+  background: linear-gradient(135deg, #10b981, #34d399);
+  color: white;
+}
+
+.program-duration {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 0.4rem 0.8rem;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.program-content {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.program-content h3 {
+  font-size: 1.35rem;
+  color: var(--text);
+  margin: 0 0 0.65rem 0;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.program-desc {
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Training Package Box */
+.training-package-box {
+  background: linear-gradient(135deg, rgba(139, 69, 19, 0.15), rgba(62, 39, 35, 0.2));
+  border: 1px solid rgba(212, 165, 116, 0.25);
+  border-radius: 12px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.training-package-box .package-title {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--primary);
+  font-weight: 600;
+  margin-bottom: 0.6rem;
+}
+
+.training-package-box .package-info-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.training-package-box .package-info-item {
+  font-size: 0.85rem;
+  color: var(--text);
+  padding: 0.3rem 0.6rem;
+  background: rgba(212, 165, 116, 0.1);
+  border-radius: 6px;
+}
+
+.training-package-box .package-schedule-fixed {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.6rem;
+  background: rgba(139, 69, 19, 0.15);
+  border-radius: 8px;
+  border-left: 3px solid var(--primary);
+}
+
+.training-package-box .schedule-label {
+  font-size: 0.8rem;
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.training-package-box .schedule-times {
+  font-size: 0.85rem;
+  color: var(--text-light);
+}
+
+.program-price {
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.program-price .price {
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: var(--primary);
+}
+
+.program-price .per-person {
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.program-actions {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  justify-content: center; /* center the action buttons as a group */
+  margin-top: auto; /* keep actions at the bottom */
+  padding-top: 12px;
+  border-top: 1px solid rgba(255,255,255,0.03);
+}
+
+..program-actions .btn-secondary-barizta {
+  /* Keep spacing/size but use the global secondary button styles for visual consistency */
+  padding: 0.78rem 1.6rem; /* slightly larger */
+  font-size: 1.06rem;
+  border-radius: 10px;
+  min-width: 170px; /* match primary button width */
+  font-weight: 700;
+  /* background and border intentionally omitted to inherit .btn-secondary-barizta from globals.css */
+}
+
+.program-actions .btn-barizta {
+  box-shadow: 0 8px 20px rgba(139,69,19,0.12);
+  padding: 0.78rem 1.6rem; /* larger primary button */
+  font-size: 1.06rem;
+  border-radius: 10px;
+  min-width: 170px;
+  font-weight: 700;
+}
+
+.program-stats .info-pill {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.03);
+  color: var(--text);
+  font-size: 0.9rem;
+}
+
+.program-stats .info-pill.positive {
+  background: rgba(34, 139, 34, 0.06);
+  border-color: rgba(34, 139, 34, 0.12);
+  color: var(--positive, #16a34a);
+}
+
+.program-stats .info-pill.danger {
+  background: rgba(255, 69, 58, 0.06);
+  border-color: rgba(255, 69, 58, 0.14);
+  color: var(--danger, #ff5348);
+}
+
+.program-stats .info-pill.neutral {
+  background: rgba(255,255,255,0.02);
+  border-color: rgba(255,255,255,0.03);
+  color: var(--muted);
+}
+
+.program-image::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,0) 40%, rgba(0,0,0,0.35) 100%);
+  pointer-events: none;
+}
+
+.program-card:focus-within {
+  outline: 2px solid rgba(255,215,160,0.06);
+  box-shadow: 0 0 40px rgba(255, 160, 80, 0.06);
+}
+
+/* Button styling dihapus - sekarang menggunakan btn-barizta dari globals.css */
+
+.program-details {
+  padding: 1rem;
+  background: rgba(139, 69, 19, 0.05);
+  border-radius: 12px;
+  margin-bottom: 1rem;
+  animation: fadeIn 0.3s ease;
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.detail-card {
+  background: var(--surface);
+  border: 1px solid var(--glass);
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+
+.detail-card h5 { margin: 0 0 6px 0; font-size: 0.95rem; color: var(--text); }
+
+/* Structured Materi */
+.materi-title {
+  margin: 10px 0 6px 0;
+  font-size: 0.95rem;
+  color: var(--text);
+}
+.materi-list {
+  margin: 0 0 0 16px;
+  padding: 6px 0 0 0;
+  color: var(--muted);
+}
+.materi-list li {
+  margin-bottom: 6px;
+}
+.detail-card p { margin: 0; color: var(--muted); font-size: 0.9rem; }
+
+.detail-desc { color: var(--muted); font-size: 0.95rem; line-height: 1.5; margin-top: 8px; }
+
+.detail-actions { display:flex; gap:8px; justify-content:flex-end; margin-top:12px; }
+
+@media (max-width: 980px) {
+  .programs-grid { grid-template-columns: repeat(1, 1fr); }
+  .detail-grid { grid-template-columns: repeat(1, 1fr); }
+}
+
+@media (max-width: 640px) {
+  .program-image { height: 160px; }
+  .program-actions { gap: 8px; flex-direction: column; }
+  .program-actions .btn-barizta, .program-actions .btn-secondary-barizta { width: 100%; min-width: 0; }
+  .program-actions { justify-content: stretch; }
+  .detail-actions { justify-content: stretch; }
+  .program-actions .btn-barizta { margin-left: 0; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.detail-section {
+  margin-bottom: 1rem;
+}
+
+.detail-section:last-child {
+  margin-bottom: 0;
+}
+
+.detail-section h4 {
+  font-size: 1rem;
+  color: var(--text);
+  margin: 0 0 0.5rem 0;
+}
+
+.detail-section ul {
+  margin: 0;
+  padding-left: 1.5rem;
+}
+
+.detail-section li {
+  color: var(--muted);
+  font-size: 0.9rem;
+  margin-bottom: 0.3rem;
+  line-height: 1.5;
+}
+
+.detail-section p {
+  color: var(--muted);
+  font-size: 0.9rem;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Button styling dihapus - sekarang menggunakan btn-barizta dari globals.css */
+
+/* Facilities Section */
+.edu-facilities {
+  padding: 4rem 0;
+  background: var(--bg);
+}
+
+.edu-facilities .container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.facilities-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+}
+
+.facility-card {
+  background: var(--surface);
+  border: 1px solid var(--glass);
+  border-radius: 12px;
+  padding: 2rem 1.5rem;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.facility-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--primary);
+  box-shadow: 0 10px 30px rgba(139, 69, 19, 0.1);
+}
+
+.facility-icon {
+  font-size: 2.5rem;
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.facility-text {
+  font-size: 1rem;
+  color: var(--text);
+  font-weight: 500;
+}
+
+/* CTA Section */
+.edu-cta {
+  padding: 4rem 0;
+  background: linear-gradient(135deg, #2c1810 0%, #3e2723 100%);
+}
+
+.edu-cta .container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.cta-content {
+  text-align: center;
+  color: white;
+}
+
+.cta-content h2 {
+  font-size: 2rem;
+  color: #ffd7a8;
+  margin-bottom: 0.5rem;
+}
+
+.cta-content p {
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 2rem;
+}
+
+.cta-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* Button styling dihapus - sekarang menggunakan btn-barizta dari globals.css */
+
+/* Button styling dihapus - sekarang menggunakan btn-barizta dari globals.css */
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .programs-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .edu-hero-content h1 {
+    font-size: 2rem;
+  }
+  
+  .facilities-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .cta-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .facilities-grid {
+    grid-template-columns: 1fr;
+  }
+}

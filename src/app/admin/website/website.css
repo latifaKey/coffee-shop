@@ -1,0 +1,329 @@
+/* Website Admin Page - Member Theme Style */
+@import '../shared-admin.css';
+
+.website-container {
+  padding: 2rem;
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin: 2rem 0;
+  background: linear-gradient(145deg, rgba(62, 39, 35, 0.6), rgba(46, 29, 24, 0.7));
+  border: 1px solid rgba(255, 215, 168, 0.12);
+  border-radius: 14px;
+  padding: 0.5rem;
+}
+
+.tab {
+  padding: 0.85rem 1.5rem;
+  background: transparent;
+  border: none;
+  color: #d4a574;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+}
+
+.tab:hover {
+  color: #ffd7a8;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.tab.active {
+  color: #ffd7a8;
+  background: linear-gradient(135deg, rgba(212, 165, 116, 0.2), rgba(212, 165, 116, 0.12));
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Content Section */
+.content-section {
+  background: linear-gradient(145deg, rgba(62, 39, 35, 0.6), rgba(46, 29, 24, 0.7));
+  border: 1px solid rgba(255, 215, 168, 0.12);
+  border-radius: 16px;
+  padding: 2rem;
+  margin-top: 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  color: #ffd7a8;
+  margin-bottom: 0.6rem;
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 0.9rem 1rem;
+  background: rgba(42, 24, 16, 0.6);
+  border: 1px solid rgba(255, 215, 168, 0.15);
+  border-radius: 10px;
+  color: #ffd7a8;
+  font-size: 1rem;
+  font-family: inherit;
+  transition: all 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: rgba(212, 165, 116, 0.5);
+  background: rgba(42, 24, 16, 0.8);
+  box-shadow: 0 0 0 3px rgba(212, 165, 116, 0.15);
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: rgba(212, 165, 116, 0.5);
+}
+
+.form-group textarea {
+  resize: vertical;
+  line-height: 1.7;
+  min-height: 120px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+/* Preview Section */
+.preview-section {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 2px solid rgba(255, 215, 168, 0.1);
+}
+
+.preview-section h3 {
+  color: #ffd7a8;
+  margin-bottom: 1.5rem;
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.preview-content {
+  background: linear-gradient(145deg, rgba(42, 24, 16, 0.6), rgba(35, 20, 13, 0.7));
+  border: 1px solid rgba(255, 215, 168, 0.1);
+  border-radius: 16px;
+  padding: 2rem;
+}
+
+.preview-content h2 {
+  color: #ffd7a8;
+  margin: 0 0 1rem 0;
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.content-text {
+  color: #e6d5c3;
+  line-height: 1.8;
+  margin: 1rem 0;
+}
+
+/* Vision Mission Cards */
+.vision-mission {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.vm-card {
+  background: linear-gradient(145deg, rgba(62, 39, 35, 0.7), rgba(46, 29, 24, 0.8));
+  border: 1px solid rgba(255, 215, 168, 0.15);
+  border-radius: 16px;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.vm-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.35);
+  border-color: rgba(212, 165, 116, 0.25);
+}
+
+.vm-card h4 {
+  color: #ffd7a8;
+  margin: 0 0 1rem 0;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.vm-card p {
+  color: #e6d5c3;
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* Contact Preview */
+.contact-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.contact-item {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  padding: 1.25rem;
+  background: linear-gradient(145deg, rgba(62, 39, 35, 0.6), rgba(46, 29, 24, 0.7));
+  border-radius: 12px;
+  border-left: 4px solid #d4a574;
+  transition: all 0.3s ease;
+}
+
+.contact-item:hover {
+  background: linear-gradient(145deg, rgba(70, 45, 40, 0.7), rgba(50, 32, 26, 0.8));
+  transform: translateX(4px);
+}
+
+.contact-item .icon {
+  font-size: 1.5rem;
+  min-width: 45px;
+  height: 45px;
+  background: rgba(212, 165, 116, 0.15);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.contact-item strong {
+  display: block;
+  color: #ffd7a8;
+  margin-bottom: 0.5rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.contact-item p {
+  color: #e6d5c3;
+  margin: 0.2rem 0;
+  line-height: 1.6;
+}
+
+/* Save Button */
+.save-btn {
+  padding: 0.85rem 1.75rem;
+  background: linear-gradient(135deg, #d4a574, #e6c39a);
+  color: #2c1810;
+  border: none;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(212, 165, 116, 0.25);
+}
+
+.save-btn:hover {
+  background: linear-gradient(135deg, #e6c39a, #f5d4a8);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(212, 165, 116, 0.35);
+}
+
+.save-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: #d4a574;
+  background: linear-gradient(145deg, rgba(62, 39, 35, 0.4), rgba(46, 29, 24, 0.5));
+  border-radius: 16px;
+}
+
+.empty-state .empty-icon {
+  font-size: 4rem;
+  margin-bottom: 1.5rem;
+  opacity: 0.6;
+}
+
+.empty-state h3 {
+  margin: 0 0 0.75rem 0;
+  color: #ffd7a8;
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+.empty-state p {
+  font-size: 1.1rem;
+  margin: 0;
+  color: rgba(212, 165, 116, 0.8);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .website-container {
+    padding: 1rem;
+  }
+
+  .tabs {
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+  
+  .tab {
+    padding: 0.7rem 1rem;
+    font-size: 0.9rem;
+  }
+
+  .content-section {
+    padding: 1.5rem;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .vision-mission {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+  }
+
+  .action-buttons button {
+    width: 100%;
+  }
+  
+  .contact-item {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .contact-item .icon {
+    min-width: 40px;
+    height: 40px;
+    font-size: 1.25rem;
+  }
+}

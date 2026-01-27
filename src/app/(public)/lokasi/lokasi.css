@@ -1,0 +1,116 @@
+/* Lokasi Page Styles */
+.lokasi-page {
+  background: var(--bg);
+}
+
+/* Hero Section */
+.lokasi-hero {
+  position: relative;
+  height: 450px;
+  background: linear-gradient(135deg, #2c1810 0%, #3e2723 50%, #4e342e 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.lokasi-hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 20% 30%, rgba(255, 107, 53, 0.15), transparent 40%),
+    radial-gradient(circle at 80% 70%, rgba(212, 165, 116, 0.1), transparent 40%);
+  animation: lokasiHeroGlow 8s ease-in-out infinite;
+}
+
+@keyframes lokasiHeroGlow {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+.lokasi-hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to bottom, rgba(44, 24, 16, 0.6), rgba(44, 24, 16, 0.85));
+}
+
+.lokasi-hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  color: white;
+  padding: 0 2rem;
+  animation: lokasiFadeInDown 0.8s ease-out;
+}
+
+@keyframes lokasiFadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.lokasi-breadcrumb {
+  font-size: 0.95rem;
+  color: #d4a574;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.lokasi-breadcrumb a {
+  color: #d4a574;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.lokasi-breadcrumb a:hover {
+  color: #ffd7a8;
+}
+
+.lokasi-breadcrumb .separator {
+  margin: 0 0.5rem;
+}
+
+.lokasi-breadcrumb .active {
+  color: #ffd7a8;
+}
+
+.lokasi-hero-content h1 {
+  font-size: 3rem;
+  font-weight: 700;
+  margin: 0.5rem 0;
+  color: #ffd7a8;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
+}
+
+.lokasi-hero-content p {
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.9);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .lokasi-hero {
+    height: 350px;
+  }
+  
+  .lokasi-hero-content h1 {
+    font-size: 2rem;
+  }
+  
+  .lokasi-hero-content p {
+    font-size: 1rem;
+  }
+}
