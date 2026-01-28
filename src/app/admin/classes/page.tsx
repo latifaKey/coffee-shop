@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
+import '../shared-admin.css';
 import './classes.css';
 import DeleteConfirmModal from '@/components/ui/DeleteConfirmModal';
 
@@ -1018,7 +1019,7 @@ export default function ClassesPage() {
                       <td data-label="Aksi">
                         <div className="action-buttons">
                           <button
-                            className="btn-detail"
+                            className="kelas-edukasi-btn btn-detail"
                             onClick={() => {
                               setSelectedRegistration(reg);
                               setShowDetailModal(true);
@@ -1191,7 +1192,7 @@ export default function ClassesPage() {
                       <td data-label="Aksi">
                         <div className="action-buttons">
                           <button
-                            className="btn-detail"
+                            className="kelas-edukasi-btn btn-detail"
                             onClick={() => {
                               setSelectedRegistration(reg);
                               setShowDetailModal(true);

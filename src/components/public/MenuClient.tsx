@@ -22,13 +22,11 @@ export default function MenuClient({ products, categories }: MenuClientProps) {
   const perPage = 9;
 
   const openModal = (product: Product) => {
-    console.log('[MenuClient] Opening modal for:', product.name);
     setModalProduct(product);
     setIsModalOpen(true);
   };
 
   const closeModal = () => {
-    console.log('[MenuClient] Closing modal');
     setIsModalOpen(false);
     setModalProduct(null);
   };

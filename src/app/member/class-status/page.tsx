@@ -85,7 +85,6 @@ export default function ClassStatusPage() {
       const res = await fetch("/api/member/class-registrations?type=active");
       if (res.ok) {
         const data = await res.json();
-        console.debug("[ClassStatus] Registrations fetched", data.map((item: Registration) => ({ id: item.id, paymentProofPreview: item.paymentProof?.slice(0, 60) })));
         setRegistrations(data);
       }
     } catch (error) {
@@ -232,7 +231,6 @@ export default function ClassStatusPage() {
   const handleViewPaymentProof = (proof: string | null) => {
     if (!proof) return;
     const resolvedUrl = resolvePaymentProofUrl(proof);
-    console.debug("[ClassStatus] Payment proof source", { proof, resolvedUrl });
     const pdf = isPdfProof(proof, resolvedUrl);
 
     setPaymentProofResolved(resolvedUrl);

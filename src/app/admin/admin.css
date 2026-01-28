@@ -2225,8 +2225,6 @@ body {
   }
 }
 
-/* Alert Messages - Duplicate removed, see main definition above */
-
 /* Page Header */
 .page-header {
   display: flex;
@@ -2510,8 +2508,6 @@ body {
   border-color: #D4A574;
   color: #fff;
 }
-
-/* Alerts - Duplicate removed, see main definition above */
 
 /* Form Styles */
 .form-group {
