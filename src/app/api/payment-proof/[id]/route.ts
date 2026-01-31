@@ -1,19 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { verifyToken } from "@/lib/auth-utils";
+import { readFile } from "fs/promises";
+import { join } from "path";
+import { existsSync } from "fs";
 
 export const runtime = "nodejs";
-
-// Helper to get session from token
-function getSessionFromToken(authToken: string): { role?: string; userId?: number; email?: string } | null {
-  try {
-    const sessionData = JSON.parse(
-      Buffer.from(authToken, 'base64').toString('utf-8')
-    );
-    return sessionData;
-  } catch {
-    return null;
-  }
-}
 
 // GET payment proof image by registration ID
 export async function GET(
@@ -39,12 +31,12 @@ export async function GET(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const session = getSessionFromToken(token);
+    const session = await verifyToken(token);
     if (!session) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Get registration with payment proof
+    // Get registration with payment proof URL
     const registration = await prisma.classregistration.findUnique({
       where: { id: registrationId },
       select: {
@@ -67,16 +59,32 @@ export async function GET(
       return NextResponse.json({ error: "No payment proof found" }, { status: 404 });
     }
 
-    // Convert Prisma Bytes to Uint8Array for NextResponse
-    const imageData = new Uint8Array(registration.paymentProof);
+    // Read file from disk
+    const filePath = join(process.cwd(), 'public', registration.paymentProof);
+    
+    if (!existsSync(filePath)) {
+      return NextResponse.json({ error: "Payment proof file not found" }, { status: 404 });
+    }
+
+    const fileBuffer = await readFile(filePath);
+
+    // Detect content type from file extension
+    const ext = registration.paymentProof.split('.').pop()?.toLowerCase();
+    const contentTypeMap: Record<string, string> = {
+      'jpg': 'image/jpeg',
+      'jpeg': 'image/jpeg',
+      'png': 'image/png',
+      'webp': 'image/webp'
+    };
+    const contentType = contentTypeMap[ext || ''] || 'image/jpeg';
 
     // Return image as blob
-    return new NextResponse(imageData, {
+    return new NextResponse(fileBuffer, {
       status: 200,
       headers: {
-        'Content-Type': 'image/png', // Default to PNG, could be detected from file signature
+        'Content-Type': contentType,
         'Cache-Control': 'public, max-age=31536000, immutable',
-        'Content-Disposition': `inline; filename="payment-proof-${registrationId}.png"`
+        'Content-Disposition': `inline; filename="payment-proof-${registrationId}.${ext}"`
       }
     });
   } catch (error) {

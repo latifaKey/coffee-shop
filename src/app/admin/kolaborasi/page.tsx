@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import ImageUploader from "@/components/admin/ImageUploader";
 import ActionButton, { ActionButtonGroup } from "@/components/admin/ActionButton";
 import DeleteConfirmModal from "@/components/ui/DeleteConfirmModal";
+import { SearchBar, FilterSelect, Alert } from '@/components/ui';
 import "../admin.css";
 import "./kolaborasi.css";
 
@@ -477,8 +478,12 @@ export default function AdminKolaborasiPage() {
 
       {/* Alert - gunakan shared .alert-toast agar konsisten dengan halaman lain */}
       {alertMessage.text && (
-        <div className={`alert alert-toast alert-${alertMessage.type}`}>
-          {alertMessage.type === "success" ? "✓" : "⚠"} {alertMessage.text}
+        <div style={{ position: 'fixed', top: '80px', right: '20px', zIndex: 9999, minWidth: '300px' }}>
+          <Alert
+            type={alertMessage.type as 'success' | 'error'}
+            message={alertMessage.text}
+            onClose={() => setAlertMessage({ type: '', text: '' })}
+          />
         </div>
       )}
 
@@ -904,30 +909,31 @@ export default function AdminKolaborasiPage() {
 
           {/* Partner Filters */}
           <div className="partner-filter-section">
-            <div className="partner-search-box">
-              <input
-                type="text"
-                placeholder="Cari nama mitra..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-            </div>
-            <div className="partner-filter-group">
-              <select value={filterType} onChange={(e) => setFilterType(e.target.value)}>
-                <option value="all">Semua Tipe</option>
-                <option value="supplier">Supplier</option>
-                <option value="investor">Investor</option>
-                <option value="franchise">Franchise</option>
-                <option value="other">Lainnya</option>
-              </select>
-            </div>
-            <div className="partner-filter-group">
-              <select value={filterStatus} onChange={(e) => setFilterStatus(e.target.value)}>
-                <option value="all">Semua Status</option>
-                <option value="active">Aktif</option>
-                <option value="inactive">Tidak Aktif</option>
-              </select>
-            </div>
+            <SearchBar
+              value={searchTerm}
+              onChange={(value) => setSearchTerm(value)}
+              placeholder="Cari nama mitra..."
+            />
+            <FilterSelect
+              value={filterType}
+              onChange={(value) => setFilterType(value)}
+              options={[
+                { value: 'all', label: 'Semua Tipe' },
+                { value: 'supplier', label: 'Supplier' },
+                { value: 'investor', label: 'Investor' },
+                { value: 'franchise', label: 'Franchise' },
+                { value: 'other', label: 'Lainnya' }
+              ]}
+            />
+            <FilterSelect
+              value={filterStatus}
+              onChange={(value) => setFilterStatus(value)}
+              options={[
+                { value: 'all', label: 'Semua Status' },
+                { value: 'active', label: 'Aktif' },
+                { value: 'inactive', label: 'Tidak Aktif' }
+              ]}
+            />
           </div>
 
           {/* Partners Table */}
@@ -1346,62 +1352,14 @@ export default function AdminKolaborasiPage() {
         </div>
       )}
 
-      {/* Modal: Delete Confirmation */}
-      {showDeleteModal && partnerToDelete && (
-        <div className="modal-overlay" onClick={closeDeleteModal}>
-          <div className="modal-container" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '500px' }}>
-            <div className="modal-header">
-              <h2>⚠️ Konfirmasi Hapus</h2>
-              <button className="modal-close" onClick={closeDeleteModal}>×</button>
-            </div>
-            <div className="modal-body" style={{ textAlign: 'center', padding: '2rem' }}>
-              <div style={{ 
-                fontSize: '4rem', 
-                marginBottom: '1rem',
-                animation: 'pulse 1s infinite'
-              }}>
-                🗑️
-              </div>
-              <p style={{ color: '#e6d5c3', marginBottom: '1rem', fontSize: '1.1rem' }}>
-                Apakah Anda yakin ingin menghapus mitra:
-              </p>
-              <p style={{ 
-                color: '#d4a574', 
-                fontWeight: 'bold', 
-                fontSize: '1.25rem',
-                marginBottom: '1rem',
-                padding: '0.75rem',
-                background: 'rgba(212, 165, 116, 0.1)',
-                borderRadius: '8px',
-                border: '1px solid rgba(212, 165, 116, 0.2)'
-              }}>
-                &quot;{partnerToDelete.name}&quot;
-              </p>
-              <p style={{ color: '#f44336', fontSize: '0.9rem' }}>
-                ⚠️ Tindakan ini tidak dapat dibatalkan!
-              </p>
-            </div>
-            <div className="modal-actions" style={{ justifyContent: 'center', gap: '1rem' }}>
-              <button 
-                className="btn-secondary-barizta" 
-                onClick={closeDeleteModal}
-                disabled={deleting}
-                style={{ minWidth: '120px' }}
-              >
-                ❌ Batal
-              </button>
-              <button 
-                className="btn-danger-barizta" 
-                onClick={handleConfirmDelete}
-                disabled={deleting}
-                style={{ minWidth: '120px' }}
-              >
-                {deleting ? '⏳ Menghapus...' : '🗑️ Ya, Hapus'}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* Modal: Delete Confirmation - Standardized */}
+      <DeleteConfirmModal
+        isOpen={showDeleteModal && !!partnerToDelete}
+        onClose={closeDeleteModal}
+        onConfirm={handleConfirmDelete}
+        itemName={partnerToDelete?.name || ""}
+        itemType="mitra"
+      />
 
       {/* Delete Type Confirmation Modal */}
       <DeleteConfirmModal

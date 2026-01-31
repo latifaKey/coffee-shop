@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import DeleteConfirmModal from '@/components/ui/DeleteConfirmModal';
+import { SearchBar, FilterSelect, Alert } from '@/components/ui';
 import './kelola-peserta.css';
 
 interface Registration {
@@ -310,9 +311,11 @@ export default function KelolaPesertaPage() {
 
       {/* Alert Message */}
       {alertMessage.text && (
-        <div className={`alert-message ${alertMessage.type}`}>
-          {alertMessage.type === 'success' ? '✅' : '❌'} {alertMessage.text}
-        </div>
+        <Alert
+          type={alertMessage.type as 'success' | 'error'}
+          message={alertMessage.text}
+          onClose={() => setAlertMessage({ type: '', text: '' })}
+        />
       )}
 
       {/* Tab Navigation */}
@@ -365,15 +368,11 @@ export default function KelolaPesertaPage() {
 
       {/* Search & Filter */}
       <div className="filters-section">
-        <div className="search-box">
-          <span className="search-icon">🔍</span>
-          <input
-            type="text"
-            placeholder="Cari nama, email, atau program..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-        </div>
+        <SearchBar
+          value={searchTerm}
+          onChange={(value) => setSearchTerm(value)}
+          placeholder="Cari nama, email, atau program..."
+        />
         <div className="filter-tabs">
           {[
             { value: 'all', label: 'Semua' },

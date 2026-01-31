@@ -1,15 +1,14 @@
--- Verify indexes installed
+-- Verify indexes installed for PostgreSQL
 -- Run this script to check if performance indexes are installed
 
 SELECT 
-    TABLE_NAME,
-    INDEX_NAME,
-    COLUMN_NAME,
-    SEQ_IN_INDEX
+    tablename as table_name,
+    indexname as index_name,
+    indexdef as index_definition
 FROM 
-    INFORMATION_SCHEMA.STATISTICS
+    pg_indexes
 WHERE 
-    TABLE_SCHEMA = 'barizta'
-    AND INDEX_NAME LIKE 'idx_%'
+    schemaname = 'public'
+    AND indexname LIKE 'idx_%'
 ORDER BY 
-    TABLE_NAME, INDEX_NAME, SEQ_IN_INDEX;
+    tablename, indexname;

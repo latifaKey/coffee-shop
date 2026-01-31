@@ -3,18 +3,7 @@ import { prisma } from '@/lib/prisma';
 import PDFDocument from 'pdfkit';
 import fs from 'fs';
 import path from 'path';
-
-// Helper to get session from token
-function getSessionFromToken(authToken: string): { role?: string; userId?: number; email?: string } | null {
-  try {
-    const sessionData = JSON.parse(
-      Buffer.from(authToken, 'base64').toString('utf-8')
-    );
-    return sessionData;
-  } catch {
-    return null;
-  }
-}
+import { verifyToken } from '@/lib/auth-utils';
 
 export async function POST(
   request: NextRequest,
@@ -33,7 +22,7 @@ export async function POST(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const session = getSessionFromToken(token);
+    const session = await verifyToken(token);
     if (!session || session.role !== 'admin') {
       return NextResponse.json({ error: "Forbidden - Admin only" }, { status: 403 });
     }

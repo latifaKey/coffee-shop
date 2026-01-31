@@ -4,20 +4,9 @@ import { createCanvas, loadImage } from "canvas";
 import { writeFile, mkdir } from "fs/promises";
 import path from "path";
 import fs from "fs";
+import { verifyToken } from "@/lib/auth-utils";
 
 export const runtime = "nodejs";
-
-// Helper to get session from token
-function getSessionFromToken(authToken: string): { role?: string; userId?: number; email?: string } | null {
-  try {
-    const sessionData = JSON.parse(
-      Buffer.from(authToken, 'base64').toString('utf-8')
-    );
-    return sessionData;
-  } catch {
-    return null;
-  }
-}
 
 // Generate unique certificate code
 function generateCertificateCode(registrationId: number, programId: string): string {
@@ -70,7 +59,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
     }
 
-    const session = getSessionFromToken(token);
+    const session = await verifyToken(token);
     if (!session || session.role !== 'admin') {
       return NextResponse.json({ success: false, error: "Forbidden" }, { status: 403 });
     }

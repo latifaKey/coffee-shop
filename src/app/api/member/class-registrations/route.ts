@@ -1,19 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { verifyToken } from "@/lib/auth-utils";
+import { uploadFile, uploadBase64 } from "@/lib/upload-utils";
 
 export const runtime = "nodejs";
-
-// Helper to get session from token
-function getSessionFromToken(authToken: string): { role?: string; userId?: number; email?: string } | null {
-  try {
-    const sessionData = JSON.parse(
-      Buffer.from(authToken, 'base64').toString('utf-8')
-    );
-    return sessionData;
-  } catch {
-    return null;
-  }
-}
 
 // GET member's class registrations
 export async function GET(request: NextRequest) {
@@ -27,7 +17,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const session = getSessionFromToken(token);
+    const session = await verifyToken(token);
     if (!session || session.role !== 'member' || !session.userId) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
@@ -77,29 +67,13 @@ export async function GET(request: NextRequest) {
         certificateUrl: true,
         createdAt: true,
         updatedAt: true,
-        // Exclude paymentProof binary - check existence with raw query
+        paymentProof: true, // Now it's a String URL
+        paymentStatus: true,
       },
       orderBy: { createdAt: "desc" },
     });
 
-    // Check payment proof existence efficiently
-    const regIds = registrations.map(r => r.id);
-    const paymentProofCheck = regIds.length > 0 
-      ? await prisma.$queryRaw<{id: number}[]>`
-          SELECT id FROM classregistration 
-          WHERE id IN (${regIds.join(',')}) AND paymentProof IS NOT NULL
-        `.catch(() => [])
-      : [];
-    const hasPaymentProofSet = new Set(paymentProofCheck.map(p => p.id));
-
-    // Transform registrations to include payment proof URL
-    const transformedRegistrations = registrations.map(reg => ({
-      ...reg,
-      paymentProof: hasPaymentProofSet.has(reg.id) ? `/api/payment-proof/${reg.id}` : null,
-      _hasPaymentProof: hasPaymentProofSet.has(reg.id)
-    }));
-
-    return NextResponse.json(transformedRegistrations);
+    return NextResponse.json(registrations);
   } catch (error) {
     console.error("GET /api/member/class-registrations error:", error);
     return NextResponse.json(
@@ -121,14 +95,46 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Silakan login terlebih dahulu" }, { status: 401 });
     }
 
-    const session = getSessionFromToken(token);
+    const session = await verifyToken(token);
     if (!session || session.role !== 'member' || !session.userId) {
       return NextResponse.json({ error: "Hanya member yang dapat mendaftar kelas" }, { status: 403 });
     }
 
     const userId = session.userId;
 
-    const body = await request.json();
+    // Check content type and parse accordingly
+    const contentType = request.headers.get('content-type') || '';
+    let formData: any = {};
+    let paymentProofFile: File | null = null;
+
+    if (contentType.includes('multipart/form-data')) {
+      // Handle multipart/form-data (file upload)
+      const data = await request.formData();
+      
+      // Extract form fields
+      formData = {
+        programId: data.get('programId') as string,
+        programName: data.get('programName') as string,
+        fullName: data.get('fullName') as string,
+        birthDate: data.get('birthDate') as string,
+        gender: data.get('gender') as string,
+        address: data.get('address') as string,
+        whatsapp: data.get('whatsapp') as string,
+        email: data.get('email') as string || null,
+        selectedPackages: data.get('selectedPackages') as string,
+        schedulePreference: data.get('schedulePreference') as string,
+        experience: data.get('experience') as string,
+        previousTraining: data.get('previousTraining') === 'true',
+        trainingDetails: data.get('trainingDetails') as string || null,
+      };
+
+      // Get file
+      paymentProofFile = data.get('paymentProof') as File;
+    } else {
+      // Handle JSON (backward compatibility with base64)
+      formData = await request.json();
+    }
+
     const {
       programId,
       programName,
@@ -143,8 +149,8 @@ export async function POST(request: NextRequest) {
       experience,
       previousTraining,
       trainingDetails,
-      paymentProof
-    } = body;
+      paymentProof // base64 string (for backward compatibility)
+    } = formData;
 
     // Validation
     if (!programId || !programName || !fullName || !birthDate || !gender || !address || !whatsapp) {
@@ -154,7 +160,17 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    if (!selectedPackages || selectedPackages.length === 0) {
+    // Parse selectedPackages if it's a string
+    let packages = selectedPackages;
+    if (typeof selectedPackages === 'string') {
+      try {
+        packages = JSON.parse(selectedPackages);
+      } catch {
+        packages = selectedPackages;
+      }
+    }
+
+    if (!packages || (Array.isArray(packages) && packages.length === 0)) {
       return NextResponse.json(
         { error: "Pilih minimal satu paket pelatihan" },
         { status: 400 }
@@ -191,29 +207,36 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Validate payment proof (base64 data URL)
-    if (!paymentProof || typeof paymentProof !== 'string' || !paymentProof.trim()) {
-      console.error('Payment proof validation failed: empty or invalid type');
+    // Handle payment proof upload
+    let paymentProofUrl: string | null = null;
+
+    if (paymentProofFile) {
+      // Upload file from multipart/form-data
+      const uploadResult = await uploadFile(paymentProofFile, 'uploads/proofs');
+      
+      if (!uploadResult.success) {
+        return NextResponse.json(
+          { error: uploadResult.error || "Gagal mengunggah bukti pembayaran" },
+          { status: 400 }
+        );
+      }
+
+      paymentProofUrl = uploadResult.url!;
+    } else if (paymentProof) {
+      // Upload from base64 (backward compatibility)
+      const uploadResult = await uploadBase64(paymentProof, 'uploads/proofs');
+      
+      if (!uploadResult.success) {
+        return NextResponse.json(
+          { error: uploadResult.error || "Gagal mengunggah bukti pembayaran" },
+          { status: 400 }
+        );
+      }
+
+      paymentProofUrl = uploadResult.url!;
+    } else {
       return NextResponse.json(
         { error: "Bukti pembayaran wajib diunggah" },
-        { status: 400 }
-      );
-    }
-
-    // Convert base64 data URL to binary Buffer
-    let paymentProofBuffer: Buffer | null = null;
-    try {
-      const base64Match = paymentProof.match(/^data:image\/[a-z]+;base64,(.+)$/);
-      if (!base64Match) {
-        throw new Error('Invalid data URL format');
-      }
-      const base64Data = base64Match[1];
-      paymentProofBuffer = Buffer.from(base64Data, 'base64');
-      console.log('Payment proof converted to binary:', paymentProofBuffer.length, 'bytes');
-    } catch (err) {
-      console.error('Failed to convert payment proof:', err);
-      return NextResponse.json(
-        { error: "Format bukti pembayaran tidak valid" },
         { status: 400 }
       );
     }
@@ -230,13 +253,14 @@ export async function POST(request: NextRequest) {
         address,
         whatsapp,
         email: email || null,
-        selectedPackages: JSON.stringify(selectedPackages),
+        selectedPackages: typeof packages === 'string' ? packages : JSON.stringify(packages),
         schedulePreference,
         experience,
         previousTraining: previousTraining || false,
         trainingDetails: trainingDetails || null,
-        paymentProof: paymentProofBuffer,
-        status: 'waiting'
+        paymentProof: paymentProofUrl,
+        status: 'waiting',
+        paymentStatus: 'pending'
       }
     });
 

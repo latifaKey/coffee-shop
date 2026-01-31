@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
+import { verifyToken } from '@/lib/auth-utils';
 
 export const runtime = 'nodejs';
 
@@ -21,19 +22,15 @@ const ALLOWED_FOLDERS = ['uploads', 'images', 'menu', 'news', 'team', 'about', '
 const MAX_FILE_SIZE = 10 * 1024 * 1024;
 
 // Helper function to verify admin role from token
-function verifyAdminRole(request: NextRequest): boolean {
+async function verifyAdminRole(request: NextRequest): Promise<boolean> {
   const adminToken = request.cookies.get("admin_token")?.value;
   const authToken = request.cookies.get("auth_token")?.value;
   const tokenToUse = adminToken || authToken;
   
   if (!tokenToUse) return false;
   
-  try {
-    const session = JSON.parse(Buffer.from(tokenToUse, "base64").toString("utf-8"));
-    return session.role === "admin";
-  } catch {
-    return false;
-  }
+  const session = await verifyToken(tokenToUse);
+  return session?.role === "admin";
 }
 
 async function saveFile(file: File, destFolder: string) {

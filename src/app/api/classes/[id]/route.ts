@@ -27,7 +27,7 @@ export async function GET(
     
     // Use raw SQL to get class with totalSessions
     const classItems = await prisma.$queryRawUnsafe(
-      `SELECT * FROM class WHERE id = ?`,
+      `SELECT * FROM class WHERE id = $1`,
       parseInt(id)
     ) as Record<string, unknown>[];
     
@@ -157,7 +157,7 @@ export async function PUT(
     // Update totalSessions using raw SQL since Prisma client needs regeneration
     if (totalSessions !== undefined && totalSessions !== null) {
       await prisma.$executeRawUnsafe(
-        `UPDATE class SET totalSessions = ? WHERE id = ?`,
+        `UPDATE class SET "totalSessions" = $1 WHERE id = $2`,
         parseInt(totalSessions.toString()),
         parseInt(id)
       );
@@ -165,7 +165,7 @@ export async function PUT(
 
     // Fetch updated class with totalSessions
     const finalClass = await prisma.$queryRawUnsafe(
-      `SELECT * FROM class WHERE id = ?`,
+      `SELECT * FROM class WHERE id = $1`,
       parseInt(id)
     ) as Record<string, unknown>[];
 

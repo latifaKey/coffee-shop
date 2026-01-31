@@ -2,31 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { cookies } from "next/headers";
 import bcrypt from "bcryptjs";
-
-// Helper function to decode Base64 token (same as /api/auth/me)
-function decodeToken(token: string) {
-  try {
-    const sessionData = JSON.parse(
-      Buffer.from(token, "base64").toString("utf-8")
-    );
-    
-    if (!sessionData || !sessionData.userId || !sessionData.timestamp) {
-      return null;
-    }
-    
-    // Check if token is expired (7 days)
-    const tokenAge = Date.now() - Number(sessionData.timestamp);
-    const maxAge = 7 * 24 * 60 * 60 * 1000;
-    
-    if (tokenAge > maxAge) {
-      return null;
-    }
-    
-    return sessionData;
-  } catch {
-    return null;
-  }
-}
+import { verifyToken } from "@/lib/auth-utils";
 
 export async function POST(request: NextRequest) {
   try {
@@ -41,9 +17,9 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const session = decodeToken(token);
+    const session = await verifyToken(token);
     if (!session) {
-      return NextResponse.json({ error: "Invalid token" }, { status: 401 });
+      return NextResponse.json({ error: "Invalid or expired token" }, { status: 401 });
     }
 
     const body = await request.json();

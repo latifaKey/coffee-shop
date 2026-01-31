@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { verifyToken } from "@/lib/auth-utils";
 
 export async function GET(_: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const { id: idStr } = await params;
@@ -22,13 +23,10 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
   const authToken = req.cookies.get("auth_token")?.value;
   const token = adminToken || authToken;
   if (!token) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  try {
-    const session = JSON.parse(Buffer.from(token, "base64").toString("utf-8"));
-    if (session.role !== "admin") {
-      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-    }
-  } catch {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  
+  const session = await verifyToken(token);
+  if (!session || session.role !== "admin") {
+    return NextResponse.json({ error: session ? "Forbidden" : "Unauthorized" }, { status: session ? 403 : 401 });
   }
   const body = await req.json();
   const { name, description, price, categoryId, image, isAvailable } = body || {};
@@ -71,14 +69,12 @@ export async function DELETE(req: NextRequest, { params }: { params: Promise<{ i
     const authToken = req.cookies.get("auth_token")?.value;
     const token = adminToken || authToken;
     if (!token) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    try {
-      const session = JSON.parse(Buffer.from(token, "base64").toString("utf-8"));
-      if (session.role !== "admin") {
-        return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-      }
-    } catch {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    
+    const session = await verifyToken(token);
+    if (!session || session.role !== "admin") {
+      return NextResponse.json({ error: session ? "Forbidden" : "Unauthorized" }, { status: session ? 403 : 401 });
     }
+    
     await prisma.product.delete({ where: { id } });
     return NextResponse.json({ success: true });
   } catch (e: unknown) {

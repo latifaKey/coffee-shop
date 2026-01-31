@@ -1,19 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { verifyToken } from "@/lib/auth-utils";
+import { uploadFile, uploadBase64 } from "@/lib/upload-utils";
 
 export const runtime = "nodejs";
-
-// Helper to get session from token
-function getSessionFromToken(authToken: string): { role?: string; userId?: number; email?: string } | null {
-  try {
-    const sessionData = JSON.parse(
-      Buffer.from(authToken, 'base64').toString('utf-8')
-    );
-    return sessionData;
-  } catch {
-    return null;
-  }
-}
 
 // GET single registration by ID
 export async function GET(
@@ -31,7 +21,7 @@ export async function GET(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const session = getSessionFromToken(token);
+    const session = await verifyToken(token);
     if (!session || session.role !== 'member' || !session.userId) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
@@ -73,13 +63,10 @@ export async function PUT(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const session = getSessionFromToken(token);
+    const session = await verifyToken(token);
     if (!session || session.role !== 'member' || !session.userId) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
-
-    const body = await request.json();
-    const { paymentProof } = body;
 
     // Check if registration exists and belongs to user
     const existingRegistration = await prisma.classregistration.findFirst({
@@ -98,20 +85,60 @@ export async function PUT(
       return NextResponse.json({ error: "Pendaftaran tidak dapat diubah" }, { status: 400 });
     }
 
-    if (!paymentProof || typeof paymentProof !== 'string') {
-      return NextResponse.json(
-        { error: "Bukti pembayaran tidak valid" },
-        { status: 400 }
-      );
-    }
+    // Check content type and parse accordingly
+    const contentType = request.headers.get('content-type') || '';
+    let paymentProofUrl: string | null = null;
 
-    // Convert base64 string to Buffer for Bytes field
-    const paymentProofBuffer = Buffer.from(paymentProof.replace(/^data:[^;]+;base64,/, ''), 'base64');
+    if (contentType.includes('multipart/form-data')) {
+      // Handle multipart/form-data (file upload)
+      const formData = await request.formData();
+      const paymentProofFile = formData.get('paymentProof') as File;
+
+      if (!paymentProofFile) {
+        return NextResponse.json(
+          { error: "Bukti pembayaran tidak valid" },
+          { status: 400 }
+        );
+      }
+
+      const uploadResult = await uploadFile(paymentProofFile, 'uploads/proofs');
+      
+      if (!uploadResult.success) {
+        return NextResponse.json(
+          { error: uploadResult.error || "Gagal mengunggah bukti pembayaran" },
+          { status: 400 }
+        );
+      }
+
+      paymentProofUrl = uploadResult.url!;
+    } else {
+      // Handle JSON (backward compatibility with base64)
+      const body = await request.json();
+      const { paymentProof } = body;
+
+      if (!paymentProof || typeof paymentProof !== 'string') {
+        return NextResponse.json(
+          { error: "Bukti pembayaran tidak valid" },
+          { status: 400 }
+        );
+      }
+
+      const uploadResult = await uploadBase64(paymentProof, 'uploads/proofs');
+      
+      if (!uploadResult.success) {
+        return NextResponse.json(
+          { error: uploadResult.error || "Gagal mengunggah bukti pembayaran" },
+          { status: 400 }
+        );
+      }
+
+      paymentProofUrl = uploadResult.url!;
+    }
 
     const updatedRegistration = await prisma.classregistration.update({
       where: { id: parseInt(id) },
       data: {
-        paymentProof: paymentProofBuffer
+        paymentProof: paymentProofUrl
       }
     });
 
@@ -141,7 +168,7 @@ export async function DELETE(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const session = getSessionFromToken(token);
+    const session = await verifyToken(token);
     if (!session || session.role !== 'member' || !session.userId) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
@@ -193,7 +220,7 @@ export async function PATCH(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const session = getSessionFromToken(token);
+    const session = await verifyToken(token);
     if (!session || session.role !== 'member' || !session.userId) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }

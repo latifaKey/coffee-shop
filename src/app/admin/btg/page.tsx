@@ -5,6 +5,7 @@ import Image from "next/image";
 import "./btg.css";
 import ActionButton, { ActionButtonGroup } from "@/components/admin/ActionButton";
 import DeleteConfirmModal from "@/components/ui/DeleteConfirmModal";
+import { SearchBar, Alert } from '@/components/ui';
 
 // Types
 interface Schedule {
@@ -601,16 +602,18 @@ export default function BariztaToGo() {
         </button>
       </div>
 
-      {success && !showModal && <div className="alert alert-success">{success}</div>}
-      {error && !showModal && <div className="alert alert-error">{error}</div>}
+      {success && !showModal && <Alert type="success" message={success} onClose={() => setSuccess("")} />}
+      {error && !showModal && <Alert type="error" message={error} onClose={() => setError("")} />}
 
       {/* JADWAL TAB */}
       {activeTab === "jadwal" && (
         <>
           <div className="filter-section">
-            <div className="search-box">
-              <input type="text" placeholder="Cari lokasi..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
-            </div>
+            <SearchBar
+              value={searchTerm}
+              onChange={(value) => setSearchTerm(value)}
+              placeholder="Cari lokasi..."
+            />
             <button className="btn-barizta" onClick={() => handleOpenModal("add")}>+ Tambah Jadwal</button>
           </div>
 
@@ -670,9 +673,11 @@ export default function BariztaToGo() {
       {activeTab === "menu" && (
         <>
           <div className="filter-section">
-            <div className="search-box">
-              <input type="text" placeholder="Cari menu..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
-            </div>
+            <SearchBar
+              value={searchTerm}
+              onChange={(value) => setSearchTerm(value)}
+              placeholder="Cari menu..."
+            />
             <button className="btn-barizta" onClick={() => handleOpenModal("add")}>+ Tambah Menu</button>
           </div>
 

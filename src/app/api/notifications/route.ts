@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { verifyToken } from "@/lib/auth-utils";
 
 // Helper function to verify authentication and get session
-function getSession(request: NextRequest): { userId: number; role: string } | null {
+async function getSession(request: NextRequest): Promise<{ userId: number; role: string } | null> {
   const adminToken = request.cookies.get("admin_token")?.value;
   const memberToken = request.cookies.get("member_token")?.value;
   const authToken = request.cookies.get("auth_token")?.value;
@@ -10,19 +11,17 @@ function getSession(request: NextRequest): { userId: number; role: string } | nu
   
   if (!tokenToUse) return null;
   
-  try {
-    const session = JSON.parse(Buffer.from(tokenToUse, "base64").toString("utf-8"));
-    return { userId: session.userId, role: session.role };
-  } catch {
-    return null;
-  }
+  const session = await verifyToken(tokenToUse);
+  if (!session) return null;
+  
+  return { userId: session.userId, role: session.role };
 }
 
 // GET notifications - for admin or specific member
 export async function GET(request: NextRequest) {
   try {
     // Verify authentication
-    const session = getSession(request);
+    const session = await getSession(request);
     if (!session) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }

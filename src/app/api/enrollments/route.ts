@@ -1,17 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-
-// Helper to get session from token
-function getSessionFromToken(authToken: string): { role?: string; userId?: number; email?: string } | null {
-  try {
-    const sessionData = JSON.parse(
-      Buffer.from(authToken, 'base64').toString('utf-8')
-    );
-    return sessionData;
-  } catch {
-    return null;
-  }
-}
+import { verifyToken } from "@/lib/auth-utils";
 
 // GET all enrollments (optionally filter by classId) - Admin only
 export async function GET(request: NextRequest) {
@@ -26,7 +15,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const session = getSessionFromToken(token);
+    const session = await verifyToken(token);
     if (!session || session.role !== 'admin') {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
@@ -115,7 +104,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Silakan login terlebih dahulu" }, { status: 401 });
     }
 
-    const session = getSessionFromToken(authToken);
+    const session = await verifyToken(authToken);
     if (!session || session.role !== 'member') {
       return NextResponse.json({ error: "Hanya member yang dapat mendaftar kelas" }, { status: 403 });
     }

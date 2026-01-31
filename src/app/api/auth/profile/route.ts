@@ -1,31 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { cookies } from "next/headers";
-
-// Helper function to decode Base64 token (same as /api/auth/me)
-function decodeToken(token: string) {
-  try {
-    const sessionData = JSON.parse(
-      Buffer.from(token, "base64").toString("utf-8")
-    );
-    
-    if (!sessionData || !sessionData.userId || !sessionData.timestamp) {
-      return null;
-    }
-    
-    // Check if token is expired (7 days)
-    const tokenAge = Date.now() - Number(sessionData.timestamp);
-    const maxAge = 7 * 24 * 60 * 60 * 1000;
-    
-    if (tokenAge > maxAge) {
-      return null;
-    }
-    
-    return sessionData;
-  } catch {
-    return null;
-  }
-}
+import { verifyToken, signToken } from "@/lib/auth-utils";
 
 // GET - Fetch current user profile
 export async function GET() {
@@ -41,9 +17,9 @@ export async function GET() {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const session = decodeToken(token);
+    const session = await verifyToken(token);
     if (!session) {
-      return NextResponse.json({ error: "Invalid token" }, { status: 401 });
+      return NextResponse.json({ error: "Invalid or expired token" }, { status: 401 });
     }
     
     const user = await prisma.user.findUnique({
@@ -84,7 +60,7 @@ export async function PATCH(request: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const session = decodeToken(token);
+    const session = await verifyToken(token);
     if (!session) {
       return NextResponse.json({ error: "Invalid token" }, { status: 401 });
     }
@@ -137,7 +113,7 @@ export async function PATCH(request: NextRequest) {
       }
     });
 
-    // Update session token dengan data baru
+    // Update session token dengan data baru menggunakan JWT
     const newSession = {
       userId: updatedUser.id,
       name: updatedUser.name,
@@ -145,7 +121,7 @@ export async function PATCH(request: NextRequest) {
       role: updatedUser.role,
       timestamp: Date.now()
     };
-    const newToken = Buffer.from(JSON.stringify(newSession)).toString("base64");
+    const newToken = await signToken(newSession, "7d");
 
     // Determine which cookie to update
     const cookieName = adminToken ? "admin_token" : memberToken ? "member_token" : "auth_token";

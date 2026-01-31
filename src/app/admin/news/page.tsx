@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import ActionButton, { ActionButtonGroup } from "@/components/admin/ActionButton";
 import DeleteConfirmModal from "@/components/ui/DeleteConfirmModal";
+import { SearchBar, FilterSelect, Alert, Badge, StatusBadge } from '@/components/ui';
 import "./news.css";
 
 interface News {
@@ -273,55 +274,51 @@ export default function KelolaBerita() {
       </div>
 
       {alertMessage.text && (
-        <div className={`alert ${alertMessage.type === 'success' ? 'alert-success' : 'alert-error'}`}>
-          {alertMessage.type === 'success' ? '✅' : '❌'} {alertMessage.text}
-        </div>
+        <Alert
+          type={alertMessage.type as 'success' | 'error'}
+          message={alertMessage.text}
+          onClose={() => setAlertMessage({ type: '', text: '' })}
+        />
       )}
 
       <div className="filter-section">
-        <div className="search-box">
-          <span className="search-icon">🔍</span>
-          <input
-            type="text"
-            placeholder="Cari berita..."
-            value={searchTerm}
-            onChange={(e) => {
-              setSearchTerm(e.target.value);
-              setCurrentPage(1);
-            }}
-          />
-        </div>
+        <SearchBar
+          value={searchTerm}
+          onChange={(value) => {
+            setSearchTerm(value);
+            setCurrentPage(1);
+          }}
+          placeholder="Cari berita..."
+        />
 
-        <div className="filter-group">
-          <label>Kategori:</label>
-          <select
-            value={filterCategory}
-            onChange={(e) => {
-              setFilterCategory(e.target.value);
-              setCurrentPage(1);
-            }}
-          >
-            <option value="all">Semua</option>
-            <option value="event">Event</option>
-            <option value="promo">Promo</option>
-            <option value="info">Info</option>
-          </select>
-        </div>
+        <FilterSelect
+          value={filterCategory}
+          onChange={(value) => {
+            setFilterCategory(value);
+            setCurrentPage(1);
+          }}
+          placeholder="Kategori"
+          options={[
+            { value: 'all', label: 'Semua' },
+            { value: 'event', label: 'Event' },
+            { value: 'promo', label: 'Promo' },
+            { value: 'info', label: 'Info' }
+          ]}
+        />
 
-        <div className="filter-group">
-          <label>Status:</label>
-          <select
-            value={filterStatus}
-            onChange={(e) => {
-              setFilterStatus(e.target.value);
-              setCurrentPage(1);
-            }}
-          >
-            <option value="all">Semua</option>
-            <option value="published">Published</option>
-            <option value="draft">Draft</option>
-          </select>
-        </div>
+        <FilterSelect
+          value={filterStatus}
+          onChange={(value) => {
+            setFilterStatus(value);
+            setCurrentPage(1);
+          }}
+          placeholder="Status"
+          options={[
+            { value: 'all', label: 'Semua' },
+            { value: 'published', label: 'Published' },
+            { value: 'draft', label: 'Draft' }
+          ]}
+        />
       </div>
 
       {/* News Table */}
@@ -360,14 +357,12 @@ export default function KelolaBerita() {
                     <small>{(news.excerpt || "").substring(0, 50)}{news.excerpt && news.excerpt.length > 50 ? '...' : ''}</small>
                   </td>
                   <td>
-                    <span className={`badge badge-${news.category}`}>{news.category}</span>
+                    <Badge variant="info">{news.category}</Badge>
                   </td>
                   <td>{news.author}</td>
                   <td>{formatDate(news.publishDate)}</td>
                   <td>
-                    <span className={`status status-${news.status === 'published' ? 'active' : 'inactive'}`}>
-                      {news.status === 'published' ? 'Published' : 'Draft'}
-                    </span>
+                    <StatusBadge status={news.status === 'published' ? 'published' : 'draft'} />
                   </td>
                   <td>
                     <ActionButtonGroup>
@@ -463,9 +458,11 @@ export default function KelolaBerita() {
               <>
                 <div className="modal-body">
                   {modalAlert.text && (
-                    <div className={`alert ${modalAlert.type === 'success' ? 'alert-success' : 'alert-error'}`}>
-                      {modalAlert.type === 'success' ? '✅' : '❌'} {modalAlert.text}
-                    </div>
+                    <Alert
+                      type={modalAlert.type as 'success' | 'error'}
+                      message={modalAlert.text}
+                      onClose={() => setModalAlert({ type: '', text: '' })}
+                    />
                   )}
 
                   <div className="form-group">

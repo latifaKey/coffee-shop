@@ -396,12 +396,17 @@ export default function ClassStatusPage() {
       {/* Filter */}
       <div className="filter-section">
         <label>Filter Status:</label>
-        <select value={filter} onChange={(e) => setFilter(e.target.value)}>
-          <option value="all">Semua</option>
-          <option value="waiting">Menunggu Verifikasi</option>
-          <option value="approved">Disetujui</option>
-          <option value="rejected">Ditolak</option>
-        </select>
+        <FilterSelect
+          value={filter}
+          onChange={(value) => setFilter(value)}
+          placeholder="Pilih Status"
+          options={[
+            { value: 'all', label: 'Semua' },
+            { value: 'waiting', label: 'Menunggu Verifikasi' },
+            { value: 'approved', label: 'Disetujui' },
+            { value: 'rejected', label: 'Ditolak' }
+          ]}
+        />
       </div>
 
       {/* Registrations Table */}

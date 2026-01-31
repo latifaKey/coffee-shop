@@ -1,32 +1,35 @@
-import mysql from 'mysql2/promise';
+import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcryptjs';
 
+const prisma = new PrismaClient();
+
 async function resetMemberPassword() {
-  const connection = await mysql.createConnection({
-    host: '127.0.0.1',
-    user: 'root',
-    password: '',
-    database: 'barizta'
-  });
+  try {
+    console.log('Connected to database');
 
-  console.log('Connected to database');
+    // Reset password untuk member
+    const newPassword = 'member123';
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    
+    await prisma.user.update({
+      where: { email: 'member@barizta.com' },
+      data: { 
+        password: hashedPassword,
+        updatedAt: new Date()
+      }
+    });
+    
+    console.log('✅ Password reset successful!');
+    console.log('');
+    console.log('Login dengan:');
+    console.log('   Email: member@barizta.com');
+    console.log('   Password: member123');
 
-  // Reset password untuk member
-  const newPassword = 'member123';
-  const hashedPassword = await bcrypt.hash(newPassword, 10);
-  
-  await connection.execute(
-    'UPDATE user SET password = ?, updatedAt = NOW() WHERE email = ?',
-    [hashedPassword, 'member@barizta.com']
-  );
-  
-  console.log('✅ Password reset successful!');
-  console.log('');
-  console.log('Login dengan:');
-  console.log('   Email: member@barizta.com');
-  console.log('   Password: member123');
-
-  await connection.end();
+  } catch (error) {
+    console.error('Error:', error);
+  } finally {
+    await prisma.$disconnect();
+  }
 }
 
 resetMemberPassword().catch(console.error);

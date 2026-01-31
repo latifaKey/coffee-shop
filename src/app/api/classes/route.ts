@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { verifyToken } from "@/lib/auth-utils";
 
 // Helper to convert BigInt to Number for JSON serialization
 function serializeClass(obj: Record<string, unknown>): Record<string, unknown> {
@@ -77,26 +78,22 @@ export async function GET(request: NextRequest) {
 }
 
 // Helper function to verify admin role from token
-function verifyAdminRole(request: NextRequest): boolean {
+async function verifyAdminRole(request: NextRequest): Promise<boolean> {
   const adminToken = request.cookies.get("admin_token")?.value;
   const authToken = request.cookies.get("auth_token")?.value;
   const tokenToUse = adminToken || authToken;
   
   if (!tokenToUse) return false;
   
-  try {
-    const session = JSON.parse(Buffer.from(tokenToUse, "base64").toString("utf-8"));
-    return session.role === "admin";
-  } catch {
-    return false;
-  }
+  const session = await verifyToken(tokenToUse);
+  return session?.role === "admin";
 }
 
 // POST new class
 export async function POST(request: NextRequest) {
   try {
     // Verify admin authentication and role
-    if (!verifyAdminRole(request)) {
+    if (!(await verifyAdminRole(request))) {
       return NextResponse.json({ error: "Unauthorized - Admin access required" }, { status: 401 });
     }
 
@@ -147,7 +144,7 @@ export async function POST(request: NextRequest) {
     // Set totalSessions using raw SQL since Prisma client needs regeneration
     const sessionsValue = totalSessions !== undefined && totalSessions !== null ? parseInt(totalSessions.toString()) : 4;
     await prisma.$executeRawUnsafe(
-      `UPDATE class SET totalSessions = ? WHERE id = ?`,
+      `UPDATE class SET "totalSessions" = $1 WHERE id = $2`,
       sessionsValue,
       classItem.id
     );

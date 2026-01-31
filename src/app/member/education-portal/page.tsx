@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
+import { Alert } from '@/components/ui';
 import './education-portal.css';
 
 interface EducationClass {
@@ -368,9 +369,11 @@ export default function EducationPortalPage() {
       </div>
 
         {!showModal && alertMessage.type && (
-          <div className={`alert alert-${alertMessage.type}`}>
-            {alertMessage.text}
-          </div>
+          <Alert
+            type={alertMessage.type as 'success' | 'error'}
+            message={alertMessage.text}
+            onClose={() => setAlertMessage({ type: '', text: '' })}
+          />
         )}
 
       {/* Classes Grid */}
@@ -515,9 +518,11 @@ export default function EducationPortalPage() {
             </div>
             <div className="modal-body">
               {alertMessage.type && (
-                <div className={`alert alert-${alertMessage.type}`}>
-                  {alertMessage.text}
-                </div>
+                <Alert
+                  type={alertMessage.type as 'success' | 'error'}
+                  message={alertMessage.text}
+                  onClose={() => setAlertMessage({ type: '', text: '' })}
+                />
               )}
               <div className="selected-class-info">
                 <h3>{selectedClass.title}</h3>

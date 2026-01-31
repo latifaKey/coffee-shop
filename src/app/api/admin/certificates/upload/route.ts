@@ -2,20 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { writeFile, mkdir } from "fs/promises";
 import path from "path";
+import { verifyToken } from "@/lib/auth-utils";
 
 export const runtime = "nodejs";
-
-// Helper to get session from token
-function getSessionFromToken(authToken: string): { role?: string; userId?: number; email?: string } | null {
-  try {
-    const sessionData = JSON.parse(
-      Buffer.from(authToken, "base64").toString("utf-8")
-    );
-    return sessionData;
-  } catch {
-    return null;
-  }
-}
 
 // POST - Upload certificate image
 export async function POST(request: NextRequest) {
@@ -31,7 +20,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Unauthorized - No token found" }, { status: 401 });
     }
 
-    const session = getSessionFromToken(token);
+    const session = await verifyToken(token);
     console.log("Certificate upload - session:", session);
     
     if (!session || (session.role !== "admin" && session.role !== "superadmin")) {

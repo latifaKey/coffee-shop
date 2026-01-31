@@ -5,6 +5,7 @@ import Image from 'next/image';
 import '../shared-admin.css';
 import './classes.css';
 import DeleteConfirmModal from '@/components/ui/DeleteConfirmModal';
+import { SearchBar, FilterSelect, Alert } from '@/components/ui';
 
 // Types & Interfaces
 interface BaristaClass {
@@ -782,8 +783,7 @@ export default function ClassesPage() {
     <div className="classes-page">
       {/* Alert Messages - Fixed Position untuk visibilitas lebih baik */}
       {alertMessage.text && (
-        <div 
-          className={`alert alert-${alertMessage.type}`}
+        <div
           style={{
             position: 'fixed',
             top: '80px',
@@ -791,11 +791,13 @@ export default function ClassesPage() {
             zIndex: 9999,
             minWidth: '300px',
             maxWidth: '450px',
-            boxShadow: '0 4px 20px rgba(0,0,0,0.3)',
-            animation: 'alertFadeIn 0.3s ease'
           }}
         >
-          {alertMessage.type === "success" ? "✓" : "⚠"} {alertMessage.text}
+          <Alert
+            type={alertMessage.type as 'success' | 'error' | 'warning' | 'info'}
+            message={alertMessage.text}
+            onClose={() => setAlertMessage({ type: '', text: '' })}
+          />
         </div>
       )}
 
@@ -949,25 +951,21 @@ export default function ClassesPage() {
         <div className="enrollments-section">
           <div className="enrollments-header">
             <div className="search-filter">
-              <div className="search-box">
-                <span className="search-icon">🔍</span>
-                <input
-                  type="text"
-                  placeholder="Cari nama, email, atau program..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                />
-              </div>
-              <select
-                className="filter-select"
+              <SearchBar
+                value={searchTerm}
+                onChange={(value) => setSearchTerm(value)}
+                placeholder="Cari nama, email, atau program..."
+              />
+              <FilterSelect
                 value={statusFilter}
-                onChange={(e) => setStatusFilter(e.target.value)}
-              >
-                <option value="all">Semua Status</option>
-                <option value="waiting">Menunggu</option>
-                <option value="approved">Disetujui</option>
-                <option value="rejected">Ditolak</option>
-              </select>
+                onChange={(value) => setStatusFilter(value)}
+                options={[
+                  { value: 'all', label: 'Semua Status' },
+                  { value: 'waiting', label: 'Menunggu' },
+                  { value: 'approved', label: 'Disetujui' },
+                  { value: 'rejected', label: 'Ditolak' }
+                ]}
+              />
             </div>
           </div>
 
@@ -1091,24 +1089,20 @@ export default function ClassesPage() {
 
           <div className="enrollments-header">
             <div className="search-filter">
-              <div className="search-box">
-                <span className="search-icon">🔍</span>
-                <input
-                  type="text"
-                  placeholder="Cari nama, email, atau program..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                />
-              </div>
-              <select
-                className="filter-select"
+              <SearchBar
+                value={searchTerm}
+                onChange={(value) => setSearchTerm(value)}
+                placeholder="Cari nama, email, atau program..."
+              />
+              <FilterSelect
                 value={pesertaStatusFilter}
-                onChange={(e) => setPesertaStatusFilter(e.target.value)}
-              >
-                <option value="all">Semua Peserta</option>
-                <option value="approved">Sedang Mengikuti</option>
-                <option value="completed">Telah Selesai</option>
-              </select>
+                onChange={(value) => setPesertaStatusFilter(value)}
+                options={[
+                  { value: 'all', label: 'Semua Peserta' },
+                  { value: 'approved', label: 'Sedang Mengikuti' },
+                  { value: 'completed', label: 'Telah Selesai' }
+                ]}
+              />
             </div>
           </div>
 
@@ -1664,32 +1658,13 @@ export default function ClassesPage() {
 
       {/* Modal: Delete Confirmation */}
       {deletingClass && (
-        <div className="modal-overlay" onClick={() => setDeletingClass(null)}>
-          <div className="modal-container" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '500px' }}>
-            <div className="modal-header">
-              <h2>Konfirmasi Hapus</h2>
-              <button className="modal-close" onClick={() => setDeletingClass(null)}>
-                ×
-              </button>
-            </div>
-            <div className="modal-body">
-              <p style={{ color: '#e6d5c3', marginBottom: '1rem' }}>
-                Apakah Anda yakin ingin menghapus kelas <strong style={{ color: '#d4a574' }}>{deletingClass.title}</strong>?
-              </p>
-              <p style={{ color: '#f44336', fontSize: '0.9rem' }}>
-                ⚠️ Tindakan ini tidak dapat dibatalkan!
-              </p>
-            </div>
-            <div className="modal-actions">
-              <button className="btn-secondary-barizta" onClick={() => setDeletingClass(null)}>
-                Batal
-              </button>
-              <button className="btn-danger-barizta" onClick={handleDeleteClass}>
-                🗑️ Hapus
-              </button>
-            </div>
-          </div>
-        </div>
+        <DeleteConfirmModal
+          isOpen={!!deletingClass}
+          onClose={() => setDeletingClass(null)}
+          onConfirm={handleDeleteClass}
+          itemName={deletingClass.title}
+          itemType="kelas"
+        />
       )}
 
       {/* Modal: Registration Detail - Enhanced */}

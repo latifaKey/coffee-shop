@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -24,7 +24,7 @@ model Renamedclass {
   title           String
   description     String       @db.Text
   instructor      String
-  schedule        DateTime?    @db.DateTime(0)
+  schedule        DateTime?
   duration        String       @default("02:00")
   location        String       @default("Barizta Coffee Shop")
   level           String       @default("Pemula")
@@ -56,7 +56,7 @@ model enrollment {
   Renamedclass   Renamedclass @relation(fields: [classId], references: [id], onDelete: Cascade, map: "Enrollment_classId_fkey")
   user           user?        @relation(fields: [userId], references: [id])
 
-  @@index([classId], map: "Enrollment_classId_fkey")
+  @@index([classId], map: "idx_enrollment_classId")
   @@index([userId])
 }
 
@@ -156,7 +156,7 @@ model product {
   updatedAt   DateTime  @updatedAt
   category    category? @relation(fields: [categoryId], references: [id], map: "Product_categoryId_fkey")
 
-  @@index([categoryId], map: "Product_categoryId_fkey")
+  @@index([categoryId], map: "idx_product_categoryId")
 }
 
 model schedule {
@@ -230,7 +230,7 @@ model classregistration {
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
   paymentStatus      String   @default("pending")
-  paymentProof       Bytes?
+  paymentProof       String?
   user               user     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])

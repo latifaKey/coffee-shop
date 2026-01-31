@@ -1,8 +1,18 @@
-"use client";
-
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { prisma } from "@/lib/prisma";
+import type { Metadata } from "next";
+import { StatCard, ActionCard, InfoCard, ActivityCard } from "@/components/ui";
+import { getGreeting, formatDate } from "@/lib/utils";
 import "./dashboard.css";
+
+// Metadata untuk SEO
+export const metadata: Metadata = {
+  title: 'Dashboard Admin | BARIZTA Coffee',
+  description: 'Admin dashboard untuk mengelola BARIZTA Coffee Shop',
+};
+
+// Revalidate setiap 60 detik untuk data fresh tanpa client-side fetching
+export const revalidate = 60;
 
 interface DashboardStats {
   totalProducts: number;
@@ -19,7 +29,7 @@ interface RecentMessage {
   id: number;
   name: string;
   subject: string;
-  createdAt: string;
+  createdAt: Date;
   isRead: boolean;
 }
 
@@ -27,69 +37,112 @@ interface RecentNews {
   id: number;
   title: string;
   status: string;
-  createdAt: string;
+  createdAt: Date;
 }
 
-export default function AdminDashboard() {
-  const [stats, setStats] = useState<DashboardStats>({
-    totalProducts: 0,
-    activeNews: 0,
-    unreadMessages: 0,
-    totalMembers: 0,
-    activeClasses: 0,
-    totalPartnerships: 0,
-    scheduledBTG: 0,
-    recentEnrollments: 0
-  });
-  const [recentMessages, setRecentMessages] = useState<RecentMessage[]>([]);
-  const [recentNews, setRecentNews] = useState<RecentNews[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+// Server Component - Data fetching di server
+async function getDashboardData() {
+  // Fetch all stats in parallel for better performance
+  const [
+    totalProducts,
+    activeNews,
+    unreadMessages,
+    totalMembers,
+    activeClasses,
+    totalPartnerships,
+    scheduledBTG,
+    recentEnrollments
+  ] = await Promise.all([
+    // Total produk
+    prisma.product.count(),
+    
+    // Berita aktif (status = published)
+    prisma.news.count({
+      where: { status: "published" }
+    }),
+    
+    // Pesan belum dibaca
+    prisma.message.count({
+      where: { isRead: false }
+    }),
+    
+    // Total member (users dengan role member)
+    prisma.user.count({
+      where: { role: "member" }
+    }),
+    
+    // Kelas aktif
+    prisma.renamedclass.count({
+      where: { status: "active" }
+    }),
+    
+    // Total partnership
+    prisma.partnership.count(),
+    
+    // BTG terjadwal
+    prisma.schedule.count({
+      where: { status: "scheduled" }
+    }),
+    
+    // Pendaftaran kelas terbaru (30 hari terakhir)
+    prisma.classregistration.count({
+      where: {
+        createdAt: {
+          gte: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
+        }
+      }
+    })
+  ]);
 
-  useEffect(() => {
-    fetchDashboardData();
-  }, []);
+  // Get recent activities
+  const [recentMessages, recentNews] = await Promise.all([
+    prisma.message.findMany({
+      take: 5,
+      orderBy: { createdAt: "desc" },
+      select: {
+        id: true,
+        name: true,
+        subject: true,
+        createdAt: true,
+        isRead: true
+      }
+    }),
+    
+    prisma.news.findMany({
+      take: 5,
+      orderBy: { createdAt: "desc" },
+      select: {
+        id: true,
+        title: true,
+        status: true,
+        createdAt: true
+      }
+    })
+  ]);
 
-  const fetchDashboardData = async () => {
-    try {
-      setLoading(true);
-      const response = await fetch("/api/stats");
-      if (!response.ok) throw new Error("Failed to fetch stats");
-      
-      const data = await response.json();
-      setStats(data.stats);
-      setRecentMessages(data.recentActivities.messages);
-      setRecentNews(data.recentActivities.news);
-      setError("");
-    } catch (err) {
-      console.error("Dashboard fetch error:", err);
-      setError("Gagal memuat data dashboard");
-    } finally {
-      setLoading(false);
-    }
+  return {
+    stats: {
+      totalProducts,
+      activeNews,
+      unreadMessages,
+      totalMembers,
+      activeClasses,
+      totalPartnerships,
+      scheduledBTG,
+      recentEnrollments
+    },
+    recentMessages,
+    recentNews
   };
+}
 
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('id-ID', {
-      day: 'numeric',
-      month: 'short',
-      year: 'numeric'
-    });
-  };
-
-  const getGreeting = () => {
-    const hour = new Date().getHours();
-    if (hour < 12) return "Selamat Pagi";
-    if (hour < 15) return "Selamat Siang";
-    if (hour < 18) return "Selamat Sore";
-    return "Selamat Malam";
-  };
-
-  if (loading) return null;
+export default async function AdminDashboard() {
+  // Fetch data directly in Server Component
+  const { stats, recentMessages, recentNews } = await getDashboardData();
 
   return (
     <div className="admin-dashboard">
-      {/* Welcome Section - Sama dengan Member */}
+      {/* Welcome Section */}
       <div className="welcome-section">
         <div className="welcome-content">
           <span className="welcome-greeting">{getGreeting()},</span>
@@ -100,162 +153,111 @@ export default function AdminDashboard() {
         </div>
       </div>
 
-      {error && <div className="alert alert-error">{error}</div>}
-
-      {/* Stats Grid - Sama dengan Member */}
-      <div className="stats-grid">
-        <Link href="/admin/products" className="stat-card">
-          <div className="stat-icon">📦</div>
-          <div className="stat-info">
-            <span className="stat-number">{stats.totalProducts}</span>
-            <span className="stat-label">Total Produk</span>
-          </div>
-        </Link>
-        <Link href="/admin/news" className="stat-card info">
-          <div className="stat-icon">📰</div>
-          <div className="stat-info">
-            <span className="stat-number">{stats.activeNews}</span>
-            <span className="stat-label">Berita Aktif</span>
-          </div>
-        </Link>
-        <Link href="/admin/messages" className="stat-card warning">
-          <div className="stat-icon">📩</div>
-          <div className="stat-info">
-            <span className="stat-number">{stats.unreadMessages}</span>
-            <span className="stat-label">Pesan Baru</span>
-          </div>
-        </Link>
-        <div className="stat-card success">
-          <div className="stat-icon">👥</div>
-          <div className="stat-info">
-            <span className="stat-number">{stats.totalMembers}</span>
-            <span className="stat-label">Total Member</span>
-          </div>
-        </div>
-        <Link href="/admin/classes" className="stat-card info">
-          <div className="stat-icon">📚</div>
-          <div className="stat-info">
-            <span className="stat-number">{stats.activeClasses}</span>
-            <span className="stat-label">Kelas Aktif</span>
-          </div>
-        </Link>
-        <Link href="/admin/partnership" className="stat-card">
-          <div className="stat-icon">🤝</div>
-          <div className="stat-info">
-            <span className="stat-number">{stats.totalPartnerships}</span>
-            <span className="stat-label">Kolaborasi</span>
-          </div>
-        </Link>
+      {/* Stats Grid - Menggunakan StatCard Component */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <StatCard 
+          icon="📦"
+          label="Total Produk"
+          value={stats.totalProducts}
+          href="/admin/products"
+        />
+        <StatCard 
+          icon="📰"
+          label="Berita Aktif"
+          value={stats.activeNews}
+          variant="info"
+          href="/admin/news"
+        />
+        <StatCard 
+          icon="📩"
+          label="Pesan Baru"
+          value={stats.unreadMessages}
+          variant="warning"
+          href="/admin/messages"
+        />
+        <StatCard 
+          icon="👥"
+          label="Total Member"
+          value={stats.totalMembers}
+          variant="success"
+        />
+        <StatCard 
+          icon="📚"
+          label="Kelas Aktif"
+          value={stats.activeClasses}
+          variant="info"
+          href="/admin/classes"
+        />
+        <StatCard 
+          icon="🤝"
+          label="Kolaborasi"
+          value={stats.totalPartnerships}
+          href="/admin/partnership"
+        />
       </div>
 
-      {/* Quick Actions - Sama dengan Member */}
+      {/* Quick Actions - Menggunakan ActionCard Component */}
       <div className="section-compact">
         <h2 className="section-title">Menu Cepat</h2>
-        <div className="quick-actions">
-          <Link href="/admin/products" className="action-card">
-            <span className="action-icon">📦</span>
-            <span className="action-label">Kelola Produk</span>
-          </Link>
-          <Link href="/admin/news" className="action-card">
-            <span className="action-icon">📰</span>
-            <span className="action-label">Kelola Berita</span>
-          </Link>
-          <Link href="/admin/messages" className="action-card">
-            <span className="action-icon">📩</span>
-            <span className="action-label">Pesan Masuk</span>
-          </Link>
-          <Link href="/admin/classes" className="action-card">
-            <span className="action-icon">📚</span>
-            <span className="action-label">Kelas Edukasi</span>
-          </Link>
-          <Link href="/admin/btg" className="action-card">
-            <span className="action-icon">🚐</span>
-            <span className="action-label">BARIZTA To Go</span>
-          </Link>
-          <Link href="/admin/partnership" className="action-card">
-            <span className="action-icon">🤝</span>
-            <span className="action-label">Kolaborasi</span>
-          </Link>
-          <Link href="/admin/about" className="action-card">
-            <span className="action-icon">ℹ️</span>
-            <span className="action-label">Tentang Kami</span>
-          </Link>
-          <Link href="/admin/website" className="action-card">
-            <span className="action-icon">🌐</span>
-            <span className="action-label">Kelola Website</span>
-          </Link>
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          <ActionCard icon="📦" label="Kelola Produk" href="/admin/products" />
+          <ActionCard icon="📰" label="Kelola Berita" href="/admin/news" />
+          <ActionCard icon="📩" label="Pesan Masuk" href="/admin/messages" />
+          <ActionCard icon="📚" label="Kelas Edukasi" href="/admin/classes" />
+          <ActionCard icon="🚐" label="BARIZTA To Go" href="/admin/btg" />
+          <ActionCard icon="🤝" label="Kolaborasi" href="/admin/partnership" />
+          <ActionCard icon="ℹ️" label="Tentang Kami" href="/admin/about" />
+          <ActionCard icon="🌐" label="Kelola Website" href="/admin/website" />
         </div>
       </div>
 
-      {/* Recent Activities - Sama dengan Member */}
+      {/* Recent Activities - Menggunakan ActivityCard Component */}
       <div className="section-compact">
         <h2 className="section-title">Aktivitas Terbaru</h2>
-        <div className="activities-grid">
-          {/* Recent Messages */}
-          <div className="activity-card">
-            <h4>📩 Pesan Terbaru</h4>
-            {recentMessages.length > 0 ? (
-              <div className="activity-list">
-                {recentMessages.map((msg) => (
-                  <div key={msg.id} className={`activity-item ${msg.isRead ? "" : "unread"}`}>
-                    <div className="activity-info">
-                      <span className="activity-program">{msg.subject}</span>
-                      <span className="activity-date">dari {msg.name} · {formatDate(msg.createdAt)}</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className="empty-state-mini">
-                <p>Tidak ada pesan</p>
-              </div>
-            )}
-            <Link href="/admin/messages" className="view-all">Lihat Semua →</Link>
-          </div>
-
-          {/* Recent News */}
-          <div className="activity-card">
-            <h4>📰 Berita Terbaru</h4>
-            {recentNews.length > 0 ? (
-              <div className="activity-list">
-                {recentNews.map((news) => (
-                  <div key={news.id} className="activity-item">
-                    <div className="activity-info">
-                      <span className="activity-program">{news.title}</span>
-                      <span className="activity-date">
-                        <span className={`status-badge status-${news.status}`}>{news.status}</span>
-                        {" · "}{formatDate(news.createdAt)}
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className="empty-state-mini">
-                <p>Tidak ada berita</p>
-              </div>
-            )}
-            <Link href="/admin/news" className="view-all">Lihat Semua →</Link>
-          </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <ActivityCard
+            icon="📩"
+            title="Pesan Terbaru"
+            viewAllHref="/admin/messages"
+            emptyMessage="Tidak ada pesan"
+            items={recentMessages.map(msg => ({
+              id: msg.id,
+              title: msg.subject,
+              subtitle: `dari ${msg.name} · ${formatDate(msg.createdAt)}`,
+              isUnread: !msg.isRead,
+            }))}
+          />
+          
+          <ActivityCard
+            icon="📰"
+            title="Berita Terbaru"
+            viewAllHref="/admin/news"
+            emptyMessage="Tidak ada berita"
+            items={recentNews.map(news => ({
+              id: news.id,
+              title: news.title,
+              subtitle: formatDate(news.createdAt),
+              badge: {
+                text: news.status,
+                variant: news.status === 'published' ? 'published' as const : 'draft' as const,
+              },
+            }))}
+          />
         </div>
       </div>
 
-      {/* Info Cards - Sama dengan Member */}
-      <div className="info-cards">
-        <div className="info-card">
-          <span className="info-icon">💡</span>
-          <div className="info-content">
-            <h4>Tips Admin</h4>
-            <p>Periksa pesan masuk secara berkala untuk respon cepat kepada customer</p>
-          </div>
-        </div>
-        <div className="info-card">
-          <span className="info-icon">📊</span>
-          <div className="info-content">
-            <h4>Statistik</h4>
-            <p>Total {stats.recentEnrollments} pendaftaran kelas baru bulan ini</p>
-          </div>
-        </div>
+      {/* Info Cards - Menggunakan InfoCard Component */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <InfoCard
+          icon="💡"
+          title="Tips Admin"
+          description="Periksa pesan masuk secara berkala untuk respon cepat kepada customer"
+        />
+        <InfoCard
+          icon="📊"
+          title="Statistik"
+          description={`Total ${stats.recentEnrollments} pendaftaran kelas baru bulan ini`}
+        />
       </div>
     </div>
   );

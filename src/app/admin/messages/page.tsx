@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import ActionButton, { ActionButtonGroup } from "@/components/admin/ActionButton";
 import DeleteConfirmModal from "@/components/ui/DeleteConfirmModal";
+import { SearchBar, FilterSelect, Alert } from '@/components/ui';
 import "./messages.css";
 
 interface Message {
@@ -235,31 +236,38 @@ export default function PesanMasuk() {
 
       {/* Success/Error Messages */}
       {successMessage && (
-        <div className="alert alert-success">{successMessage}</div>
+        <Alert
+          type="success"
+          message={successMessage}
+          onClose={() => setSuccessMessage("")}
+        />
       )}
       {errorMessage && (
-        <div className="alert alert-error">{errorMessage}</div>
+        <Alert
+          type="error"
+          message={errorMessage}
+          onClose={() => setErrorMessage("")}
+        />
       )}
 
       {/* Filters */}
       <div className="filter-section">
-        <div className="search-box">
-          <input
-            type="text"
-            placeholder="Cari nama, email, atau subjek..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-        </div>
-        <div className="filter-group">
-          <label>Filter:</label>
-          <select value={filterStatus} onChange={(e) => setFilterStatus(e.target.value)}>
-            <option value="all">Semua Pesan</option>
-            <option value="unread">Belum Dibaca</option>
-            <option value="read">Sudah Dibaca</option>
-            <option value="replied">Sudah Dibalas</option>
-          </select>
-        </div>
+        <SearchBar
+          value={searchTerm}
+          onChange={(value) => setSearchTerm(value)}
+          placeholder="Cari nama, email, atau subjek..."
+        />
+        <FilterSelect
+          label="Filter:"
+          value={filterStatus}
+          onChange={(value) => setFilterStatus(value)}
+          options={[
+            { value: 'all', label: 'Semua Pesan' },
+            { value: 'unread', label: 'Belum Dibaca' },
+            { value: 'read', label: 'Sudah Dibaca' },
+            { value: 'replied', label: 'Sudah Dibalas' }
+          ]}
+        />
       </div>
 
       {/* Loading State */}

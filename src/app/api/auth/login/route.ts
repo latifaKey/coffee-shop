@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
+import { signToken } from "@/lib/auth-utils";
 
 export async function POST(request: Request) {
   try {
@@ -14,7 +15,7 @@ export async function POST(request: Request) {
       );
     }
 
-    // Cari user di database MySQL
+    // Cari user di database
     const user = await prisma.user.findUnique({
       where: { email },
     });
@@ -44,18 +45,17 @@ export async function POST(request: Request) {
       );
     }
 
-    // Buat session token dengan signing sederhana
+    // Buat session data untuk JWT payload
     const sessionData = {
       userId: user.id,
       name: user.name,
       email: user.email,
-      role: user.role,
+      role: user.role as "admin" | "member",
       timestamp: Date.now(),
     };
 
-    const sessionToken = Buffer.from(JSON.stringify(sessionData)).toString(
-      "base64"
-    );
+    // Generate JWT token dengan signature
+    const jwtToken = await signToken(sessionData, 60 * 60 * 24 * 7); // 7 days
 
     // Set cookie berdasarkan role
     const response = NextResponse.json({
@@ -71,15 +71,14 @@ export async function POST(request: Request) {
 
     // Cookie name berbeda untuk admin dan member
     const cookieName = user.role === 'admin' ? 'admin_token' : 'member_token';
-    // Path harus "/" agar cookie terkirim ke semua route termasuk /api
-    const cookiePath = '/';
 
-    response.cookies.set(cookieName, sessionToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
+    // Set JWT token ke HTTP-only cookie
+    response.cookies.set(cookieName, jwtToken, {
+      httpOnly: true, // Tidak bisa diakses dari JavaScript client-side
+      secure: process.env.NODE_ENV === "production", // HTTPS only di production
+      sameSite: "lax", // CSRF protection
       maxAge: 60 * 60 * 24 * 7, // 7 days
-      path: cookiePath,
+      path: '/', // Available di semua routes
     });
 
     // Clear cookie dari role yang berbeda untuk menghindari konflik
@@ -88,9 +87,9 @@ export async function POST(request: Request) {
       response.cookies.set("member_token", "", { maxAge: 0, path: "/" });
       response.cookies.set("auth_token", "", { maxAge: 0, path: "/" });
     } else {
-      // Member login - hapus admin cookie dan set auth_token
+      // Member login - hapus admin cookie dan set auth_token untuk backward compatibility
       response.cookies.set("admin_token", "", { maxAge: 0, path: "/" });
-      response.cookies.set("auth_token", sessionToken, {
+      response.cookies.set("auth_token", jwtToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
         sameSite: "lax",

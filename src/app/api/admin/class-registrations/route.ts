@@ -1,19 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { verifyToken } from "@/lib/auth-utils";
 
 export const runtime = "nodejs";
-
-// Helper to get session from token
-function getSessionFromToken(authToken: string): { role?: string; userId?: number; email?: string } | null {
-  try {
-    const sessionData = JSON.parse(
-      Buffer.from(authToken, 'base64').toString('utf-8')
-    );
-    return sessionData;
-  } catch {
-    return null;
-  }
-}
 
 // GET all class registrations (Admin only)
 export async function GET(request: NextRequest) {
@@ -27,7 +16,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const session = getSessionFromToken(token);
+    const session = await verifyToken(token);
     if (!session || session.role !== 'admin') {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
@@ -48,7 +37,7 @@ export async function GET(request: NextRequest) {
       where.programId = programId;
     }
 
-    // Optimized query - exclude binary paymentProof, use select with pagination
+    // Optimized query with pagination
     const [total, registrations] = await Promise.all([
       prisma.classregistration.count({ where }),
       prisma.classregistration.findMany({
@@ -74,6 +63,8 @@ export async function GET(request: NextRequest) {
           certificateUrl: true,
           createdAt: true,
           updatedAt: true,
+          paymentProof: true, // Now it's a String URL
+          paymentStatus: true,
           user: {
             select: {
               id: true,
@@ -81,7 +72,6 @@ export async function GET(request: NextRequest) {
               email: true
             }
           }
-          // Exclude paymentProof binary data
         },
         orderBy: { createdAt: "desc" },
         skip,
@@ -89,26 +79,9 @@ export async function GET(request: NextRequest) {
       })
     ]);
 
-    // Check payment proof existence efficiently
-    const regIds = registrations.map(r => r.id);
-    const paymentProofCheck = regIds.length > 0 
-      ? await prisma.$queryRaw<{id: number}[]>`
-          SELECT id FROM classregistration 
-          WHERE id IN (${regIds.join(',')}) AND paymentProof IS NOT NULL
-        `.catch(() => [])
-      : [];
-    const hasPaymentProofSet = new Set(paymentProofCheck.map(p => p.id));
-
-    // Transform registrations to include payment proof URL
-    const transformedRegistrations = registrations.map(reg => ({
-      ...reg,
-      paymentProof: hasPaymentProofSet.has(reg.id) ? `/api/payment-proof/${reg.id}` : null,
-      _hasPaymentProof: hasPaymentProofSet.has(reg.id)
-    }));
-
     return NextResponse.json({ 
       success: true, 
-      registrations: transformedRegistrations,
+      registrations: registrations,
       pagination: {
         page,
         limit,

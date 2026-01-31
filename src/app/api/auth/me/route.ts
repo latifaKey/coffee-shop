@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { prisma } from "@/lib/prisma";
+import { verifyToken } from "@/lib/auth-utils";
 
 export async function GET() {
   const cookieStore = await cookies();
@@ -17,28 +18,11 @@ export async function GET() {
   }
 
   try {
-    // Decode session token
-    const sessionData = JSON.parse(
-      Buffer.from(authToken, "base64").toString("utf-8")
-    );
+    // Verify JWT token
+    const sessionData = await verifyToken(authToken);
 
-    // Validate token fields
-    if (!sessionData || !sessionData.userId || !sessionData.timestamp) {
-      console.warn("Auth: session token missing required fields", sessionData);
-      return NextResponse.json({ error: "Invalid token data" }, { status: 401 });
-    }
-
-    // Check if token is expired (7 days)
-    const tokenTimestamp = Number(sessionData.timestamp);
-    if (isNaN(tokenTimestamp)) {
-      console.warn("Auth: invalid timestamp in token", sessionData);
-      return NextResponse.json({ error: "Invalid token" }, { status: 401 });
-    }
-    const tokenAge = Date.now() - tokenTimestamp;
-    const maxAge = 7 * 24 * 60 * 60 * 1000; // 7 days in milliseconds
-
-    if (tokenAge > maxAge) {
-      return NextResponse.json({ error: "Token expired" }, { status: 401 });
+    if (!sessionData) {
+      return NextResponse.json({ error: "Invalid or expired token" }, { status: 401 });
     }
 
     // Fetch full user data from database for phone

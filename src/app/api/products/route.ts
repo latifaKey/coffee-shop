@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { verifyToken } from "@/lib/auth-utils";
 import type { Prisma } from '@prisma/client';
 
 export async function GET(req: NextRequest) {
@@ -80,13 +81,10 @@ export async function POST(req: NextRequest) {
     const authToken = req.cookies.get("auth_token")?.value;
     const token = adminToken || authToken;
     if (!token) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    try {
-      const session = JSON.parse(Buffer.from(token, "base64").toString("utf-8"));
-      if (session.role !== "admin") {
-        return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-      }
-    } catch {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    
+    const session = await verifyToken(token);
+    if (!session || session.role !== "admin") {
+      return NextResponse.json({ error: session ? "Forbidden" : "Unauthorized" }, { status: session ? 403 : 401 });
     }
 
     const body = await req.json();

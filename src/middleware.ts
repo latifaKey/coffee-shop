@@ -1,19 +1,8 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
+import { getSessionFromNextRequest } from '@/lib/auth-utils';
 
-// Helper to decode auth token and get session data
-function getSessionFromToken(authToken: string): { role?: string; userId?: number } | null {
-  try {
-    const sessionData = JSON.parse(
-      Buffer.from(authToken, 'base64').toString('utf-8')
-    );
-    return sessionData;
-  } catch {
-    return null;
-  }
-}
-
-export default function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   // Gunakan cookie yang berbeda untuk admin dan member
   const memberToken = request.cookies.get('member_token')?.value;
   const adminToken = request.cookies.get('admin_token')?.value;
@@ -30,7 +19,7 @@ export default function middleware(request: NextRequest) {
     if (pathname === '/admin/login') {
       // Jika sudah login sebagai admin, redirect ke dashboard
       if (adminToken) {
-        const session = getSessionFromToken(adminToken);
+        const session = await getSessionFromNextRequest(request);
         if (session?.role === 'admin') {
           return NextResponse.redirect(new URL('/admin', request.url));
         }
@@ -38,13 +27,13 @@ export default function middleware(request: NextRequest) {
       return NextResponse.next();
     }
     
-    // Cek admin token
+    // Cek admin token dengan JWT verification
     const tokenToCheck = adminToken || legacyToken;
     if (!tokenToCheck) {
       return NextResponse.redirect(new URL('/admin/login', request.url));
     }
     
-    const session = getSessionFromToken(tokenToCheck);
+    const session = await getSessionFromNextRequest(request);
     if (!session || session.role !== 'admin') {
       // Bukan admin, redirect ke member dashboard jika punya member token
       if (memberToken) {
@@ -66,7 +55,7 @@ export default function middleware(request: NextRequest) {
       return NextResponse.redirect(new URL(`/auth/login?redirect=${returnUrl}`, request.url));
     }
     
-    const session = getSessionFromToken(tokenToCheck);
+    const session = await getSessionFromNextRequest(request);
     if (!session) {
       return NextResponse.redirect(new URL('/auth/login', request.url));
     }
@@ -84,7 +73,7 @@ export default function middleware(request: NextRequest) {
     // Hanya cek member token untuk halaman login member
     // Admin yang sudah login tidak di-redirect (mungkin ingin login sebagai akun lain)
     if (memberToken) {
-      const session = getSessionFromToken(memberToken);
+      const session = await getSessionFromNextRequest(request);
       if (session && session.role === 'member') {
         // Cek apakah ada redirect URL
         const redirectUrl = request.nextUrl.searchParams.get('redirect');
@@ -101,7 +90,7 @@ export default function middleware(request: NextRequest) {
     // Admin yang sudah login masih boleh mengakses halaman register (untuk membuat akun member baru)
     // Hanya member yang sudah login yang akan di-redirect
     if (memberToken) {
-      const session = getSessionFromToken(memberToken);
+      const session = await getSessionFromNextRequest(request);
       if (session && session.role === 'member') {
         return NextResponse.redirect(new URL('/member/dashboard', request.url));
       }
@@ -121,7 +110,7 @@ export default function middleware(request: NextRequest) {
       return NextResponse.redirect(new URL(`/auth/register?redirect=${returnUrl}`, request.url));
     }
     
-    const session = getSessionFromToken(tokenToCheck);
+    const session = await getSessionFromNextRequest(request);
     if (!session) {
       return NextResponse.redirect(new URL('/auth/register', request.url));
     }

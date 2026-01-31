@@ -9,7 +9,8 @@ export async function POST(request: Request) {
     message: "Logout berhasil",
   });
 
-  // Clear semua auth cookies
+  // Clear semua auth cookies (JWT tokens)
+  // Path harus "/" untuk menghapus dari semua routes
   response.cookies.set("auth_token", "", {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
@@ -18,7 +19,6 @@ export async function POST(request: Request) {
     path: "/",
   });
 
-  // Clear member token
   response.cookies.set("member_token", "", {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
@@ -27,16 +27,13 @@ export async function POST(request: Request) {
     path: "/",
   });
 
-  // Clear admin token (path harus sama dengan saat di-set)
-  if (logoutType === 'admin') {
-    response.cookies.set("admin_token", "", {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      maxAge: 0,
-      path: "/admin",
-    });
-  }
+  response.cookies.set("admin_token", "", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+    maxAge: 0,
+    path: "/",
+  });
 
   return response;
 }

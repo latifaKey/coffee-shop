@@ -5,7 +5,9 @@ import Image from "next/image";
 import ActionButton, { ActionButtonGroup } from "@/components/admin/ActionButton";
 import ImageUploader from "@/components/admin/ImageUploader";
 import DeleteConfirmModal from "@/components/ui/DeleteConfirmModal";
+import { SearchBar, FilterSelect, Badge, StatusBadge, Alert, FormGroup, Input, Textarea, Checkbox } from '@/components/ui';
 import { normalizeImagePath } from "@/lib/admin-utils";
+import { formatCurrency } from "@/lib/utils";
 import "./products.css";
 
 interface Category {
@@ -263,14 +265,6 @@ export default function KelolaProduk() {
     }
   };
 
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('id-ID', {
-      style: 'currency',
-      currency: 'IDR',
-      minimumFractionDigits: 0
-    }).format(amount);
-  };
-
   // Group categories by type
   const minumanCategories = categories.filter(c => c.type === 'MINUMAN');
   const makananCategories = categories.filter(c => c.type === 'MAKANAN');
@@ -292,37 +286,32 @@ export default function KelolaProduk() {
 
       {/* Success/Error Messages */}
       {success && !showModal && (
-        <div className="alert alert-success">
-          {success}
-        </div>
+        <Alert type="success" message={success} onClose={() => setSuccess("")} />
       )}
       {error && !showModal && (
-        <div className="alert alert-error">
-          {error}
-        </div>
+        <Alert type="error" message={error} onClose={() => setError("")} />
       )}
 
       {/* Filters and Search */}
       <div className="filter-section">
-        <div className="search-box">
-          <input
-            type="text"
-            placeholder="Cari nama produk atau deskripsi..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-        </div>
-        <div className="filter-group">
-          <label>Kategori:</label>
-          <select value={filterCategory} onChange={(e) => setFilterCategory(e.target.value)}>
-            <option value="all">Semua</option>
-            {categories.map((cat) => (
-              <option key={cat.id} value={cat.id.toString()}>
-                {cat.name} ({cat.type})
-              </option>
-            ))}
-          </select>
-        </div>
+        <SearchBar
+          value={searchTerm}
+          onChange={setSearchTerm}
+          placeholder="Cari nama produk atau deskripsi..."
+          className="flex-1"
+        />
+        <FilterSelect
+          value={filterCategory}
+          onChange={setFilterCategory}
+          options={[
+            { value: 'all', label: 'Semua Kategori' },
+            ...categories.map(cat => ({
+              value: cat.id.toString(),
+              label: `${cat.name} (${cat.type})`
+            }))
+          ]}
+          placeholder="Kategori"
+        />
       </div>
 
       {/* Products Table */}
@@ -360,15 +349,13 @@ export default function KelolaProduk() {
                     <small>{(product.description || "").substring(0, 50)}{product.description && product.description.length > 50 ? '...' : ''}</small>
                   </td>
                   <td>
-                    <span className={`badge badge-${product.category?.type?.toLowerCase() || 'default'}`}>
+                    <Badge variant="info">
                       {product.category?.name || 'Tanpa Kategori'}
-                    </span>
+                    </Badge>
                   </td>
                   <td><strong>{formatCurrency(product.price)}</strong></td>
                   <td>
-                    <span className={`status status-${product.isAvailable ? 'active' : 'inactive'}`}>
-                      {product.isAvailable ? 'Tersedia' : 'Tidak Tersedia'}
-                    </span>
+                    <StatusBadge status={product.isAvailable ? 'active' : 'inactive'} />
                   </td>
                   <td>
                     <ActionButtonGroup>
@@ -451,9 +438,9 @@ export default function KelolaProduk() {
                     <h3>{selectedProduct?.name}</h3>
                     <div className="detail-row">
                       <span className="detail-label">Kategori:</span>
-                      <span className={`badge badge-${selectedProduct?.category?.type?.toLowerCase() || 'default'}`}>
+                      <Badge variant="info">
                         {selectedProduct?.category?.name || 'Tanpa Kategori'}
-                      </span>
+                      </Badge>
                     </div>
                     <div className="detail-row">
                       <span className="detail-label">Harga:</span>
@@ -461,9 +448,7 @@ export default function KelolaProduk() {
                     </div>
                     <div className="detail-row">
                       <span className="detail-label">Status:</span>
-                      <span className={`status status-${selectedProduct?.isAvailable ? 'active' : 'inactive'}`}>
-                        {selectedProduct?.isAvailable ? 'Tersedia' : 'Tidak Tersedia'}
-                      </span>
+                      <StatusBadge status={selectedProduct?.isAvailable ? 'active' : 'inactive'} />
                     </div>
                     <div className="detail-row">
                       <span className="detail-label">Deskripsi:</span>
@@ -486,43 +471,31 @@ export default function KelolaProduk() {
               // Add/Edit Form
               <>
                 <div className="modal-body">
-                  {error && (
-                    <div className="alert alert-error">
-                      {error}
-                    </div>
-                  )}
-                  {success && (
-                    <div className="alert alert-success">
-                      {success}
-                    </div>
-                  )}
+                  {error && <Alert type="error" message={error} onClose={() => setError("")} />}
+                  {success && <Alert type="success" message={success} />}
                   
-                  <div className="form-group">
-                    <label>Nama Produk <span className="required">*</span></label>
-                    <input
-                      type="text"
+                  <FormGroup label="Nama Produk" required>
+                    <Input
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      required
                       placeholder="Masukkan nama produk"
                     />
-                  </div>
+                  </FormGroup>
 
-                  <div className="form-group">
-                    <label>Deskripsi</label>
-                    <textarea
+                  <FormGroup label="Deskripsi">
+                    <Textarea
                       value={formData.description}
                       onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                       rows={3}
                       placeholder="Deskripsi produk (opsional)"
                     />
-                  </div>
+                  </FormGroup>
 
-                  <div className="form-group">
-                    <label>Kategori</label>
+                  <FormGroup label="Kategori">
                     <select
                       value={formData.categoryId}
                       onChange={(e) => setFormData({ ...formData, categoryId: e.target.value })}
+                      className="w-full px-3 py-2.5 rounded-lg bg-white/[0.04] border border-white/[0.14] text-[#F7F2EE] focus:border-[#8B4513] focus:outline-none transition-colors"
                     >
                       <option value="">-- Pilih Kategori --</option>
                       {minumanCategories.length > 0 && (
@@ -544,19 +517,17 @@ export default function KelolaProduk() {
                         </optgroup>
                       )}
                     </select>
-                  </div>
+                  </FormGroup>
 
-                  <div className="form-group">
-                    <label>Harga (Rp) <span className="required">*</span></label>
-                    <input
+                  <FormGroup label="Harga (Rp)" required>
+                    <Input
                       type="number"
-                      value={formData.price}
+                      value={formData.price.toString()}
                       onChange={(e) => setFormData({ ...formData, price: parseInt(e.target.value) || 0 })}
-                      required
                       min="0"
                       placeholder="0"
                     />
-                  </div>
+                  </FormGroup>
 
                   <div className="form-group">
                     <label>Gambar <span className="required">*</span></label>
@@ -566,16 +537,11 @@ export default function KelolaProduk() {
                     />
                   </div>
 
-                  <div className="form-group checkbox-group">
-                    <label className="checkbox-label compact">
-                      <input 
-                        type="checkbox" 
-                        checked={formData.isAvailable} 
-                        onChange={(e) => setFormData({ ...formData, isAvailable: e.target.checked })}
-                      />
-                      Produk Tersedia
-                    </label>
-                  </div>
+                  <Checkbox
+                    label="Produk Tersedia"
+                    checked={formData.isAvailable}
+                    onChange={(e) => setFormData({ ...formData, isAvailable: e.target.checked })}
+                  />
                 </div>
 
                 <div className="modal-actions">
