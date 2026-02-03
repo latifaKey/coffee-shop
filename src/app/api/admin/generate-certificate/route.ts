@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { createCanvas, loadImage } from "canvas";
 import { writeFile, mkdir } from "fs/promises";
 import path from "path";
 import fs from "fs";
 import { verifyToken } from "@/lib/auth-utils";
+import type { Canvas, Image } from "canvas";
 
 export const runtime = "nodejs";
 
@@ -115,6 +115,11 @@ export async function POST(request: NextRequest) {
     const directorName = customDirectorName || 'RINA TUPON PANGUDI LUHUR, M.PD';
     const instructorName = customInstructorName || 'M RIZAL NOVIANTO';
 
+    // ============================================
+    // LAZY LOAD CANVAS - Reduce initial bundle size
+    // ============================================
+    const { createCanvas, loadImage } = await import("canvas");
+    
     // Load template image
     const templatePath = path.join(process.cwd(), 'public', 'certificates', 'serti.png');
     

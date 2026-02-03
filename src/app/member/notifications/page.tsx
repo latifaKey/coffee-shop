@@ -2,8 +2,6 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { FilterSelect } from '@/components/ui';
-import "./notifications.css";
 
 interface Notification {
   id: number;
@@ -402,15 +400,14 @@ export default function NotificationsPage() {
           )}
         </div>
         <div className="header-actions">
-          <FilterSelect
+          <select
             value={filter}
-            onChange={(value) => setFilter(value as "all" | "unread")}
-            placeholder="Filter"
-            options={[
-              { value: 'all', label: 'Semua' },
-              { value: 'unread', label: 'Belum Dibaca' }
-            ]}
-          />
+            onChange={(e) => setFilter(e.target.value as "all" | "unread")}
+            className="filter-select"
+          >
+            <option value="all">Semua</option>
+            <option value="unread">Belum Dibaca</option>
+          </select>
           {unreadCount > 0 && (
             <button className="btn-mark-all" onClick={markAllAsRead}>
               Tandai Semua Dibaca

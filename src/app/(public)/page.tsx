@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import HeroCarousel from "@/components/public/HeroCarousel";
@@ -180,23 +180,7 @@ function NewsSection() {
   const [newsData, setNewsData] = useState<NewsItem[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const fallbackNews = useMemo<NewsItem[]>(() => {
-    const fallbackImages = [
-      "https://images.unsplash.com/photo-1554118811-1e0d58224f24?q=80&w=600&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1521017432531-fbd92d768814?q=80&w=600&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1442512595331-e89e73853f31?q=80&w=600&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=600&auto=format&fit=crop",
-    ];
-
-    return copy.fallback.map((item, index) => ({
-      id: index + 1,
-      title: item.title,
-      excerpt: item.excerpt,
-      category: "NEWS",
-      image: fallbackImages[index % fallbackImages.length],
-      publishDate: new Date().toISOString(),
-    }));
-  }, [copy.fallback]);
+  // FALLBACK dihapus - hanya menampilkan data dari database admin
 
   useEffect(() => {
     const fetchNews = async () => {
@@ -212,19 +196,24 @@ function NewsSection() {
             ...n,
             image: n.image || n.imageUrl || "/images/hero/slide-menu.jpg"
           }));
-          setNewsData(latestNews.length > 0 ? latestNews : fallbackNews);
+          setNewsData(latestNews);
         } else {
-          setNewsData(fallbackNews);
+          setNewsData([]);
         }
       } catch (error) {
         console.error("Error fetching news:", error);
-        setNewsData(fallbackNews);
+        setNewsData([]);
       } finally {
         setLoading(false);
       }
     };
     fetchNews();
-  }, [fallbackNews]);
+  }, []);
+
+  // Jika tidak ada berita, sembunyikan section ini
+  if (!loading && newsData.length === 0) {
+    return null;
+  }
 
   return (
     <section className="section" style={{ background: 'var(--bg)' }}>
@@ -260,8 +249,7 @@ function NewsSection() {
 function InstagramSection() {
   const { t } = useLanguage();
   const copy = t.publicPages.home.instagram;
-  
-  const instagramPosts = [
+  const [instagramPosts, setInstagramPosts] = useState([
     { id: 1, image: "/images/instagram/ig_1.jpg", url: "https://www.instagram.com/bariztaspecialtycoffee" },
     { id: 2, image: "/images/instagram/ig_2.jpg", url: "https://www.instagram.com/bariztaspecialtycoffee" },
     { id: 3, image: "/images/instagram/ig_3.jpg", url: "https://www.instagram.com/bariztaspecialtycoffee" },
@@ -270,7 +258,31 @@ function InstagramSection() {
     { id: 6, image: "/images/instagram/ig_9.jpg", url: "https://www.instagram.com/bariztaspecialtycoffee" },
     { id: 7, image: "/images/instagram/ig_7.jpg", url: "https://www.instagram.com/bariztaspecialtycoffee" },
     { id: 8, image: "/images/instagram/ig_8.jpg", url: "https://www.instagram.com/bariztaspecialtycoffee" },
-  ];
+  ]);
+
+  // Fetch Instagram posts from Media table (folder: instagram)
+  useEffect(() => {
+    const fetchInstagramMedia = async () => {
+      try {
+        const res = await fetch("/api/media?folder=instagram&limit=8");
+        if (res.ok) {
+          const data = await res.json();
+          const mediaItems = data.data || [];
+          if (mediaItems.length > 0) {
+            setInstagramPosts(mediaItems.map((m: { id: number; path: string; caption?: string }) => ({
+              id: m.id,
+              image: m.path,
+              url: "https://www.instagram.com/bariztaspecialtycoffee"
+            })));
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching instagram media:", error);
+        // Keep default posts on error
+      }
+    };
+    fetchInstagramMedia();
+  }, []);
 
   return (
     <section className="section instagram-section">

@@ -7,13 +7,18 @@ interface DeleteConfirmModalProps {
   isOpen: boolean;
   onClose: () => void;
   onConfirm: () => void;
-  itemName: string;
+  itemName?: string;
   itemType?: string; // e.g., "kelas", "produk", "berita", etc.
   isLoading?: boolean;
   title?: string;
+  message?: string; // Custom message
   warningText?: string;
   confirmButtonText?: string;
   cancelButtonText?: string;
+  confirmText?: string; // Alias for confirmButtonText
+  cancelText?: string; // Alias for cancelButtonText
+  loading?: boolean; // Alias for isLoading
+  variant?: "delete" | "logout" | "warning" | "info";
 }
 
 export default function DeleteConfirmModal({
@@ -23,11 +28,22 @@ export default function DeleteConfirmModal({
   itemName,
   itemType = "item",
   isLoading = false,
-  title = "Konfirmasi Hapus",
-  warningText = "Tindakan ini tidak dapat dibatalkan!",
-  confirmButtonText = "Hapus",
-  cancelButtonText = "Batal",
+  title,
+  message,
+  warningText,
+  confirmButtonText,
+  cancelButtonText,
+  confirmText,
+  cancelText,
+  loading,
+  variant = "delete",
 }: DeleteConfirmModalProps) {
+  // Support both naming conventions
+  const finalLoading = loading ?? isLoading;
+  const finalConfirmText = confirmText ?? confirmButtonText ?? (variant === "delete" ? "Hapus" : "Ya");
+  const finalCancelText = cancelText ?? cancelButtonText ?? "Batal";
+  const finalTitle = title ?? (variant === "delete" ? "Konfirmasi Hapus" : "Konfirmasi");
+  const finalWarning = warningText ?? (variant === "delete" ? "Tindakan ini tidak dapat dibatalkan!" : undefined);
   const modalRef = useRef<HTMLDivElement>(null);
   const cancelButtonRef = useRef<HTMLButtonElement>(null);
   const confirmButtonRef = useRef<HTMLButtonElement>(null);
@@ -35,7 +51,7 @@ export default function DeleteConfirmModal({
   // Handle escape key
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
-      if (e.key === "Escape" && !isLoading) {
+      if (e.key === "Escape" && !finalLoading) {
         onClose();
       }
       
@@ -56,7 +72,7 @@ export default function DeleteConfirmModal({
         }
       }
     },
-    [isLoading, onClose]
+    [finalLoading, onClose]
   );
 
   useEffect(() => {
@@ -76,7 +92,7 @@ export default function DeleteConfirmModal({
   if (!isOpen) return null;
 
   const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (e.target === e.currentTarget && !isLoading) {
+    if (e.target === e.currentTarget && !finalLoading) {
       onClose();
     }
   };
@@ -97,16 +113,16 @@ export default function DeleteConfirmModal({
     >
       <div 
         ref={modalRef}
-        className="delete-confirm-modal"
+        className={`delete-confirm-modal ${variant ? `variant-${variant}` : ""}`}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
         <div className="delete-confirm-header">
-          <h2 id="delete-modal-title">{title}</h2>
+          <h2 id="delete-modal-title">{finalTitle}</h2>
           <button 
             className="delete-confirm-close" 
             onClick={onClose}
-            disabled={isLoading}
+            disabled={finalLoading}
             aria-label="Tutup modal"
             tabIndex={0}
           >
@@ -116,14 +132,20 @@ export default function DeleteConfirmModal({
 
         {/* Body */}
         <div className="delete-confirm-body">
-          <p className="delete-confirm-message">
-            Apakah Anda yakin ingin menghapus {itemType}{" "}
-            <strong>{itemName}</strong>?
-          </p>
-          <p className="delete-confirm-warning">
-            <span className="warning-icon">⚠️</span>
-            {warningText}
-          </p>
+          {message ? (
+            <p className="delete-confirm-message">{message}</p>
+          ) : (
+            <p className="delete-confirm-message">
+              Apakah Anda yakin ingin menghapus {itemType}{" "}
+              <strong>{itemName}</strong>?
+            </p>
+          )}
+          {finalWarning && (
+            <p className="delete-confirm-warning">
+              <span className="warning-icon">⚠️</span>
+              {finalWarning}
+            </p>
+          )}
         </div>
 
         {/* Actions */}
@@ -132,25 +154,25 @@ export default function DeleteConfirmModal({
             ref={cancelButtonRef}
             className="btn-secondary-barizta"
             onClick={onClose}
-            disabled={isLoading}
+            disabled={finalLoading}
             tabIndex={0}
           >
-            {cancelButtonText}
+            {finalCancelText}
           </button>
           <button
             ref={confirmButtonRef}
-            className="btn-danger-barizta"
+            className={variant === "logout" ? "btn-logout-barizta" : "btn-danger-barizta"}
             onClick={handleConfirm}
-            disabled={isLoading}
+            disabled={finalLoading}
             tabIndex={0}
           >
-            {isLoading ? (
+            {finalLoading ? (
               <>
                 <span className="delete-spinner"></span>
                 Memproses...
               </>
             ) : (
-              confirmButtonText
+              finalConfirmText
             )}
           </button>
         </div>

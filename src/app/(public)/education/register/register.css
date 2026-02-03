@@ -5,10 +5,10 @@
   min-height: 100vh;
 }
 
-/* Hero */
+/* Hero - Compact */
 .register-hero {
   position: relative;
-  height: 300px;
+  height: 280px;
   background: linear-gradient(135deg, #2c1810 0%, #3e2723 50%, #4e342e 100%);
   display: flex;
   align-items: center;
@@ -385,6 +385,14 @@
 }
 
 @media (max-width: 768px) {
+  .register-hero {
+    height: 220px;
+  }
+
+  .register-hero-content h1 {
+    font-size: 1.75rem;
+  }
+
   .form-row {
     grid-template-columns: 1fr;
   }

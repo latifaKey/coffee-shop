@@ -50,3 +50,5 @@ export {
   SearchBar,
   FilterSelect
 } from './AdminHelpers';
+
+export { default as LogoutModal } from './LogoutModal';

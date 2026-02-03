@@ -22,11 +22,11 @@ type SessionData = {
 /**
  * Sign JWT token dengan expiration time
  * @param payload - Data yang akan di-encode ke dalam JWT
- * @param expiresIn - Durasi expiration dalam detik (default: 7 days)
+ * @param expiresIn - Durasi expiration dalam detik (default: 1 day)
  */
 export async function signToken(
   payload: SessionData,
-  expiresIn: number = 60 * 60 * 24 * 7 // 7 days
+  expiresIn: number = 60 * 60 * 24 // 1 day for better security
 ): Promise<string> {
   const secret = getJWTSecret();
   

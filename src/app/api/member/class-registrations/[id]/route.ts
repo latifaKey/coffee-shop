@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { verifyToken } from "@/lib/auth-utils";
 import { uploadFile, uploadBase64 } from "@/lib/upload-utils";
+import { auth } from "@/lib/auth";
 
 export const runtime = "nodejs";
 
@@ -17,19 +18,37 @@ export async function GET(
     const authToken = cookies.get("auth_token")?.value;
     const token = memberToken || authToken;
     
-    if (!token) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    // Try NextAuth session first (for Google OAuth users)
+    const nextAuthSession = await auth();
+    let userId: number | undefined;
+
+    if (nextAuthSession?.user?.email) {
+      const user = await prisma.user.findUnique({
+        where: { email: nextAuthSession.user.email },
+        select: { id: true, role: true }
+      });
+      
+      if (!user || user.role !== 'member') {
+        return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+      }
+      
+      userId = user.id;
+    } else if (token) {
+      const session = await verifyToken(token);
+      if (!session || session.role !== 'member' || !session.userId) {
+        return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+      }
+      userId = session.userId;
     }
 
-    const session = await verifyToken(token);
-    if (!session || session.role !== 'member' || !session.userId) {
-      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    if (!userId) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     const registration = await prisma.classregistration.findFirst({
       where: {
         id: parseInt(id),
-        userId: session.userId
+        userId: userId
       }
     });
 
@@ -59,20 +78,38 @@ export async function PUT(
     const authToken = cookies.get("auth_token")?.value;
     const token = memberToken || authToken;
     
-    if (!token) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    // Try NextAuth session first (for Google OAuth users)
+    const nextAuthSession = await auth();
+    let userId: number | undefined;
+
+    if (nextAuthSession?.user?.email) {
+      const user = await prisma.user.findUnique({
+        where: { email: nextAuthSession.user.email },
+        select: { id: true, role: true }
+      });
+      
+      if (!user || user.role !== 'member') {
+        return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+      }
+      
+      userId = user.id;
+    } else if (token) {
+      const session = await verifyToken(token);
+      if (!session || session.role !== 'member' || !session.userId) {
+        return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+      }
+      userId = session.userId;
     }
 
-    const session = await verifyToken(token);
-    if (!session || session.role !== 'member' || !session.userId) {
-      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    if (!userId) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     // Check if registration exists and belongs to user
     const existingRegistration = await prisma.classregistration.findFirst({
       where: {
         id: parseInt(id),
-        userId: session.userId
+        userId: userId
       }
     });
 

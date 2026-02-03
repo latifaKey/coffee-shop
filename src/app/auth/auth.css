@@ -32,6 +32,96 @@
   gap: 8px;
 }
 
+/* Google Sign-In Button */
+.btn-google {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid #dadce0;
+  border-radius: 8px;
+  background: white;
+  color: #3c4043;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  transition: all 0.2s ease;
+  margin-bottom: 20px;
+}
+
+.btn-google:hover {
+  background: #f8f9fa;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.btn-google:active {
+  background: #f1f3f4;
+}
+
+.btn-google:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.dark .btn-google {
+  background: #2a2622;
+  border-color: rgba(255,255,255,0.1);
+  color: #e8e6e3;
+}
+
+.dark .btn-google:hover {
+  background: #332e29;
+  border-color: rgba(255,255,255,0.15);
+}
+
+/* Divider */
+.auth-divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 20px 0;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid #dadce0;
+}
+
+.dark .auth-divider::before,
+.dark .auth-divider::after {
+  border-bottom-color: rgba(255,255,255,0.1);
+}
+
+.auth-divider span {
+  padding: 0 12px;
+  color: #5f6368;
+  font-size: 13px;
+}
+
+.dark .auth-divider span {
+  color: #9aa0a6;
+}
+
+/* Spinner for loading state */
+.spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid #f3f3f3;
+  border-top: 2px solid #3c4043;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
 .auth-card {
   border-radius: 16px;
   padding: 2rem 2rem;
@@ -466,5 +556,65 @@
     flex-direction: column;
     gap: 0.75rem;
     align-items: flex-start;
+  }
+}
+
+/* Password Requirements Checklist */
+.password-requirements {
+  margin-top: 8px;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+  font-size: 0.8rem;
+}
+
+.dark .password-requirements {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.password-requirements .requirements-title {
+  margin: 0 0 8px 0;
+  font-weight: 600;
+  color: #666;
+}
+
+.dark .password-requirements .requirements-title {
+  color: #aaa;
+}
+
+.password-requirements ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+}
+
+.password-requirements li {
+  color: #999;
+  font-size: 0.75rem;
+  transition: color 0.2s ease;
+}
+
+.password-requirements li.valid {
+  color: #28a745;
+  font-weight: 500;
+}
+
+/* Password Hint for Login Page */
+.password-hint {
+  margin-top: 6px;
+  font-size: 0.75rem;
+  color: #888;
+}
+
+.dark .password-hint {
+  color: #777;
+}
+
+@media (max-width: 380px) {
+  .password-requirements ul {
+    grid-template-columns: 1fr;
   }
 }

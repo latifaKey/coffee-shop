@@ -8,6 +8,234 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
+/* ============================================
+   ADMIN LAYOUT - SAME AS MEMBER
+   ============================================ */
+
+/* Admin Layout */
+.admin-layout {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #1f1410 0%, #0f0a08 100%);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Admin Header - Full Width like Member */
+.admin-header {
+  background: linear-gradient(135deg, #2a1810 0%, #1f1410 50%, #1a1210 100%);
+  border-bottom: 2px solid #ff6b35;
+  padding: 1rem 2rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.header-content {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo-section {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.logo-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.logo-image {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
+.logo-text {
+  color: white;
+  font-weight: bold;
+  font-size: 1.25rem;
+  letter-spacing: 1px;
+}
+
+.header-title-text {
+  color: #ddd;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.user-section {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.profile-avatar-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #8B4513, #D4A574);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 700;
+  font-size: 1.1rem;
+  border: 2px solid #D4A574;
+  transition: all 0.3s ease;
+}
+
+.user-avatar:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 15px rgba(212, 165, 116, 0.5);
+}
+
+.welcome-text {
+  color: #e6d5c3;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.divider {
+  color: rgba(212, 165, 116, 0.4);
+  font-weight: 300;
+}
+
+.logout-btn {
+  background: linear-gradient(135deg, rgba(255, 69, 58, 0.2), rgba(255, 107, 53, 0.15));
+  border: 1px solid rgba(255, 107, 53, 0.4);
+  color: #ff6b6b;
+  padding: 0.5rem 1.25rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.logout-btn:hover {
+  background: linear-gradient(135deg, rgba(255, 69, 58, 0.3), rgba(255, 107, 53, 0.25));
+  border-color: #ff6b35;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+}
+
+/* Layout Container with Sidebar */
+.layout-container {
+  display: flex;
+  flex: 1;
+  min-height: calc(100vh - 68px);
+}
+
+/* Admin Sidebar - Same as Member */
+.admin-sidebar {
+  width: 250px;
+  background: linear-gradient(135deg, #2a1810 0%, #1f1410 50%, #1a1210 100%);
+  border-right: 2px solid #8B4513;
+  overflow-y: auto;
+  flex-shrink: 0;
+}
+
+.admin-sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.admin-sidebar::-webkit-scrollbar-track {
+  background: #1f1410;
+}
+
+.admin-sidebar::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #8B4513, #D4A574);
+  border-radius: 3px;
+}
+
+.admin-sidebar::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #D4A574, #e6c39a);
+}
+
+.admin-sidebar-nav {
+  padding: 1rem 0.5rem;
+}
+
+.admin-nav-section-title {
+  color: #8B4513;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 1rem 1rem 0.5rem;
+  margin-top: 0.5rem;
+  border-top: 1px solid rgba(93, 64, 55, 0.3);
+}
+
+.admin-nav-section-title:first-child {
+  border-top: none;
+  margin-top: 0;
+}
+
+.admin-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.85rem 1rem;
+  margin: 0.25rem 0.5rem;
+  color: rgba(230, 213, 195, 0.8);
+  text-decoration: none;
+  transition: all 0.3s ease;
+  border-radius: 10px;
+  border-left: 3px solid transparent;
+}
+
+.admin-nav-item:hover {
+  background: linear-gradient(135deg, rgba(139, 69, 19, 0.3), rgba(212, 165, 116, 0.15));
+  color: #d4a574;
+  border-left-color: #d4a574;
+  transform: translateX(4px);
+}
+
+.admin-nav-item.active {
+  background: linear-gradient(135deg, rgba(139, 69, 19, 0.4), rgba(212, 165, 116, 0.25));
+  color: #d4a574;
+  border-left-color: #d4a574;
+  font-weight: 600;
+  box-shadow: 0 0 15px rgba(212, 165, 116, 0.15);
+}
+
+.admin-nav-icon {
+  font-size: 1.35rem;
+  min-width: 1.5rem;
+  text-align: center;
+}
+
+.admin-nav-label {
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+/* Main Content Area */
+.main-content {
+  flex: 1;
+  padding: 2rem;
+  overflow-y: auto;
+  max-width: calc(100% - 250px);
+}
+
+/* ============================================
+   LEGACY ADMIN STYLES (Keep for compatibility)
+   ============================================ */
+
 /* Safety override: ensure interactive elements in admin are clickable */
 .layout-container button, .layout-container a, .layout-container input, .layout-container select, .layout-container textarea {
   pointer-events: auto !important;

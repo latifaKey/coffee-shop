@@ -3,10 +3,10 @@
   background: var(--bg);
 }
 
-/* Hero Section */
+/* Hero Section - Compact */
 .lokasi-hero {
   position: relative;
-  height: 450px;
+  height: 280px;
   background: linear-gradient(135deg, #2c1810 0%, #3e2723 50%, #4e342e 100%);
   display: flex;
   align-items: center;
@@ -103,14 +103,14 @@
 
 @media (max-width: 768px) {
   .lokasi-hero {
-    height: 350px;
+    height: 220px;
   }
   
   .lokasi-hero-content h1 {
-    font-size: 2rem;
+    font-size: 1.75rem;
   }
   
   .lokasi-hero-content p {
-    font-size: 1rem;
+    font-size: 0.9rem;
   }
 }

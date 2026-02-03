@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, useMemo } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import NewsCard, { NewsItem } from "@/components/public/NewsCard";
@@ -8,14 +8,15 @@ import { useLanguage } from "@/context/LanguageContext";
 import "./tentang-kami.css";
 
 interface Milestone {
-  id: string;
+  id: number;
   year: string;
   title: string;
   description: string;
+  order?: number;
 }
 
 interface Team {
-  id: string;
+  id: number;
   name: string;
   position: string;
   photo: string;
@@ -32,11 +33,13 @@ export default function TentangKamiPage() {
   const milestoneCopy = aboutCopy.milestones;
   const teamCopy = aboutCopy.team;
   const newsCopy = aboutCopy.news;
-  const milestones: Milestone[] = aboutCopy.milestones.items.map((item, index) => ({
-    id: `${item.year}-${index}`,
-    ...item,
-  }));
-  const teamMembers: Team[] = aboutCopy.team.members;
+  
+  // State untuk data dari database
+  const [milestones, setMilestones] = useState<Milestone[]>([]);
+  const [teamMembers, setTeamMembers] = useState<Team[]>([]);
+  const [loadingMilestones, setLoadingMilestones] = useState(true);
+  const [loadingTeam, setLoadingTeam] = useState(true);
+  
   const [newsData, setNewsData] = useState<NewsItem[]>([]);
   const [loadingNews, setLoadingNews] = useState(true);
   const sliderRef = useRef<HTMLDivElement>(null);
@@ -152,28 +155,38 @@ export default function TentangKamiPage() {
     setTimeout(() => setIsAutoPlay(true), 2000);
   };
 
-  // Fallback news - using useCallback to avoid dependency issues
-  const fallbackNews = useMemo<NewsItem[]>(() => {
-    const fallbackImages = [
-      "https://images.unsplash.com/photo-1554118811-1e0d58224f24?q=80&w=600&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1521017432531-fbd92d768814?q=80&w=600&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1442512595331-e89e73853f31?q=80&w=600&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=600&auto=format&fit=crop",
-    ];
-
-    return homeNewsCopy.fallback.slice(0, 3).map((item, index) => ({
-      id: index + 1,
-      title: item.title,
-      excerpt: item.excerpt,
-      category: "NEWS",
-      image: fallbackImages[index % fallbackImages.length],
-      publishDate: new Date().toISOString(),
-    }));
-  }, [homeNewsCopy.fallback]);
+  // FALLBACK dihapus - hanya menampilkan data dari database admin
 
   useEffect(() => {
-    // Langsung gunakan defaultTeamMembers - tidak perlu fetch API
-    // Foto sudah dari folder /images/about/TEAM/
+    // Fetch milestones from database
+    const fetchMilestones = async () => {
+      try {
+        const res = await fetch("/api/milestones");
+        if (res.ok) {
+          const data = await res.json();
+          setMilestones(data);
+        }
+      } catch (error) {
+        console.error("Error fetching milestones:", error);
+      } finally {
+        setLoadingMilestones(false);
+      }
+    };
+
+    // Fetch team members from database
+    const fetchTeam = async () => {
+      try {
+        const res = await fetch("/api/team");
+        if (res.ok) {
+          const data = await res.json();
+          setTeamMembers(data);
+        }
+      } catch (error) {
+        console.error("Error fetching team:", error);
+      } finally {
+        setLoadingTeam(false);
+      }
+    };
 
     // Fetch news data from API
     const fetchNews = async () => {
@@ -188,19 +201,23 @@ export default function TentangKamiPage() {
             ...n,
             image: n.image || n.imageUrl || "/images/hero/slide-menu.jpg"
           }));
-          setNewsData(latestNews.length > 0 ? latestNews : fallbackNews);
+          setNewsData(latestNews);
         } else {
-          setNewsData(fallbackNews);
+          setNewsData([]);
         }
       } catch (error) {
         console.error("Error fetching news:", error);
-        setNewsData(fallbackNews);
+        setNewsData([]);
       } finally {
         setLoadingNews(false);
       }
     };
+    
+    // Fetch all data
+    fetchMilestones();
+    fetchTeam();
     fetchNews();
-  }, [fallbackNews]);
+  }, []);
 
   // Auto-scroll slider with infinite loop
   useEffect(() => {
@@ -278,20 +295,26 @@ export default function TentangKamiPage() {
           <p className="section-subtitle">{milestoneCopy.subtitle}</p>
           
           <div className="milestone-scroll-wrapper">
-            <div className="timeline">
-              <div className="timeline-line"></div>
-              {milestones.map((milestone, index) => (
-                <div key={milestone.id} className={`timeline-item ${index % 2 === 0 ? 'left' : 'right'}`}>
-                  <div className="timeline-marker">
-                    <div className="timeline-year">{milestone.year}</div>
+            {loadingMilestones ? (
+              <p className="loading-text">Memuat data...</p>
+            ) : milestones.length === 0 ? (
+              <p className="loading-text">Belum ada data milestone</p>
+            ) : (
+              <div className="timeline">
+                <div className="timeline-line"></div>
+                {milestones.map((milestone, index) => (
+                  <div key={milestone.id} className={`timeline-item ${index % 2 === 0 ? 'left' : 'right'}`}>
+                    <div className="timeline-marker">
+                      <div className="timeline-year">{milestone.year}</div>
+                    </div>
+                    <div className="timeline-content">
+                      <h3>{milestone.title}</h3>
+                      <p>{milestone.description}</p>
+                    </div>
                   </div>
-                  <div className="timeline-content">
-                    <h3>{milestone.title}</h3>
-                    <p>{milestone.description}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </section>
@@ -302,6 +325,11 @@ export default function TentangKamiPage() {
           <h2 className="section-title-center">{teamCopy.title}</h2>
           <p className="section-subtitle">{teamCopy.subtitle}</p>
           
+          {loadingTeam ? (
+            <p className="loading-text">Memuat data tim...</p>
+          ) : teamMembers.length === 0 ? (
+            <p className="loading-text">Belum ada data tim</p>
+          ) : (
           <div className="team-slider-container">
             <div 
               className={`team-slider ${isDragging ? 'is-dragging' : ''}`}
@@ -362,32 +390,31 @@ export default function TentangKamiPage() {
               ))}
             </div>
           </div>
+          )}
         </div>
       </section>
 
-      {/* Berita Section */}
-      <section className="news-section">
-        <div className="container">
-          <div className="news-header">
-            <div>
-              <h2 className="section-title-center">{newsCopy.title}</h2>
-              <p className="section-subtitle">{newsCopy.subtitle}</p>
+      {/* Berita Section - Hanya tampil jika ada data dari database */}
+      {!loadingNews && newsData.length > 0 && (
+        <section className="news-section">
+          <div className="container">
+            <div className="news-header">
+              <div>
+                <h2 className="section-title-center">{newsCopy.title}</h2>
+                <p className="section-subtitle">{newsCopy.subtitle}</p>
+              </div>
+            </div>
+            <div className="news-grid">
+              {newsData.map((news) => (
+                <NewsCard key={news.id} news={news} />
+              ))}
+            </div>
+            <div className="news-footer">
+              <Link href="/berita" className="btn-barizta">{newsCopy.cta}</Link>
             </div>
           </div>
-          <div className="news-grid">
-            {loadingNews ? (
-              <p className="loading-text">{newsCopy.loading}</p>
-            ) : (
-              newsData.map((news) => (
-                <NewsCard key={news.id} news={news} />
-              ))
-            )}
-          </div>
-          <div className="news-footer">
-            <Link href="/berita" className="btn-barizta">{newsCopy.cta}</Link>
-          </div>
-        </div>
-      </section>
+        </section>
+      )}
     </div>
   );
 }

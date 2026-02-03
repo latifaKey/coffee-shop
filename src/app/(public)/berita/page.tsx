@@ -22,32 +22,7 @@ type Pagination = {
   totalPages: number;
 };
 
-const FALLBACK_NEWS: NewsItem[] = [
-  { 
-    id: 1, 
-    title: "Grand Opening BARIZTA Coffee", 
-    category: "NEWS",
-    publishDate: "2024-10-15", 
-    excerpt: "BARIZTA resmi membuka pintunya untuk para pecinta kopi di Padang. Dapatkan promo spesial opening!",
-    image: "https://images.unsplash.com/photo-1554118811-1e0d58224f24?q=80&w=600"
-  },
-  { 
-    id: 2, 
-    title: "Coffee Cupping Workshop", 
-    category: "EVENT",
-    publishDate: "2024-10-25", 
-    excerpt: "Ikuti workshop cupping untuk memahami karakteristik dan cita rasa berbagai jenis kopi.",
-    image: "https://images.unsplash.com/photo-1521017432531-fbd92d768814?q=80&w=600"
-  },
-  { 
-    id: 3, 
-    title: "Kolaborasi dengan Seniman Lokal", 
-    category: "NEWS",
-    publishDate: "2024-11-05", 
-    excerpt: "Pameran karya seni lokal sambil menikmati kopi. Dukung talenta kreatif daerah!",
-    image: "https://images.unsplash.com/photo-1442512595331-e89e73853f31?q=80&w=600"
-  },
-];
+// FALLBACK_NEWS dihapus - hanya menampilkan data dari database admin
 
 export default function BeritaPage() {
   const { lang } = useLanguage();
@@ -113,20 +88,20 @@ export default function BeritaPage() {
           excerpt: n.excerpt || (n.content ? n.content.slice(0, 120) + "..." : ""),
           image: n.image || "/images/hero/slide-menu.jpg"
         }));
-        setNewsData(mapped.length > 0 ? mapped : FALLBACK_NEWS);
+        setNewsData(mapped);
         if (result.pagination) {
           setPagination(result.pagination);
         } else {
-          setPagination({ page: 1, limit: 12, total: mapped.length, totalPages: 1 });
+          setPagination({ page: 1, limit: 12, total: mapped.length, totalPages: Math.ceil(mapped.length / 12) });
         }
       } else {
-        setNewsData(FALLBACK_NEWS);
-        setPagination({ page: 1, limit: 12, total: FALLBACK_NEWS.length, totalPages: 1 });
+        setNewsData([]);
+        setPagination({ page: 1, limit: 12, total: 0, totalPages: 0 });
       }
     } catch (err) {
       console.error("Failed to load news:", err);
-      setNewsData(FALLBACK_NEWS);
-      setPagination({ page: 1, limit: 12, total: FALLBACK_NEWS.length, totalPages: 1 });
+      setNewsData([]);
+      setPagination({ page: 1, limit: 12, total: 0, totalPages: 0 });
     } finally {
       setLoading(false);
     }
@@ -249,9 +224,15 @@ export default function BeritaPage() {
           </div>
 
           {/* Loading State */}
-          {loading ? null : newsData.length === 0 ? (
+          {loading ? (
+            <div className="loading-state">
+              <p>Memuat berita...</p>
+            </div>
+          ) : newsData.length === 0 ? (
             <div className="empty-state">
-              <p>Tidak ada berita yang ditemukan.</p>
+              <div className="empty-icon">📰</div>
+              <h3>Belum Ada Berita</h3>
+              <p>{search ? "Tidak ada berita yang sesuai dengan pencarian." : "Berita akan segera hadir. Pantau terus update dari BARIZTA!"}</p>
               {search && (
                 <button onClick={() => { setSearch(""); setSearchInput(""); }} className="btn-barizta">
                   Lihat Semua Berita

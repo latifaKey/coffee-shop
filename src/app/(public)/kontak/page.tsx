@@ -177,11 +177,11 @@ export default function KontakPage() {
                 {kontakCopy.infoSubtitle}
               </p>
 
-              <div className="info-cards">
+              <div className="kontak-info-cards">
                 {/* WhatsApp */}
-                <div className="info-card clickable" onClick={handleWhatsApp}>
-                  <div className="info-icon">💬</div>
-                  <div className="info-content">
+                <div className="kontak-info-card clickable" onClick={handleWhatsApp}>
+                  <div className="kontak-info-icon">💬</div>
+                  <div className="kontak-info-content">
                     <h3>{kontakCopy.whatsapp}</h3>
                     <p className="highlight">{CONTACT_INFO.whatsapp}</p>
                     <span className="link-hint">{kontakCopy.clickToChat}</span>
@@ -189,9 +189,9 @@ export default function KontakPage() {
                 </div>
 
                 {/* Email */}
-                <div className="info-card">
-                  <div className="info-icon">✉️</div>
-                  <div className="info-content">
+                <div className="kontak-info-card">
+                  <div className="kontak-info-icon">✉️</div>
+                  <div className="kontak-info-content">
                     <h3>{kontakCopy.email}</h3>
                     <a href={`mailto:${CONTACT_INFO.email}`} className="email-link">
                       {CONTACT_INFO.email}
@@ -200,9 +200,9 @@ export default function KontakPage() {
                 </div>
 
                 {/* Instagram */}
-                <div className="info-card">
-                  <div className="info-icon">📷</div>
-                  <div className="info-content">
+                <div className="kontak-info-card">
+                  <div className="kontak-info-icon">📷</div>
+                  <div className="kontak-info-content">
                     <h3>{kontakCopy.instagram}</h3>
                     <a 
                       href={CONTACT_INFO.instagramUrl} 
@@ -216,9 +216,9 @@ export default function KontakPage() {
                 </div>
 
                 {/* Location - With Button */}
-                <div className="info-card location-card">
-                  <div className="info-icon">📍</div>
-                  <div className="info-content">
+                <div className="kontak-info-card kontak-location-card">
+                  <div className="kontak-info-icon">📍</div>
+                  <div className="kontak-info-content">
                     <h3>{kontakCopy.address}</h3>
                     <p>{CONTACT_INFO.address.name}</p>
                     <p className="address-detail">{CONTACT_INFO.address.street}, {CONTACT_INFO.address.district}</p>

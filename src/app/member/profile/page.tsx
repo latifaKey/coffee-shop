@@ -101,8 +101,24 @@ export default function ProfilePage() {
       return;
     }
 
-    if (passwordForm.newPassword.length < 6) {
-      setMessage({ type: "error", text: "Password minimal 6 karakter" });
+    // Strong password validation
+    if (passwordForm.newPassword.length < 8) {
+      setMessage({ type: "error", text: "Password minimal 8 karakter" });
+      setSaving(false);
+      return;
+    }
+    if (!/[A-Z]/.test(passwordForm.newPassword)) {
+      setMessage({ type: "error", text: "Password harus mengandung huruf besar (A-Z)" });
+      setSaving(false);
+      return;
+    }
+    if (!/[a-z]/.test(passwordForm.newPassword)) {
+      setMessage({ type: "error", text: "Password harus mengandung huruf kecil (a-z)" });
+      setSaving(false);
+      return;
+    }
+    if (!/[0-9]/.test(passwordForm.newPassword)) {
+      setMessage({ type: "error", text: "Password harus mengandung angka (0-9)" });
       setSaving(false);
       return;
     }

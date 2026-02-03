@@ -54,6 +54,23 @@ export async function POST(request: Request) {
 
     console.log("New user registered:", { email, role: newUser.role });
 
+    // Buat notifikasi untuk admin saat ada member baru daftar
+    try {
+      await prisma.notification.create({
+        data: {
+          target: "admin",
+          type: "registration",
+          title: "Member Baru Terdaftar",
+          message: `${newUser.name} (${newUser.email}) telah mendaftar sebagai member baru`,
+          isRead: false,
+        },
+      });
+      console.log("Admin notification created for new member:", newUser.email);
+    } catch (notifError) {
+      // Jangan gagalkan registrasi jika notifikasi gagal
+      console.error("Failed to create admin notification:", notifError);
+    }
+
     return NextResponse.json(
       {
         success: true,

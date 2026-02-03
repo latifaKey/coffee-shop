@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { getSessionFromNextRequest } from '@/lib/auth-utils';
+import { getToken } from 'next-auth/jwt';
 
 export async function middleware(request: NextRequest) {
   // Gunakan cookie yang berbeda untuk admin dan member
@@ -8,6 +9,12 @@ export async function middleware(request: NextRequest) {
   const adminToken = request.cookies.get('admin_token')?.value;
   // Backward compatibility dengan auth_token lama
   const legacyToken = request.cookies.get('auth_token')?.value;
+  
+  // Check NextAuth session (for Google OAuth users)
+  const nextAuthToken = await getToken({ 
+    req: request, 
+    secret: process.env.NEXTAUTH_SECRET 
+  });
   
   const pathname = request.nextUrl.pathname;
   
@@ -49,12 +56,19 @@ export async function middleware(request: NextRequest) {
   if (pathname.startsWith('/member')) {
     const tokenToCheck = memberToken || legacyToken;
     
-    if (!tokenToCheck) {
+    // Check if user has either JWT token OR NextAuth session
+    if (!tokenToCheck && !nextAuthToken) {
       // Simpan URL yang ingin diakses untuk redirect setelah login
       const returnUrl = encodeURIComponent(pathname);
       return NextResponse.redirect(new URL(`/auth/login?redirect=${returnUrl}`, request.url));
     }
     
+    // If logged in via NextAuth (Google OAuth), allow access
+    if (nextAuthToken && nextAuthToken.role === 'member') {
+      return NextResponse.next();
+    }
+    
+    // If logged in via JWT, verify session
     const session = await getSessionFromNextRequest(request);
     if (!session) {
       return NextResponse.redirect(new URL('/auth/login', request.url));
@@ -70,8 +84,16 @@ export async function middleware(request: NextRequest) {
   // AUTH PAGES (LOGIN/REGISTER)
   // =====================
   if (pathname.startsWith('/auth/login') || pathname === '/login') {
-    // Hanya cek member token untuk halaman login member
-    // Admin yang sudah login tidak di-redirect (mungkin ingin login sebagai akun lain)
+    // Check if already logged in via NextAuth (Google OAuth)
+    if (nextAuthToken && nextAuthToken.role === 'member') {
+      const redirectUrl = request.nextUrl.searchParams.get('redirect');
+      if (redirectUrl && !redirectUrl.startsWith('/admin')) {
+        return NextResponse.redirect(new URL(redirectUrl, request.url));
+      }
+      return NextResponse.redirect(new URL('/member/dashboard', request.url));
+    }
+    
+    // Check if already logged in via JWT
     if (memberToken) {
       const session = await getSessionFromNextRequest(request);
       if (session && session.role === 'member') {
@@ -86,9 +108,12 @@ export async function middleware(request: NextRequest) {
   }
   
   if (pathname.startsWith('/auth/register') || pathname === '/register') {
-    // Untuk halaman register, HANYA cek member token
-    // Admin yang sudah login masih boleh mengakses halaman register (untuk membuat akun member baru)
-    // Hanya member yang sudah login yang akan di-redirect
+    // Check if already logged in via NextAuth (Google OAuth)
+    if (nextAuthToken && nextAuthToken.role === 'member') {
+      return NextResponse.redirect(new URL('/member/dashboard', request.url));
+    }
+    
+    // Check if already logged in via JWT
     if (memberToken) {
       const session = await getSessionFromNextRequest(request);
       if (session && session.role === 'member') {

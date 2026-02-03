@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { cookies } from "next/headers";
 import { verifyToken } from "@/lib/auth-utils";
+import { auth } from "@/lib/auth";
 
 // GET - Get user profile
 export async function GET() {
@@ -12,17 +13,32 @@ export async function GET() {
     
     const token = memberToken || legacyToken;
 
-    if (!token) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    // Try NextAuth session first (for Google OAuth users)
+    const session = await auth();
+    let userId: number | undefined;
+
+    if (session?.user?.email) {
+      // Get user ID from email
+      const userFromEmail = await prisma.user.findUnique({
+        where: { email: session.user.email },
+        select: { id: true }
+      });
+      userId = userFromEmail?.id;
+    } else if (token) {
+      // Fallback to JWT token
+      const jwtSession = await verifyToken(token);
+      if (!jwtSession) {
+        return NextResponse.json({ error: "Invalid or expired token" }, { status: 401 });
+      }
+      userId = jwtSession.userId;
     }
 
-    const session = await verifyToken(token);
-    if (!session) {
-      return NextResponse.json({ error: "Invalid or expired token" }, { status: 401 });
+    if (!userId) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     
     const user = await prisma.user.findUnique({
-      where: { id: session.userId },
+      where: { id: userId },
       select: {
         id: true,
         email: true,
@@ -30,6 +46,7 @@ export async function GET() {
         phone: true,
         role: true,
         createdAt: true,
+        provider: true,
       },
     });
 
@@ -53,13 +70,28 @@ export async function PUT(request: NextRequest) {
     
     const token = memberToken || legacyToken;
 
-    if (!token) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    // Try NextAuth session first (for Google OAuth users)
+    const session = await auth();
+    let userId: number | undefined;
+
+    if (session?.user?.email) {
+      // Get user ID from email
+      const userFromEmail = await prisma.user.findUnique({
+        where: { email: session.user.email },
+        select: { id: true }
+      });
+      userId = userFromEmail?.id;
+    } else if (token) {
+      // Fallback to JWT token
+      const jwtSession = await verifyToken(token);
+      if (!jwtSession) {
+        return NextResponse.json({ error: "Invalid token" }, { status: 401 });
+      }
+      userId = jwtSession.userId;
     }
 
-    const session = await verifyToken(token);
-    if (!session) {
-      return NextResponse.json({ error: "Invalid token" }, { status: 401 });
+    if (!userId) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     const body = await request.json();
@@ -80,7 +112,7 @@ export async function PUT(request: NextRequest) {
 
     // Update user in database
     const updatedUser = await prisma.user.update({
-      where: { id: session.userId },
+      where: { id: userId },
       data: {
         name: name || undefined,
         ...(normalizedPhone !== undefined && { phone: normalizedPhone }),

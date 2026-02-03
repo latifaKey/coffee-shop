@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { verifyToken } from "@/lib/auth-utils";
+import { requireAdmin } from "@/lib/api-middleware";
+import { classSchema } from "@/lib/validation";
 
 // Helper to convert BigInt to Number for JSON serialization
 function serializeClass(obj: Record<string, unknown>): Record<string, unknown> {
@@ -77,27 +78,30 @@ export async function GET(request: NextRequest) {
   }
 }
 
-// Helper function to verify admin role from token
-async function verifyAdminRole(request: NextRequest): Promise<boolean> {
-  const adminToken = request.cookies.get("admin_token")?.value;
-  const authToken = request.cookies.get("auth_token")?.value;
-  const tokenToUse = adminToken || authToken;
-  
-  if (!tokenToUse) return false;
-  
-  const session = await verifyToken(tokenToUse);
-  return session?.role === "admin";
-}
-
 // POST new class
 export async function POST(request: NextRequest) {
   try {
-    // Verify admin authentication and role
-    if (!(await verifyAdminRole(request))) {
-      return NextResponse.json({ error: "Unauthorized - Admin access required" }, { status: 401 });
+    // Verify admin with middleware
+    const authResult = await requireAdmin(request);
+    if (!authResult.success) {
+      return authResult.response;
     }
 
     const body = await request.json();
+    
+    // Validate with Zod
+    const validationResult = classSchema.safeParse(body);
+    if (!validationResult.success) {
+      return NextResponse.json(
+        { 
+          error: "Input tidak valid", 
+          details: validationResult.error.errors.map(e => `${e.path.join('.')}: ${e.message}`) 
+        },
+        { status: 400 }
+      );
+    }
+
+    const data = validationResult.data;
     const { 
       title, 
       description, 

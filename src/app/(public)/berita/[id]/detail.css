@@ -3,10 +3,10 @@
   background: var(--bg);
 }
 
-/* Hero Section */
+/* Hero Section - Compact */
 .berita-detail-hero {
   position: relative;
-  height: 450px;
+  height: 280px;
   background: linear-gradient(135deg, #2c1810 0%, #3e2723 50%, #4e342e 100%);
   display: flex;
   align-items: center;
@@ -105,14 +105,14 @@
 
 @media (max-width: 768px) {
   .berita-detail-hero {
-    height: 380px;
+    height: 220px;
   }
   
   .berita-detail-hero-content h1 {
-    font-size: 1.75rem;
+    font-size: 1.5rem;
   }
   
   .berita-detail-hero-content p {
-    font-size: 1rem;
+    font-size: 0.9rem;
   }
 }

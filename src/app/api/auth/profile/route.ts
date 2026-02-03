@@ -56,13 +56,28 @@ export async function PATCH(request: NextRequest) {
     
     const token = adminToken || memberToken || legacyToken;
 
-    if (!token) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    // Try NextAuth session first (for Google OAuth users)
+    const nextAuthSession = await auth();
+    let userId: number | undefined;
+
+    if (nextAuthSession?.user?.email) {
+      // Get user ID from email
+      const user = await prisma.user.findUnique({
+        where: { email: nextAuthSession.user.email },
+        select: { id: true }
+      });
+      userId = user?.id;
+    } else if (token) {
+      // Fallback to JWT token
+      const session = await verifyToken(token);
+      if (!session) {
+        return NextResponse.json({ error: "Invalid token" }, { status: 401 });
+      }
+      userId = session.userId;
     }
 
-    const session = await verifyToken(token);
-    if (!session) {
-      return NextResponse.json({ error: "Invalid token" }, { status: 401 });
+    if (!userId) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     const body = await request.json();
@@ -86,7 +101,7 @@ export async function PATCH(request: NextRequest) {
       const existingUser = await prisma.user.findFirst({
         where: {
           email,
-          NOT: { id: session.userId }
+          NOT: { id: userId }
         }
       });
 
@@ -96,7 +111,7 @@ export async function PATCH(request: NextRequest) {
     }
 
     const updatedUser = await prisma.user.update({
-      where: { id: session.userId },
+      where: { id: userId },
       data: {
         ...(name && { name }),
         ...(email && { email }),

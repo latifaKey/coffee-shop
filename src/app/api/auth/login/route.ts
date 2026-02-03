@@ -2,18 +2,87 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
 import { signToken } from "@/lib/auth-utils";
+import { z } from "zod";
+
+// ============================================
+// RATE LIMITING - Prevent Brute Force Attacks
+// ============================================
+const loginAttempts = new Map<string, { count: number; resetAt: number }>();
+
+// Cleanup expired entries every 5 minutes
+if (typeof setInterval !== 'undefined') {
+  setInterval(() => {
+    const now = Date.now();
+    for (const [ip, data] of loginAttempts.entries()) {
+      if (data.resetAt < now) {
+        loginAttempts.delete(ip);
+      }
+    }
+  }, 300000);
+}
+
+function checkRateLimit(ip: string): boolean {
+  const now = Date.now();
+  const record = loginAttempts.get(ip);
+  
+  if (record) {
+    if (record.resetAt < now) {
+      loginAttempts.set(ip, { count: 1, resetAt: now + 60000 }); // 1 minute window
+      return true;
+    }
+    if (record.count >= 5) { // Max 5 attempts per minute
+      return false;
+    }
+    record.count++;
+    return true;
+  } else {
+    loginAttempts.set(ip, { count: 1, resetAt: now + 60000 });
+    return true;
+  }
+}
+
+// ============================================
+// INPUT VALIDATION SCHEMA
+// ============================================
+const loginSchema = z.object({
+  email: z.string().email("Format email tidak valid"),
+  password: z.string()
+    .min(8, "Password minimal 8 karakter")
+    .regex(/[A-Z]/, "Password harus mengandung huruf besar")
+    .regex(/[a-z]/, "Password harus mengandung huruf kecil")
+    .regex(/[0-9]/, "Password harus mengandung angka"),
+  loginType: z.enum(["admin", "member"]).optional(),
+});
 
 export async function POST(request: Request) {
   try {
-    const { email, password, loginType } = await request.json();
-
-    // Validasi input
-    if (!email || !password) {
+    // Rate limiting check
+    const ip = request.headers.get("x-forwarded-for") || 
+               request.headers.get("x-real-ip") || 
+               "unknown";
+    
+    if (!checkRateLimit(ip)) {
       return NextResponse.json(
-        { error: "Email dan password harus diisi" },
+        { error: "Terlalu banyak percobaan login. Coba lagi dalam 1 menit." },
+        { status: 429 }
+      );
+    }
+
+    const body = await request.json();
+    
+    // Validate input with Zod
+    const validationResult = loginSchema.safeParse(body);
+    if (!validationResult.success) {
+      return NextResponse.json(
+        { 
+          error: "Input tidak valid", 
+          details: validationResult.error.issues[0].message 
+        },
         { status: 400 }
       );
     }
+    
+    const { email, password, loginType } = validationResult.data;
 
     // Cari user di database
     const user = await prisma.user.findUnique({

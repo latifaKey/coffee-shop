@@ -4,10 +4,10 @@
   background: var(--bg);
 }
 
-/* Hero */
+/* Hero - Compact */
 .togo-hero {
   position: relative;
-  height: 450px;
+  height: 280px;
   background: linear-gradient(135deg, #2c1810 0%, #3e2723 50%, #4e342e 100%);
   display: flex;
   align-items: center;
@@ -414,6 +414,51 @@
   white-space: nowrap;
 }
 
+/* Menu Loading Skeleton */
+.menu-card-skeleton {
+  pointer-events: none;
+}
+
+.skeleton-icon {
+  background: linear-gradient(90deg, var(--glass) 25%, rgba(255, 255, 255, 0.1) 50%, var(--glass) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 12px;
+}
+
+.skeleton-text {
+  background: linear-gradient(90deg, var(--glass) 25%, rgba(255, 255, 255, 0.1) 50%, var(--glass) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 4px;
+  height: 1em;
+  width: 100%;
+  display: block;
+}
+
+.skeleton-text-short {
+  width: 70%;
+  margin-top: 0.5rem;
+}
+
+.menu-card-skeleton .menu-price {
+  width: 80px;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.skeleton-feature {
+  display: flex;
+  align-items: center;
+}
+
 /* Compact Info Section */
 .togo-info-compact {
   padding: 2rem 0;
@@ -675,11 +720,11 @@
 
 @media (max-width: 768px) {
   .togo-hero {
-    height: 380px;
+    height: 220px;
   }
 
   .togo-hero-content h1 {
-    font-size: 2.2rem;
+    font-size: 1.75rem;
   }
 
   .info-grid {

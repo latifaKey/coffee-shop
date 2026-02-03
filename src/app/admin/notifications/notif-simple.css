@@ -1,0 +1,356 @@
+/* Notifications Admin Page - Simplified Theme */
+
+.notifications-page {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid rgba(139, 69, 19, 0.3);
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.header-left h1 {
+  margin: 0;
+  color: #D4A574;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.unread-badge {
+  background: linear-gradient(135deg, #ff6b35, #ff8c42);
+  color: white;
+  padding: 0.35rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.header-actions {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.filter-label {
+  color: #D4A574;
+  font-size: 0.95rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.filter-select {
+  background: linear-gradient(135deg, rgba(139, 69, 19, 0.4), rgba(212, 165, 116, 0.2));
+  border: 1px solid rgba(212, 165, 116, 0.5);
+  color: #ffd7a8;
+  padding: 0.6rem 2.5rem 0.6rem 1rem;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  appearance: none;
+  position: relative;
+  background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23D4A574' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.8rem center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.filter-select:hover {
+  background: linear-gradient(135deg, rgba(139, 69, 19, 0.5), rgba(212, 165, 116, 0.3));
+  border-color: #ffd7a8;
+  box-shadow: 0 4px 12px rgba(212, 165, 116, 0.25);
+}
+
+.filter-select:focus {
+  outline: none;
+  border-color: #ffd7a8;
+  box-shadow: 0 0 0 3px rgba(212, 165, 116, 0.2), 0 4px 12px rgba(212, 165, 116, 0.25);
+}
+
+.filter-select option {
+  background: #2a1810;
+  color: #ffd7a8;
+  padding: 0.5rem;
+}
+
+/* Bulk Actions Bar */
+.bulk-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.5rem;
+  background: linear-gradient(135deg, rgba(212, 165, 116, 0.15), rgba(139, 69, 19, 0.2));
+  border: 1px solid rgba(212, 165, 116, 0.3);
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.selected-count {
+  color: #ffd7a8;
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 0.4rem 0.8rem;
+  background: rgba(139, 69, 19, 0.3);
+  border-radius: 6px;
+  border: 1px solid rgba(212, 165, 116, 0.3);
+}
+
+.btn-bulk-read,
+.btn-bulk-delete {
+  padding: 0.5rem 1.25rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.btn-bulk-read {
+  background: linear-gradient(135deg, rgba(76, 175, 80, 0.25), rgba(139, 195, 74, 0.2));
+  border-color: rgba(76, 175, 80, 0.5);
+  color: #81c784;
+}
+
+.btn-bulk-read:hover:not(:disabled) {
+  background: linear-gradient(135deg, rgba(76, 175, 80, 0.35), rgba(139, 195, 74, 0.3));
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+}
+
+.btn-bulk-delete {
+  background: linear-gradient(135deg, rgba(244, 67, 54, 0.25), rgba(255, 107, 53, 0.2));
+  border-color: rgba(244, 67, 54, 0.5);
+  color: #ff8a80;
+}
+
+.btn-bulk-delete:hover:not(:disabled) {
+  background: linear-gradient(135deg, rgba(244, 67, 54, 0.35), rgba(255, 107, 53, 0.3));
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(244, 67, 54, 0.3);
+}
+
+.btn-bulk-read:disabled,
+.btn-bulk-delete:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Table Header */
+.notifications-container {
+  background: linear-gradient(135deg, #2a1810 0%, #1f1410 100%);
+  border: 1px solid rgba(212, 165, 116, 0.3);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+.table-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.5rem;
+  background: linear-gradient(135deg, rgba(139, 69, 19, 0.3), rgba(212, 165, 116, 0.15));
+  border-bottom: 1px solid rgba(212, 165, 116, 0.3);
+}
+
+.header-title {
+  color: #ffd7a8;
+  font-weight: 600;
+  font-size: 0.95rem;
+  user-select: none;
+}
+
+/* Notifications List */
+.notifications-list {
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.notifications-list::-webkit-scrollbar {
+  width: 10px;
+}
+
+.notifications-list::-webkit-scrollbar-track {
+  background: #1a1210;
+}
+
+.notifications-list::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #8B4513, #D4A574);
+  border-radius: 5px;
+}
+
+.notifications-list::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #D4A574, #ffd7a8);
+}
+
+/* Notification Item */
+.notification-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid rgba(139, 69, 19, 0.2);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.notification-item:hover {
+  background: rgba(139, 69, 19, 0.15);
+}
+
+.notification-item.unread {
+  background: rgba(255, 107, 53, 0.05);
+  border-left: 3px solid #ff6b35;
+}
+
+.notification-item.selected {
+  background: rgba(212, 165, 116, 0.2);
+  border-left: 3px solid #D4A574;
+}
+
+.checkbox-select {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  accent-color: #D4A574;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.checkbox-select:hover {
+  transform: scale(1.1);
+  transition: transform 0.2s ease;
+}
+
+.notification-icon {
+  font-size: 2rem;
+  min-width: 2.5rem;
+  text-align: center;
+}
+
+.notification-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.notification-title {
+  color: #D4A574;
+  font-weight: 600;
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
+}
+
+.notification-message {
+  color: rgba(230, 213, 195, 0.8);
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+  line-height: 1.5;
+}
+
+.notification-time {
+  color: rgba(212, 165, 116, 0.6);
+  font-size: 0.85rem;
+}
+
+.notification-new-badge {
+  background: linear-gradient(135deg, #ff6b35, #ff8c42);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 15px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+/* Individual Action Buttons */
+.notification-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.btn-read,
+.btn-delete {
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  white-space: nowrap;
+}
+
+.btn-read {
+  background: linear-gradient(135deg, rgba(76, 175, 80, 0.25), rgba(139, 195, 74, 0.2));
+  border-color: rgba(76, 175, 80, 0.5);
+  color: #81c784;
+}
+
+.btn-read:hover {
+  background: linear-gradient(135deg, rgba(76, 175, 80, 0.35), rgba(139, 195, 74, 0.3));
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+}
+
+.btn-delete {
+  background: linear-gradient(135deg, rgba(244, 67, 54, 0.25), rgba(255, 107, 53, 0.2));
+  border-color: rgba(244, 67, 54, 0.5);
+  color: #ff8a80;
+}
+
+.btn-delete:hover {
+  background: linear-gradient(135deg, rgba(244, 67, 54, 0.35), rgba(255, 107, 53, 0.3));
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(244, 67, 54, 0.3);
+}
+
+/* Loading & Empty States */
+.loading-state {
+  text-align: center;
+  padding: 3rem;
+  color: #D4A574;
+  font-size: 1.1rem;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: rgba(212, 165, 116, 0.7);
+}
+
+.empty-icon {
+  font-size: 4rem;
+  display: block;
+  margin-bottom: 1rem;
+  opacity: 0.5;
+}
+
+.empty-state h3 {
+  color: #D4A574;
+  margin-bottom: 0.5rem;
+}
+
+.empty-state p {
+  color: rgba(230, 213, 195, 0.6);
+  font-size: 0.95rem;
+}

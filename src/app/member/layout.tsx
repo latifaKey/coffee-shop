@@ -4,6 +4,7 @@ import { useEffect, useState, useCallback, type ChangeEvent, type FormEvent } fr
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
+import { signOut } from "next-auth/react";
 import MemberNotificationBell from "@/components/public/MemberNotificationBell";
 import DeleteConfirmModal from "@/components/ui/DeleteConfirmModal";
 import "./member.css";
@@ -156,8 +157,24 @@ export default function MemberLayout({
       return;
     }
 
-    if (passwordForm.newPassword.length < 6) {
-      setPasswordMessage({ type: "error", text: "Password baru minimal 6 karakter." });
+    // Strong password validation
+    if (passwordForm.newPassword.length < 8) {
+      setPasswordMessage({ type: "error", text: "Password minimal 8 karakter" });
+      setPasswordSaving(false);
+      return;
+    }
+    if (!/[A-Z]/.test(passwordForm.newPassword)) {
+      setPasswordMessage({ type: "error", text: "Password harus mengandung huruf besar (A-Z)" });
+      setPasswordSaving(false);
+      return;
+    }
+    if (!/[a-z]/.test(passwordForm.newPassword)) {
+      setPasswordMessage({ type: "error", text: "Password harus mengandung huruf kecil (a-z)" });
+      setPasswordSaving(false);
+      return;
+    }
+    if (!/[0-9]/.test(passwordForm.newPassword)) {
+      setPasswordMessage({ type: "error", text: "Password harus mengandung angka (0-9)" });
       setPasswordSaving(false);
       return;
     }
@@ -221,11 +238,17 @@ export default function MemberLayout({
   const handleLogoutConfirm = async () => {
     setLoggingOut(true);
     try {
-      await fetch("/api/auth/logout", { 
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ logoutType: "member" })
-      });
+      // Clear both JWT cookie and NextAuth session in parallel
+      await Promise.all([
+        fetch("/api/auth/logout", { 
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ logoutType: "member" })
+        }),
+        signOut({ redirect: false })
+      ]);
+      
+      // Redirect to login page
       router.push("/auth/login");
       router.refresh();
     } catch (error) {

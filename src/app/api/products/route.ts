@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { verifyToken } from "@/lib/auth-utils";
+import { requireAdmin } from "@/lib/api-middleware";
+import { productSchema } from "@/lib/validation";
 import type { Prisma } from '@prisma/client';
 
 export async function GET(req: NextRequest) {
@@ -76,25 +77,29 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
-    // Auth check - support both admin_token and auth_token
-    const adminToken = req.cookies.get("admin_token")?.value;
-    const authToken = req.cookies.get("auth_token")?.value;
-    const token = adminToken || authToken;
-    if (!token) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    
-    const session = await verifyToken(token);
-    if (!session || session.role !== "admin") {
-      return NextResponse.json({ error: session ? "Forbidden" : "Unauthorized" }, { status: session ? 403 : 401 });
+    // Auth check with middleware
+    const authResult = await requireAdmin(req);
+    if (!authResult.success) {
+      return authResult.response;
     }
 
     const body = await req.json();
-    const { name, description, price, categoryId, image, isAvailable = true } = body || {};
-
-    if (!name || !price || !image) {
-      return NextResponse.json({ error: "Nama, harga, dan gambar harus diisi" }, { status: 400 });
+    
+    // Validate input with Zod
+    const validationResult = productSchema.safeParse(body);
+    if (!validationResult.success) {
+      return NextResponse.json(
+        { 
+          error: "Input tidak valid", 
+          details: validationResult.error.errors.map(e => e.message) 
+        },
+        { status: 400 }
+      );
     }
 
-    const slug = (name as string)
+    const { name, description, price, categoryId, image, isAvailable } = validationResult.data;
+
+    const slug = name
       .toLowerCase()
       .replace(/[^a-z0-9\s-]/g, "")
       .trim()

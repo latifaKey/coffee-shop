@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { verifyToken } from "@/lib/auth-utils";
+import { auth } from "@/lib/auth";
 
 // Helper function to verify authentication and get session
 async function getSession(request: NextRequest): Promise<{ userId: number; role: string } | null> {
@@ -9,6 +10,20 @@ async function getSession(request: NextRequest): Promise<{ userId: number; role:
   const authToken = request.cookies.get("auth_token")?.value;
   const tokenToUse = adminToken || memberToken || authToken;
   
+  // Try NextAuth session first (for Google OAuth users)
+  const nextAuthSession = await auth();
+  if (nextAuthSession?.user?.email) {
+    const user = await prisma.user.findUnique({
+      where: { email: nextAuthSession.user.email },
+      select: { id: true, role: true }
+    });
+    
+    if (user) {
+      return { userId: user.id, role: user.role };
+    }
+  }
+  
+  // Fallback to JWT token
   if (!tokenToUse) return null;
   
   const session = await verifyToken(tokenToUse);
@@ -138,7 +153,7 @@ export async function POST(request: NextRequest) {
 export async function PATCH(request: NextRequest) {
   try {
     // Verify authentication
-    const session = getSession(request);
+    const session = await getSession(request);
     if (!session) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
@@ -158,6 +173,47 @@ export async function PATCH(request: NextRequest) {
     console.error("Error updating notifications:", error);
     return NextResponse.json(
       { error: "Failed to update notifications" },
+      { status: 500 }
+    );
+  }
+}
+
+// DELETE - Delete notifications (single or bulk)
+export async function DELETE(request: NextRequest) {
+  try {
+    // Verify authentication
+    const session = await getSession(request);
+    if (!session) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const body = await request.json();
+    const { ids } = body; // Array of notification IDs to delete
+
+    if (!ids || !Array.isArray(ids) || ids.length === 0) {
+      return NextResponse.json(
+        { error: "Invalid request: ids array is required" },
+        { status: 400 }
+      );
+    }
+
+    // Build where clause based on user role for security
+    const whereClause = session.role === "admin"
+      ? { id: { in: ids }, target: "admin" } // Admin can only delete admin notifications
+      : { id: { in: ids }, target: "member", userId: session.userId }; // Members can only delete their own
+
+    const result = await prisma.notification.deleteMany({
+      where: whereClause,
+    });
+
+    return NextResponse.json({ 
+      message: `${result.count} notification(s) deleted successfully`,
+      deletedCount: result.count 
+    });
+  } catch (error) {
+    console.error("DELETE /api/notifications error:", error);
+    return NextResponse.json(
+      { error: "Failed to delete notifications" },
       { status: 500 }
     );
   }

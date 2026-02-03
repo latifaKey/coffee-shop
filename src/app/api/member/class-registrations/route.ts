@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { verifyToken } from "@/lib/auth-utils";
 import { uploadFile, uploadBase64 } from "@/lib/upload-utils";
+import { auth } from "@/lib/auth";
 
 export const runtime = "nodejs";
 
@@ -13,16 +14,34 @@ export async function GET(request: NextRequest) {
     const authToken = cookies.get("auth_token")?.value;
     const token = memberToken || authToken;
     
-    if (!token) {
+    // Try NextAuth session first (for Google OAuth users)
+    const nextAuthSession = await auth();
+    let userId: number | undefined;
+
+    if (nextAuthSession?.user?.email) {
+      // Get user ID from email
+      const user = await prisma.user.findUnique({
+        where: { email: nextAuthSession.user.email },
+        select: { id: true, role: true }
+      });
+      
+      if (!user || user.role !== 'member') {
+        return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+      }
+      
+      userId = user.id;
+    } else if (token) {
+      // Fallback to JWT token
+      const session = await verifyToken(token);
+      if (!session || session.role !== 'member' || !session.userId) {
+        return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+      }
+      userId = session.userId;
+    }
+
+    if (!userId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
-
-    const session = await verifyToken(token);
-    if (!session || session.role !== 'member' || !session.userId) {
-      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-    }
-
-    const userId = session.userId;
 
     const { searchParams } = new URL(request.url);
     const status = searchParams.get("status");
@@ -91,16 +110,34 @@ export async function POST(request: NextRequest) {
     const authToken = cookies.get("auth_token")?.value;
     const token = memberToken || authToken;
     
-    if (!token) {
+    // Try NextAuth session first (for Google OAuth users)
+    const nextAuthSession = await auth();
+    let userId: number | undefined;
+
+    if (nextAuthSession?.user?.email) {
+      // Get user ID from email
+      const user = await prisma.user.findUnique({
+        where: { email: nextAuthSession.user.email },
+        select: { id: true, role: true }
+      });
+      
+      if (!user || user.role !== 'member') {
+        return NextResponse.json({ error: "Hanya member yang dapat mendaftar kelas" }, { status: 403 });
+      }
+      
+      userId = user.id;
+    } else if (token) {
+      // Fallback to JWT token
+      const session = await verifyToken(token);
+      if (!session || session.role !== 'member' || !session.userId) {
+        return NextResponse.json({ error: "Hanya member yang dapat mendaftar kelas" }, { status: 403 });
+      }
+      userId = session.userId;
+    }
+
+    if (!userId) {
       return NextResponse.json({ error: "Silakan login terlebih dahulu" }, { status: 401 });
     }
-
-    const session = await verifyToken(token);
-    if (!session || session.role !== 'member' || !session.userId) {
-      return NextResponse.json({ error: "Hanya member yang dapat mendaftar kelas" }, { status: 403 });
-    }
-
-    const userId = session.userId;
 
     // Check content type and parse accordingly
     const contentType = request.headers.get('content-type') || '';

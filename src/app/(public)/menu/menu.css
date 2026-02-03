@@ -1,9 +1,9 @@
 /* Hero Section - Clean theme-aware implementation */
 
-/* Default (dark) theme hero */
+/* Default (dark) theme hero - Compact */
 .hero-section {
   position: relative;
-  height: 420px;
+  height: 280px;
   background: linear-gradient(135deg, #2c1810 0%, #3e2723 50%, #4e342e 100%);
   display: flex;
   align-items: center;
@@ -187,20 +187,20 @@
 /* Responsive adjustments */
 @media (max-width: 980px) {
   .hero-section {
-    height: 360px;
+    height: 260px;
   }
   .hero-content h1 {
-    font-size: 2.6rem;
+    font-size: 2rem;
   }
 }
 
 @media (max-width: 640px) {
   .hero-section {
-    height: 280px;
+    height: 220px;
     padding: 24px 0;
   }
   .hero-content h1 {
-    font-size: 2rem;
+    font-size: 1.75rem;
     margin-bottom: 0.5rem;
   }
   .breadcrumb {

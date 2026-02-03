@@ -1,8 +1,65 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🚀 BARIZTA Coffee - Production Ready
 
-## Getting Started
+**Fullstack Coffee Shop Management System**
 
-First, run the development server:
+Next.js 15 • React 19 • PostgreSQL • Prisma • TypeScript
+
+---
+
+## 📋 Overview
+
+BARIZTA Coffee adalah platform e-commerce dan education portal untuk coffee shop dengan teknologi modern.
+
+### Features:
+- ☕ **Public**: Digital menu, news, contact form
+- 👤 **Member**: Class registration, certificates
+- 🛡️ **Admin**: Full management dashboard
+
+## 🛠️ Tech Stack
+
+- **Framework**: Next.js 15.5.2 (App Router)
+- **Database**: PostgreSQL + Prisma ORM
+- **Auth**: JWT (jose) with bcrypt
+- **Validation**: Zod
+- **Styling**: Tailwind CSS 4.0
+
+## 📦 Quick Start
+
+### 1. Install Dependencies
+
+```bash
+npm install
+```
+
+### 2. Setup Environment
+
+```bash
+cp .env.example .env
+```
+
+Edit `.env` dengan database credentials dan JWT secret:
+
+```env
+DATABASE_URL="postgresql://user:pass@localhost:5432/barizta"
+JWT_SECRET="generate-with-crypto-randomBytes-64"
+EMAIL_USER="your-email@gmail.com"
+EMAIL_PASS="your-app-password"
+```
+
+### 3. Setup Database
+
+```bash
+# Generate Prisma Client
+npx prisma generate
+
+# Run migrations
+npx prisma migrate deploy
+
+# Seed data (optional)
+npm run seed:all
+```
+
+### 4. Run Development Server
 
 ```bash
 npm run dev

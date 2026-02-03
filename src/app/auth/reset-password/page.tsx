@@ -26,8 +26,21 @@ function ResetPasswordForm() {
       return;
     }
 
-    if (formData.password.length < 6) {
-      setError("Password minimal 6 karakter");
+    // Strong password validation
+    if (formData.password.length < 8) {
+      setError("Password minimal 8 karakter");
+      return;
+    }
+    if (!/[A-Z]/.test(formData.password)) {
+      setError("Password harus mengandung huruf besar (A-Z)");
+      return;
+    }
+    if (!/[a-z]/.test(formData.password)) {
+      setError("Password harus mengandung huruf kecil (a-z)");
+      return;
+    }
+    if (!/[0-9]/.test(formData.password)) {
+      setError("Password harus mengandung angka (0-9)");
       return;
     }
 

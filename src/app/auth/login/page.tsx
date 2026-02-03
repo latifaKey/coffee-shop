@@ -2,6 +2,7 @@
 
 import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { signIn } from "next-auth/react";
 import Link from "next/link";
 
 function LoginContent() {
@@ -14,6 +15,7 @@ function LoginContent() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
 
   // Load theme preference dan cek registered status
   useEffect(() => {
@@ -71,6 +73,21 @@ function LoginContent() {
     }
   };
 
+  const handleGoogleLogin = async () => {
+    setGoogleLoading(true);
+    setError("");
+    
+    try {
+      await signIn("google", {
+        callbackUrl: "/member/dashboard",
+        redirect: true,
+      });
+    } catch (err) {
+      setError("Gagal login dengan Google");
+      setGoogleLoading(false);
+    }
+  };
+
   return (
     <div className="auth-container dark">
       <div className="auth-card">
@@ -111,7 +128,7 @@ function LoginContent() {
               }
               placeholder="nama@email.com"
               required
-              disabled={loading}
+              disabled={loading || googleLoading}
             />
           </div>
 
@@ -126,8 +143,11 @@ function LoginContent() {
               }
               placeholder="Masukkan password"
               required
-              disabled={loading}
+              disabled={loading || googleLoading}
             />
+            <p className="password-hint">
+              Password: min. 8 karakter, huruf besar, huruf kecil, dan angka
+            </p>
           </div>
 
           <div className="form-options">
@@ -142,11 +162,41 @@ function LoginContent() {
           <button 
             type="submit" 
             className="btn-barizta btn-barizta-block btn-barizta-lg" 
-            disabled={loading}
+            disabled={loading || googleLoading}
           >
             {loading ? "Memproses..." : "Masuk"}
           </button>
         </form>
+
+        {/* Divider */}
+        <div className="auth-divider">
+          <span>atau masuk dengan Gmail</span>
+        </div>
+
+        {/* Google Sign-In Button */}
+        <button
+          type="button"
+          onClick={handleGoogleLogin}
+          disabled={googleLoading || loading}
+          className="btn-google"
+        >
+          {googleLoading ? (
+            <>
+              <span className="spinner"></span>
+              Menghubungkan...
+            </>
+          ) : (
+            <>
+              <svg width="18" height="18" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
+                <path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z"/>
+                <path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.258c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332C2.438 15.983 5.482 18 9 18z"/>
+                <path fill="#FBBC05" d="M3.964 10.707c-.18-.54-.282-1.117-.282-1.707 0-.593.102-1.17.282-1.709V4.958H.957C.347 6.173 0 7.548 0 9c0 1.452.348 2.827.957 4.042l3.007-2.335z"/>
+                <path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0 5.482 0 2.438 2.017.957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z"/>
+              </svg>
+              Masuk dengan Google
+            </>
+          )}
+        </button>
 
         <div className="auth-footer">
           <p>
