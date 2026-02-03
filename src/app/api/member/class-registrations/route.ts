@@ -6,6 +6,24 @@ import { auth } from "@/lib/auth";
 
 export const runtime = "nodejs";
 
+// Type for form data
+interface RegistrationFormData {
+  programId?: string | number;
+  programName?: string;
+  fullName?: string;
+  birthDate?: string;
+  gender?: string;
+  address?: string;
+  whatsapp?: string;
+  email?: string | null;
+  selectedPackages?: string | string[];
+  schedulePreference?: string;
+  experience?: string;
+  previousTraining?: boolean | string;
+  trainingDetails?: string | null;
+  paymentProof?: string; // base64 string for backward compatibility
+}
+
 // GET member's class registrations
 export async function GET(request: NextRequest) {
   try {
@@ -141,8 +159,7 @@ export async function POST(request: NextRequest) {
 
     // Check content type and parse accordingly
     const contentType = request.headers.get('content-type') || '';
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    let formData: any = {};
+    let formData: RegistrationFormData = {};
     let paymentProofFile: File | null = null;
 
     if (contentType.includes('multipart/form-data')) {
@@ -233,7 +250,7 @@ export async function POST(request: NextRequest) {
     const existingRegistration = await prisma.classregistration.findFirst({
       where: {
         userId,
-        programId,
+        programId: String(programId),
         status: { notIn: ['rejected', 'completed'] }
       }
     });
@@ -283,19 +300,19 @@ export async function POST(request: NextRequest) {
     const registration = await prisma.classregistration.create({
       data: {
         userId,
-        programId,
-        programName,
-        fullName,
-        birthDate: new Date(birthDate),
-        gender,
-        address,
-        whatsapp,
-        email: email || null,
+        programId: String(programId),
+        programName: String(programName),
+        fullName: String(fullName),
+        birthDate: new Date(String(birthDate)),
+        gender: String(gender),
+        address: String(address),
+        whatsapp: String(whatsapp),
+        email: email ? String(email) : null,
         selectedPackages: typeof packages === 'string' ? packages : JSON.stringify(packages),
-        schedulePreference,
-        experience,
-        previousTraining: previousTraining || false,
-        trainingDetails: trainingDetails || null,
+        schedulePreference: String(schedulePreference || ''),
+        experience: String(experience || ''),
+        previousTraining: Boolean(previousTraining) || false,
+        trainingDetails: trainingDetails ? String(trainingDetails) : null,
         paymentProof: paymentProofUrl,
         status: 'waiting',
         paymentStatus: 'pending'
