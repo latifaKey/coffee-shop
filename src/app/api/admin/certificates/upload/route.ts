@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
     const session = await verifyToken(token);
     console.log("Certificate upload - session:", session);
     
-    if (!session || (session.role !== "admin" && session.role !== "superadmin")) {
+    if (!session || session.role !== "admin") {
       return NextResponse.json({ error: "Forbidden - Admin access required" }, { status: 403 });
     }
 

@@ -95,12 +95,13 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         { 
           error: "Input tidak valid", 
-          details: validationResult.error.errors.map(e => `${e.path.join('.')}: ${e.message}`) 
+          details: validationResult.error.issues.map(e => `${e.path.join('.')}: ${e.message}`) 
         },
         { status: 400 }
       );
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const data = validationResult.data;
     const { 
       title, 

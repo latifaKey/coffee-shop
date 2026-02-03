@@ -114,7 +114,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     // Verify admin authentication
-    const session = getSession(request);
+    const session = await getSession(request);
     if (!session || session.role !== "admin") {
       return NextResponse.json({ error: "Unauthorized - Admin access required" }, { status: 401 });
     }

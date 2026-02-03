@@ -141,6 +141,7 @@ export async function POST(request: NextRequest) {
 
     // Check content type and parse accordingly
     const contentType = request.headers.get('content-type') || '';
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let formData: any = {};
     let paymentProofFile: File | null = null;
 

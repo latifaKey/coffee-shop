@@ -82,7 +82,7 @@ function LoginContent() {
         callbackUrl: "/member/dashboard",
         redirect: true,
       });
-    } catch (err) {
+    } catch {
       setError("Gagal login dengan Google");
       setGoogleLoading(false);
     }

@@ -91,7 +91,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(
         { 
           error: "Input tidak valid", 
-          details: validationResult.error.errors.map(e => e.message) 
+          details: validationResult.error.issues.map(e => e.message) 
         },
         { status: 400 }
       );
@@ -114,7 +114,7 @@ export async function POST(req: NextRequest) {
         name, 
         description: description || "", 
         price: Number(price), 
-        categoryId: categoryId ? parseInt(categoryId) : null,
+        categoryId: categoryId ? Number(categoryId) : null,
         image, 
         isAvailable, 
         slug: finalSlug 

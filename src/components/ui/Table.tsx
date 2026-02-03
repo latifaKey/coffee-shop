@@ -93,6 +93,7 @@ export function Table<T>({
                 >
                   {column.render 
                     ? column.render(item, index)
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     : (item as any)[column.key]
                   }
                 </td>

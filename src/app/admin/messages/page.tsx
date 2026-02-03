@@ -258,9 +258,9 @@ export default function PesanMasuk() {
           placeholder="Cari nama, email, atau subjek..."
         />
         <FilterSelect
-          label="Filter:"
           value={filterStatus}
           onChange={(value) => setFilterStatus(value)}
+          placeholder="Filter:"
           options={[
             { value: 'all', label: 'Semua Pesan' },
             { value: 'unread', label: 'Belum Dibaca' },

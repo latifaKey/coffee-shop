@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { cookies } from "next/headers";
 import { verifyToken, signToken } from "@/lib/auth-utils";
+import { auth } from "@/lib/auth";
 
 // GET - Fetch current user profile
 export async function GET() {
@@ -133,10 +134,10 @@ export async function PATCH(request: NextRequest) {
       userId: updatedUser.id,
       name: updatedUser.name,
       email: updatedUser.email,
-      role: updatedUser.role,
+      role: updatedUser.role as "admin" | "member",
       timestamp: Date.now()
     };
-    const newToken = await signToken(newSession, "7d");
+    const newToken = await signToken(newSession);
 
     // Determine which cookie to update
     const cookieName = adminToken ? "admin_token" : memberToken ? "member_token" : "auth_token";
