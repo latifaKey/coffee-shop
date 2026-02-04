@@ -3,8 +3,7 @@ import "./globals.css";
 import { LanguageProvider } from "@/context/LanguageContext";
 import { ThemeProvider } from "@/context/ThemeContext";
 import ToastsRoot from '@/components/ui/ToastsRoot';
-import Nav from "@/components/public/Nav";
-import Footer from "@/components/public/Footer";
+import PublicLayout from "@/components/PublicLayout";
 
 export const metadata: Metadata = {
   title: "BARIZTA - Kopi Terbaik",
@@ -36,9 +35,9 @@ export default function RootLayout({
       <body suppressHydrationWarning style={{ fontFamily: 'system-ui, -apple-system, sans-serif' }}>
         <ThemeProvider>
           <LanguageProvider>
-            <Nav />
-            <main className="public-main">{children}</main>
-            <Footer />
+            <PublicLayout>
+              {children}
+            </PublicLayout>
             <ToastsRoot />
           </LanguageProvider>
         </ThemeProvider>
