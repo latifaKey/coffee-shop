@@ -115,6 +115,8 @@ export default function ClassesPage() {
   const [confirmingApprove, setConfirmingApprove] = useState<ClassRegistration | null>(null);
   const [confirmingReject, setConfirmingReject] = useState<ClassRegistration | null>(null);
   const [confirmingRevert, setConfirmingRevert] = useState<ClassRegistration | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [isProcessing, setIsProcessing] = useState(false);
   const [certInstructorName, setCertInstructorName] = useState<string>('M RIZAL NOVIANTO');
   const [certDirectorSignature, setCertDirectorSignature] = useState<string | null>(null);
   const [certInstructorSignature, setCertInstructorSignature] = useState<string | null>(null);

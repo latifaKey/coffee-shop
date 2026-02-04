@@ -4,7 +4,7 @@ import { PrismaClient } from "@prisma/client";
 // Updated: 2025-12-22 - Added query optimization and connection pooling
 // Updated: 2026-02-04 - Fixed for Vercel build (lazy initialization)
 
-/* eslint-disable no-var */
+ 
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
 };
