@@ -213,18 +213,19 @@ model product {
 }
 
 model schedule {
-  id          Int      @id @default(autoincrement())
-  date        DateTime
-  location    String
-  startTime   String
-  endTime     String
-  status      String   @default("scheduled")
-  notes       String?
-  coordinator String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  mapsUrl     String?
-  statusStay  String   @default("BELUM_STAY")
+  id              Int      @id @default(autoincrement())
+  date            DateTime
+  location        String
+  startTime       String
+  endTime         String
+  status          String   @default("scheduled")
+  notes           String?
+  coordinator     String
+  contactWhatsapp String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  mapsUrl         String?
+  statusStay      String   @default("BELUM_STAY")
 }
 
 model team {
