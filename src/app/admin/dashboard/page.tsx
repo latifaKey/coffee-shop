@@ -13,6 +13,7 @@ export const metadata: Metadata = {
   description: 'Admin dashboard untuk mengelola BARIZTA Coffee Shop',
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 interface DashboardStats {
   totalProducts: number;
   activeNews: number;
@@ -24,6 +25,7 @@ interface DashboardStats {
   recentEnrollments: number;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 interface RecentMessage {
   id: number;
   name: string;
@@ -32,6 +34,7 @@ interface RecentMessage {
   isRead: boolean;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 interface RecentNews {
   id: number;
   title: string;
