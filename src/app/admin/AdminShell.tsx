@@ -56,7 +56,7 @@ const NAV_ITEMS: NavItem[] = [
 const NAV_SECTIONS = [
   { key: "main", title: null },
   { key: "kelola", title: "Kelola Data" },
-  { key: "kelas", title: "Kelas Barizta" },
+  { key: "kelas", title: "Barizta" },
   { key: "berita", title: "Berita & Partnership" },
   { key: "lainnya", title: "Lainnya" },
 ] as const;

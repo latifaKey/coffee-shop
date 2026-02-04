@@ -46,11 +46,7 @@ function checkRateLimit(ip: string): boolean {
 // ============================================
 const loginSchema = z.object({
   email: z.string().email("Format email tidak valid"),
-  password: z.string()
-    .min(8, "Password minimal 8 karakter")
-    .regex(/[A-Z]/, "Password harus mengandung huruf besar")
-    .regex(/[a-z]/, "Password harus mengandung huruf kecil")
-    .regex(/[0-9]/, "Password harus mengandung angka"),
+  password: z.string().min(1, "Password tidak boleh kosong"),
   loginType: z.enum(["admin", "member"]).optional(),
 });
 
