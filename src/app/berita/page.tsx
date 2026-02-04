@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useLanguage } from "@/context/LanguageContext";
+import PublicLayout from "@/components/public/PublicLayout";
 import "./berita.css";
 
 type NewsItem = { 
@@ -175,6 +176,7 @@ export default function BeritaPage() {
   };
 
   return (
+    <PublicLayout>
     <main className="berita-page">
       {/* Hero Section */}
       <section className="berita-hero">
@@ -297,6 +299,7 @@ export default function BeritaPage() {
         </div>
       </section>
     </main>
+    </PublicLayout>
   );
 }
 

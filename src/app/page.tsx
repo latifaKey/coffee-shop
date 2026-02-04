@@ -6,6 +6,7 @@ import Link from "next/link";
 import HeroCarousel from "@/components/public/HeroCarousel";
 import NewsCard, { NewsItem } from "@/components/public/NewsCard";
 import { useLanguage } from "@/context/LanguageContext";
+import PublicLayout from "@/components/public/PublicLayout";
 
 export default function Home() {
   const { t } = useLanguage();
@@ -15,7 +16,7 @@ export default function Home() {
   // Modal pesanan dihapus karena tidak diperlukan lagi
 
   return (
-    <>
+    <PublicLayout>
       {/* Hero Carousel (translated) */}
       <HomeHero />
 
@@ -30,7 +31,7 @@ export default function Home() {
 
       {/* Instagram Section */}
       <InstagramSection />
-    </>
+    </PublicLayout>
   );
 }
 
