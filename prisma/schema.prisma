@@ -14,7 +14,7 @@ model category {
   type        String
   imageFolder String?
   createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  updatedAt   DateTime
   product     product[]
 }
 
@@ -22,7 +22,7 @@ model category {
 model Renamedclass {
   id              Int          @id @default(autoincrement())
   title           String
-  description     String       @db.Text
+  description     String
   instructor      String
   schedule        DateTime?
   duration        String       @default("02:00")
@@ -35,11 +35,41 @@ model Renamedclass {
   isActive        Boolean      @default(true)
   image           String
   createdAt       DateTime     @default(now())
-  updatedAt       DateTime     @updatedAt
+  updatedAt       DateTime
   totalSessions   Int          @default(4)
   enrollment      enrollment[]
 
   @@map("class")
+}
+
+model classregistration {
+  id                 Int      @id @default(autoincrement())
+  userId             Int
+  programId          String
+  programName        String
+  fullName           String
+  birthDate          DateTime
+  gender             String
+  address            String
+  whatsapp           String
+  email              String?
+  selectedPackages   String
+  schedulePreference String
+  experience         String
+  previousTraining   Boolean  @default(false)
+  trainingDetails    String?
+  status             String   @default("waiting")
+  adminNotes         String?
+  certificateUrl     String?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime
+  paymentStatus      String   @default("pending")
+  paymentProof       String?
+  user               user     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([programId])
+  @@index([status])
+  @@index([userId])
 }
 
 model enrollment {
@@ -52,12 +82,35 @@ model enrollment {
   paymentStatus  String       @default("pending")
   certificateUrl String?
   createdAt      DateTime     @default(now())
-  updatedAt      DateTime     @updatedAt
+  updatedAt      DateTime
   Renamedclass   Renamedclass @relation(fields: [classId], references: [id], onDelete: Cascade, map: "Enrollment_classId_fkey")
   user           user?        @relation(fields: [userId], references: [id])
 
-  @@index([classId], map: "idx_enrollment_classId")
   @@index([userId])
+  @@index([classId], map: "idx_enrollment_classId")
+}
+
+model kolaborasisetting {
+  id        Int      @id @default(autoincrement())
+  key       String   @unique
+  value     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime
+}
+
+model kolaborasitype {
+  id            Int      @id @default(autoincrement())
+  icon          String   @default("?")
+  title         String
+  titleEn       String?
+  type          String
+  description   String
+  descriptionEn String?
+  image         String?
+  order         Int      @default(0)
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime
 }
 
 model media {
@@ -69,7 +122,7 @@ model media {
   size      Int      @default(0)
   caption   String?
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  updatedAt DateTime
 }
 
 model message {
@@ -82,7 +135,7 @@ model message {
   reply     String?
   replyDate DateTime?
   createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  updatedAt DateTime
 }
 
 model milestone {
@@ -92,7 +145,7 @@ model milestone {
   description String
   order       Int      @default(0)
   createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  updatedAt   DateTime
 }
 
 model news {
@@ -107,24 +160,24 @@ model news {
   status      String   @default("draft")
   views       Int      @default(0)
   createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  updatedAt   DateTime
 }
 
 model notification {
   id        Int      @id @default(autoincrement())
   title     String
-  message   String   @db.Text
+  message   String
   type      String   @default("info")
   isRead    Boolean  @default(false)
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  updatedAt DateTime
   target    String   @default("admin")
   url       String?
   userId    Int?
 
-  @@index([userId])
-  @@index([target])
   @@index([isRead])
+  @@index([target])
+  @@index([userId])
 }
 
 model partnership {
@@ -140,38 +193,38 @@ model partnership {
   description   String
   logo          String
   createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  updatedAt     DateTime
 }
 
 model product {
   id          Int       @id @default(autoincrement())
   name        String
   slug        String    @unique(map: "Product_slug_key")
-  description String?   @db.Text
+  description String?
   price       Int
   image       String
   isAvailable Boolean   @default(true)
   categoryId  Int?
   createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  updatedAt   DateTime
   category    category? @relation(fields: [categoryId], references: [id], map: "Product_categoryId_fkey")
 
   @@index([categoryId], map: "idx_product_categoryId")
 }
 
 model schedule {
-  id              Int      @id @default(autoincrement())
-  date            DateTime
-  location        String
-  startTime       String
-  endTime         String
-  status          String   @default("scheduled")
-  notes           String?
-  contactWhatsapp String   @map("coordinator")
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
-  mapsUrl         String?
-  statusStay      String   @default("BELUM_STAY")
+  id          Int      @id @default(autoincrement())
+  date        DateTime
+  location    String
+  startTime   String
+  endTime     String
+  status      String   @default("scheduled")
+  notes       String?
+  coordinator String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime
+  mapsUrl     String?
+  statusStay  String   @default("BELUM_STAY")
 }
 
 model team {
@@ -182,65 +235,27 @@ model team {
   bio       String
   order     Int      @default(0)
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  updatedAt DateTime
 }
 
-model user {
-  id                Int                 @id @default(autoincrement())
-  name              String
-  email             String              @unique(map: "User_email_key")
-  password          String              @default("")
-  phone             String?
-  role              String              @default("member")
-  provider          String?             @default("credentials")
-  createdAt         DateTime            @default(now())
-  updatedAt         DateTime            @updatedAt
-  resetToken        String?
-  resetTokenExpiry  DateTime?
-  classregistration classregistration[]
-  enrollment        enrollment[]
-
-  @@index([email])
-  @@index([role])
-  @@index([provider])
-}
-
-model websitesetting {
+model togofeature {
   id        Int      @id @default(autoincrement())
-  key       String   @unique(map: "WebsiteSetting_key_key")
-  value     String   @db.Text
+  text      String
+  order     Int      @default(0)
+  isActive  Boolean  @default(true)
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  updatedAt DateTime
 }
 
-model classregistration {
-  id                 Int      @id @default(autoincrement())
-  userId             Int
-  programId          String
-  programName        String
-  fullName           String
-  birthDate          DateTime
-  gender             String
-  address            String   @db.Text
-  whatsapp           String
-  email              String?
-  selectedPackages   String   @db.Text
-  schedulePreference String
-  experience         String
-  previousTraining   Boolean  @default(false)
-  trainingDetails    String?  @db.Text
-  status             String   @default("waiting")
-  adminNotes         String?  @db.Text
-  certificateUrl     String?
-  createdAt          DateTime @default(now())
-  updatedAt          DateTime @updatedAt
-  paymentStatus      String   @default("pending")
-  paymentProof       String?
-  user               user     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@index([userId])
-  @@index([status])
-  @@index([programId])
+model togogallery {
+  id        Int      @id @default(autoincrement())
+  image     String
+  caption   String?
+  isLarge   Boolean  @default(false)
+  order     Int      @default(0)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime
 }
 
 model togomenu {
@@ -252,56 +267,41 @@ model togomenu {
   isActive    Boolean  @default(true)
   order       Int      @default(0)
   createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-}
-
-model togogallery {
-  id        Int      @id @default(autoincrement())
-  image     String
-  caption   String?
-  isLarge   Boolean  @default(false)
-  order     Int      @default(0)
-  isActive  Boolean  @default(true)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model togofeature {
-  id        Int      @id @default(autoincrement())
-  text      String
-  order     Int      @default(0)
-  isActive  Boolean  @default(true)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  updatedAt   DateTime
 }
 
 model togosetting {
   id        Int      @id @default(autoincrement())
   key       String   @unique
-  value     String   @db.Text
+  value     String
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  updatedAt DateTime
 }
 
-model kolaborasisetting {
+model user {
+  id                Int                 @id @default(autoincrement())
+  name              String
+  email             String              @unique(map: "User_email_key")
+  password          String              @default("")
+  phone             String?
+  role              String              @default("member")
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime
+  resetToken        String?
+  resetTokenExpiry  DateTime?
+  provider          String?             @default("credentials")
+  classregistration classregistration[]
+  enrollment        enrollment[]
+
+  @@index([email])
+  @@index([provider])
+  @@index([role])
+}
+
+model websitesetting {
   id        Int      @id @default(autoincrement())
-  key       String   @unique
-  value     String   @db.Text
+  key       String   @unique(map: "WebsiteSetting_key_key")
+  value     String
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model kolaborasitype {
-  id            Int      @id @default(autoincrement())
-  icon          String   @default("?")
-  title         String
-  titleEn       String?
-  type          String
-  description   String   @db.Text
-  descriptionEn String?  @db.Text
-  image         String?
-  order         Int      @default(0)
-  isActive      Boolean  @default(true)
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  updatedAt DateTime
 }
