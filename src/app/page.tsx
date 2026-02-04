@@ -1,6 +1,6 @@
-// Default root should render the public home (located in `main/page.tsx`)
-import PublicLayout from './main/layout';
-import Home from './main/page';
+// Default root should render the public home (located in `(site)/page.tsx`)
+import PublicLayout from './(site)/layout';
+import Home from './(site)/page';
 
 export default function RootPage() {
 	return (
