@@ -63,12 +63,11 @@ export async function POST(request: NextRequest) {
     // Format completion date
     const completionDateObj = completionDate ? new Date(completionDate) : new Date();
     
-    // Update registration with certificate info
+    // Update registration with certificate info (using certificateUrl to store the code)
     await prisma.classregistration.update({
       where: { id: registration.id },
       data: {
-        certificateCode: certificateCode,
-        completionDate: completionDateObj,
+        certificateUrl: certificateCode,
         status: "completed"
       }
     });
