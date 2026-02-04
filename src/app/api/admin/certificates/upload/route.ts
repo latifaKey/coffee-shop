@@ -5,6 +5,7 @@ import path from "path";
 import { verifyToken } from "@/lib/auth-utils";
 
 export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 // POST - Upload certificate image
 export async function POST(request: NextRequest) {

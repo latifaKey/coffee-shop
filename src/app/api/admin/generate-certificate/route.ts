@@ -7,6 +7,7 @@ import { verifyToken } from "@/lib/auth-utils";
 import type { Canvas, Image } from "canvas";
 
 export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 // Generate unique certificate code
 function generateCertificateCode(registrationId: number, programId: string): string {

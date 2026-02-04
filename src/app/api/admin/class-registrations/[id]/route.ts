@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { verifyToken } from "@/lib/auth-utils";
 
 export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 // GET single registration by ID (Admin only)
 export async function GET(
