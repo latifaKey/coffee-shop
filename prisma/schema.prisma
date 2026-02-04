@@ -14,7 +14,7 @@ model category {
   type        String
   imageFolder String?
   createdAt   DateTime  @default(now())
-  updatedAt   DateTime
+  updatedAt   DateTime  @updatedAt
   product     product[]
 }
 
@@ -35,7 +35,7 @@ model Renamedclass {
   isActive        Boolean      @default(true)
   image           String
   createdAt       DateTime     @default(now())
-  updatedAt       DateTime
+  updatedAt       DateTime     @updatedAt
   totalSessions   Int          @default(4)
   enrollment      enrollment[]
 
@@ -62,7 +62,7 @@ model classregistration {
   adminNotes         String?
   certificateUrl     String?
   createdAt          DateTime @default(now())
-  updatedAt          DateTime
+  updatedAt          DateTime @updatedAt
   paymentStatus      String   @default("pending")
   paymentProof       String?
   user               user     @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -82,7 +82,7 @@ model enrollment {
   paymentStatus  String       @default("pending")
   certificateUrl String?
   createdAt      DateTime     @default(now())
-  updatedAt      DateTime
+  updatedAt      DateTime     @updatedAt
   Renamedclass   Renamedclass @relation(fields: [classId], references: [id], onDelete: Cascade, map: "Enrollment_classId_fkey")
   user           user?        @relation(fields: [userId], references: [id])
 
@@ -95,7 +95,7 @@ model kolaborasisetting {
   key       String   @unique
   value     String
   createdAt DateTime @default(now())
-  updatedAt DateTime
+  updatedAt DateTime @updatedAt
 }
 
 model kolaborasitype {
@@ -110,7 +110,7 @@ model kolaborasitype {
   order         Int      @default(0)
   isActive      Boolean  @default(true)
   createdAt     DateTime @default(now())
-  updatedAt     DateTime
+  updatedAt     DateTime @updatedAt
 }
 
 model media {
@@ -122,7 +122,7 @@ model media {
   size      Int      @default(0)
   caption   String?
   createdAt DateTime @default(now())
-  updatedAt DateTime
+  updatedAt DateTime @updatedAt
 }
 
 model message {
@@ -135,7 +135,7 @@ model message {
   reply     String?
   replyDate DateTime?
   createdAt DateTime  @default(now())
-  updatedAt DateTime
+  updatedAt DateTime @updatedAt
 }
 
 model milestone {
@@ -145,7 +145,7 @@ model milestone {
   description String
   order       Int      @default(0)
   createdAt   DateTime @default(now())
-  updatedAt   DateTime
+  updatedAt   DateTime @updatedAt
 }
 
 model news {
@@ -160,7 +160,7 @@ model news {
   status      String   @default("draft")
   views       Int      @default(0)
   createdAt   DateTime @default(now())
-  updatedAt   DateTime
+  updatedAt   DateTime @updatedAt
 }
 
 model notification {
@@ -170,7 +170,7 @@ model notification {
   type      String   @default("info")
   isRead    Boolean  @default(false)
   createdAt DateTime @default(now())
-  updatedAt DateTime
+  updatedAt DateTime @updatedAt
   target    String   @default("admin")
   url       String?
   userId    Int?
@@ -193,7 +193,7 @@ model partnership {
   description   String
   logo          String
   createdAt     DateTime @default(now())
-  updatedAt     DateTime
+  updatedAt     DateTime @updatedAt
 }
 
 model product {
@@ -206,7 +206,7 @@ model product {
   isAvailable Boolean   @default(true)
   categoryId  Int?
   createdAt   DateTime  @default(now())
-  updatedAt   DateTime
+  updatedAt   DateTime  @updatedAt
   category    category? @relation(fields: [categoryId], references: [id], map: "Product_categoryId_fkey")
 
   @@index([categoryId], map: "idx_product_categoryId")
@@ -222,7 +222,7 @@ model schedule {
   notes       String?
   coordinator String
   createdAt   DateTime @default(now())
-  updatedAt   DateTime
+  updatedAt   DateTime @updatedAt
   mapsUrl     String?
   statusStay  String   @default("BELUM_STAY")
 }
@@ -235,7 +235,7 @@ model team {
   bio       String
   order     Int      @default(0)
   createdAt DateTime @default(now())
-  updatedAt DateTime
+  updatedAt DateTime @updatedAt
 }
 
 model togofeature {
@@ -244,7 +244,7 @@ model togofeature {
   order     Int      @default(0)
   isActive  Boolean  @default(true)
   createdAt DateTime @default(now())
-  updatedAt DateTime
+  updatedAt DateTime @updatedAt
 }
 
 model togogallery {
@@ -255,7 +255,7 @@ model togogallery {
   order     Int      @default(0)
   isActive  Boolean  @default(true)
   createdAt DateTime @default(now())
-  updatedAt DateTime
+  updatedAt DateTime @updatedAt
 }
 
 model togomenu {
@@ -267,7 +267,7 @@ model togomenu {
   isActive    Boolean  @default(true)
   order       Int      @default(0)
   createdAt   DateTime @default(now())
-  updatedAt   DateTime
+  updatedAt   DateTime @updatedAt
 }
 
 model togosetting {
@@ -275,7 +275,7 @@ model togosetting {
   key       String   @unique
   value     String
   createdAt DateTime @default(now())
-  updatedAt DateTime
+  updatedAt DateTime @updatedAt
 }
 
 model user {
@@ -286,7 +286,7 @@ model user {
   phone             String?
   role              String              @default("member")
   createdAt         DateTime            @default(now())
-  updatedAt         DateTime
+  updatedAt         DateTime            @updatedAt
   resetToken        String?
   resetTokenExpiry  DateTime?
   provider          String?             @default("credentials")
@@ -303,5 +303,5 @@ model websitesetting {
   key       String   @unique(map: "WebsiteSetting_key_key")
   value     String
   createdAt DateTime @default(now())
-  updatedAt DateTime
+  updatedAt DateTime @updatedAt
 }
