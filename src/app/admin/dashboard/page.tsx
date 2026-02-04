@@ -4,14 +4,14 @@ import type { Metadata } from "next";
 import { getGreeting, formatDate } from "@/lib/utils";
 import "./dashboard.css";
 
+// Force dynamic rendering to prevent build-time database access
+export const dynamic = "force-dynamic";
+
 // Metadata untuk SEO
 export const metadata: Metadata = {
   title: 'Dashboard Admin | BARIZTA Coffee',
   description: 'Admin dashboard untuk mengelola BARIZTA Coffee Shop',
 };
-
-// Revalidate setiap 60 detik untuk data fresh tanpa client-side fetching
-export const revalidate = 60;
 
 interface DashboardStats {
   totalProducts: number;
