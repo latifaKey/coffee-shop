@@ -200,7 +200,17 @@ Tim BARIZTA Coffee
 // ============================================
 import { Resend } from 'resend';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+// Lazy initialization to avoid build-time errors
+let resend: Resend | null = null;
+function getResend() {
+  if (!resend) {
+    if (!process.env.RESEND_API_KEY) {
+      throw new Error('RESEND_API_KEY is not configured');
+    }
+    resend = new Resend(process.env.RESEND_API_KEY);
+  }
+  return resend;
+}
 
 export async function sendPasswordResetEmail(
   email: string, 
@@ -211,7 +221,7 @@ export async function sendPasswordResetEmail(
   const resetUrl = `${baseUrl}/auth/reset-password?token=${resetToken}`;
   
   try {
-    const { data, error } = await resend.emails.send({
+    const { data, error } = await getResend().emails.send({
       from: 'Barizta Coffee <onboarding@resend.dev>',
       to: email,
       subject: 'Reset Password - Barizta Coffee',
