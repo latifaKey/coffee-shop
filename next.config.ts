@@ -1,7 +1,6 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  output: 'standalone',
   images: {
     remotePatterns: [
       {
@@ -19,6 +18,15 @@ const nextConfig: NextConfig = {
     serverActions: {
       bodySizeLimit: '100mb',
     },
+  },
+  // Exclude public folder from serverless function bundling
+  outputFileTracingExcludes: {
+    '*': [
+      './public/images/**',
+      './public/uploads/**',
+      './public/certificates/**',
+      './public/payment-proofs/**',
+    ],
   },
 };
 
