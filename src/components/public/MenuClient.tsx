@@ -1,8 +1,8 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import ProductCard, { Product, Category } from "@/app/(site)/menu/ProductCard";
-import ProductModal from "@/app/(site)/menu/ProductModal";
+import ProductCard, { Product, Category } from "@/app/menu/ProductCard";
+import ProductModal from "@/app/menu/ProductModal";
 import { useLanguage } from "@/context/LanguageContext";
 
 interface MenuClientProps {
