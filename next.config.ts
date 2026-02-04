@@ -19,18 +19,6 @@ const nextConfig: NextConfig = {
       bodySizeLimit: '100mb',
     },
   },
-  // Mark pdfkit and its dependencies as external for server-side only
-  serverExternalPackages: ['pdfkit', 'fontkit', 'linebreak', 'png-js'],
-  webpack: (config, { isServer }) => {
-    if (isServer) {
-      // Ensure these native modules are not bundled
-      config.externals = config.externals || [];
-      if (Array.isArray(config.externals)) {
-        config.externals.push('pdfkit', 'fontkit');
-      }
-    }
-    return config;
-  },
 };
 
 export default nextConfig;
