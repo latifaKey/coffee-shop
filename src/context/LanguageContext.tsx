@@ -166,15 +166,14 @@ const LanguageContext = createContext<Ctx | undefined>(undefined);
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const [lang, setLangState] = useState<Lang>("id");
-  const [mounted, setMounted] = useState(false);
 
-  // Prevent hydration mismatch by setting mounted state
+  // Load language preference from localStorage
   useEffect(() => {
-    setMounted(true);
     const saved = (localStorage.getItem("lang") as Lang) || "id";
     if (saved !== lang) {
       setLangState(saved);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const setLang = (l: Lang) => {
