@@ -104,6 +104,7 @@ export default function AdminKolaborasiPage() {
   // Delete confirmation modal state
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [partnerToDelete, setPartnerToDelete] = useState<Partner | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [deleting, setDeleting] = useState(false);
 
   // Fetch settings

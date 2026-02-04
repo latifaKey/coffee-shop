@@ -19,6 +19,7 @@ export default function NotificationsPage() {
   const router = useRouter();
   const [user, setUser] = useState<{ id: number } | null>(null);
   const [notifications, setNotifications] = useState<Notification[]>([]);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<"all" | "unread">("all");
 

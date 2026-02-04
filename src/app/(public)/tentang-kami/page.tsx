@@ -27,6 +27,7 @@ interface Team {
 export default function TentangKamiPage() {
   const { t } = useLanguage();
   const aboutCopy = t.publicPages.about;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const homeNewsCopy = t.publicPages.home.news;
   const heroCopy = aboutCopy.hero;
   const storyCopy = aboutCopy.story;

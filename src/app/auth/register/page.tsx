@@ -88,6 +88,7 @@ export default function RegisterPage() {
         callbackUrl: "/member/dashboard",
         redirect: true,
       });
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (err) {
       setError("Gagal mendaftar dengan Google");
       setGoogleLoading(false);

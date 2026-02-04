@@ -4,6 +4,7 @@ import { requireAdmin } from "@/lib/api-middleware";
 import { classSchema } from "@/lib/validation";
 
 // Helper to convert BigInt to Number for JSON serialization
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function serializeClass(obj: Record<string, unknown>): Record<string, unknown> {
   const result: Record<string, unknown> = {};
   for (const key in obj) {

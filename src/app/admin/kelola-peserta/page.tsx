@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import DeleteConfirmModal from '@/components/ui/DeleteConfirmModal';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { SearchBar, FilterSelect, Alert } from '@/components/ui';
 import './kelola-peserta.css';
 

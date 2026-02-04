@@ -9,6 +9,7 @@ import { useLanguage } from "@/context/LanguageContext";
 
 export default function Home() {
   const { t } = useLanguage();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const homeCopy = t.publicPages.home;
 
   // Modal pesanan dihapus karena tidak diperlukan lagi

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
   // Cek apakah logout dari admin atau member
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { logoutType } = await request.json().catch(() => ({}));
   
   const response = NextResponse.json({
