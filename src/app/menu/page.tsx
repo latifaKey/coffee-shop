@@ -5,11 +5,16 @@ import MenuHero from "./MenuHero";
 import MenuEmptyNotice from "./MenuEmptyNotice";
 import "./menu.css";
 
-export const dynamic = "force-dynamic";
+// Use ISR instead of force-dynamic to handle Supabase outages
+export const revalidate = 60; // Cache for 60 seconds
 
 export default async function MenuPage() {
-  // Fetch products with OPTIMIZED select fields - only what we need
-  const products = (await prisma.product.findMany({ 
+  let products: Product[] = [];
+  let categories: Category[] = [];
+
+  try {
+    // Fetch products with OPTIMIZED select fields - only what we need
+    products = (await prisma.product.findMany({ 
     where: {
       isAvailable: true, // Only show available products
     },
@@ -33,24 +38,28 @@ export default async function MenuPage() {
       },
     },
     orderBy: { name: "asc" }, // Sort by name for better UX
-  })) as unknown as Product[];
+    })) as unknown as Product[];
 
-  // Fetch only MENU categories (MINUMAN & MAKANAN)
-  const categories = (await prisma.category.findMany({
-    where: {
-      type: {
-        in: ["MINUMAN", "MAKANAN"],
+    // Fetch only MENU categories (MINUMAN & MAKANAN)
+    categories = (await prisma.category.findMany({
+      where: {
+        type: {
+          in: ["MINUMAN", "MAKANAN"],
+        },
       },
-    },
-    select: {
-      id: true,
-      name: true,
-      slug: true,
-      type: true,
-      imageFolder: true,
-    },
-    orderBy: [{ type: 'asc' }, { name: 'asc' }]
-  })) as unknown as Category[];
+      select: {
+        id: true,
+        name: true,
+        slug: true,
+        type: true,
+        imageFolder: true,
+      },
+      orderBy: [{ type: 'asc' }, { name: 'asc' }]
+    })) as unknown as Category[];
+  } catch (error) {
+    console.error('[Menu] Database connection error (possibly Supabase outage):', error);
+    // Return empty arrays - MenuEmptyNotice will show
+  }
 
   return (
     <main>
