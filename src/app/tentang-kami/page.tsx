@@ -49,112 +49,150 @@ export default function TentangKamiPage() {
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
-  const [activeSlide, setActiveSlide] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(1); // Start at 1 (first real slide)
+  const [centerCardIndex, setCenterCardIndex] = useState(1);
   
-  const infiniteMembers = useMemo(() => {
+  const cardWidth = 312; // 280px card + 32px gap
+  const totalSlides = teamMembers.length;
+  
+  // Helper function to calculate scroll position to center a card
+  const getScrollPositionForIndex = useCallback((index: number) => {
+    if (!sliderRef.current) return index * cardWidth;
+    const sliderWidth = sliderRef.current.clientWidth;
+    const cardCenterOffset = 280 / 2; // Half of card width (not including gap)
+    const viewportCenter = sliderWidth / 2;
+    // Position card center at viewport center
+    return (index * cardWidth) - (viewportCenter - cardCenterOffset);
+  }, [cardWidth]);
+  
+  // Create infinite loop: [last, ...members, first]
+  const extendedMembers = useMemo(() => {
     if (teamMembers.length === 0) return [];
-    const lastMember = { ...teamMembers[teamMembers.length - 1], id: `${teamMembers[teamMembers.length - 1].id}-clone-last` };
-    const firstMember = { ...teamMembers[0], id: `${teamMembers[0].id}-clone-first` };
-    return [lastMember, ...teamMembers, firstMember];
-  }, [teamMembers]);
+    return [teamMembers[totalSlides - 1], ...teamMembers, teamMembers[0]];
+  }, [teamMembers, totalSlides]);
   
-  const cardWidth = 332; // 300px card + 32px gap
-
-  // Handle infinite loop scroll
-  const handleScrollEnd = useCallback(() => {
-    if (!sliderRef.current || isTransitioning || teamMembers.length === 0) return;
+  // Jump to real slide when on clone - using currentIndex state directly
+  const jumpToRealSlide = useCallback((cloneIndex: number) => {
+    if (!sliderRef.current || totalSlides === 0) return;
     
     const slider = sliderRef.current;
-    const currentScroll = slider.scrollLeft;
-    const maxScroll = slider.scrollWidth - slider.clientWidth;
     
-    // If scrolled to the clone of last item (at the beginning)
-    if (currentScroll <= 0) {
-      setIsTransitioning(true);
-      // Jump to the real last item
+    // If at clone of last (index 0), jump to real last (index totalSlides)
+    if (cloneIndex === 0) {
       slider.style.scrollBehavior = 'auto';
-      slider.scrollLeft = maxScroll - cardWidth;
+      slider.scrollLeft = getScrollPositionForIndex(totalSlides);
+      setCurrentIndex(totalSlides);
+      setCenterCardIndex(totalSlides);
       setTimeout(() => {
         slider.style.scrollBehavior = 'smooth';
         setIsTransitioning(false);
-      }, 50);
+      }, 100);
     }
-    // If scrolled to the clone of first item (at the end)
-    else if (currentScroll >= maxScroll) {
-      setIsTransitioning(true);
-      // Jump to the real first item
+    // If at clone of first (index totalSlides + 1), jump to real first (index 1)
+    else if (cloneIndex === totalSlides + 1) {
       slider.style.scrollBehavior = 'auto';
-      slider.scrollLeft = cardWidth;
+      slider.scrollLeft = getScrollPositionForIndex(1);
+      setCurrentIndex(1);
+      setCenterCardIndex(1);
       setTimeout(() => {
         slider.style.scrollBehavior = 'smooth';
         setIsTransitioning(false);
-      }, 50);
+      }, 100);
+    } else {
+      setIsTransitioning(false);
     }
-  }, [cardWidth, isTransitioning, teamMembers.length]);
+  }, [totalSlides, getScrollPositionForIndex]);
 
-  // Initialize slider position and add scroll listener for active dot
+  // Initialize slider position and add scroll listener
   useEffect(() => {
-    if (sliderRef.current && teamMembers.length > 0) {
-      // Start at the first real item (after the clone of last)
-      sliderRef.current.scrollLeft = cardWidth;
-      
-      // Add scroll listener to update active dot
+    if (sliderRef.current && extendedMembers.length > 0) {
       const slider = sliderRef.current;
+      
+      // Start at the first real item (index 1), centered
+      slider.style.scrollBehavior = 'auto';
+      slider.scrollLeft = getScrollPositionForIndex(1);
+      setCurrentIndex(1);
+      setCenterCardIndex(1);
+      setTimeout(() => {
+        slider.style.scrollBehavior = 'smooth';
+      }, 100);
+      
+      // Add scroll listener to update center card highlighting only
+      const threshold = 50;
       const handleScroll = () => {
-        if (!slider || isTransitioning) return;
-        const scrollPos = slider.scrollLeft;
-        // Calculate active index (accounting for clone at start)
-        let index = Math.round((scrollPos - cardWidth) / cardWidth);
-        // Wrap around for infinite scroll
-        if (teamMembers.length > 0) {
-          if (index < 0) index = teamMembers.length - 1;
-          if (index >= teamMembers.length) index = 0;
-          setActiveSlide(index);
+        if (!slider) return;
+        
+        const sliderRect = slider.getBoundingClientRect();
+        const sliderCenter = sliderRect.left + sliderRect.width / 2;
+        const cards = slider.querySelectorAll('.team-card-compact');
+        let closestIndex = 0;
+        let closestDistance = Infinity;
+        
+        cards.forEach((card, idx) => {
+          const cardRect = card.getBoundingClientRect();
+          const cardCenter = cardRect.left + cardRect.width / 2;
+          const distance = Math.abs(sliderCenter - cardCenter);
+          
+          if (distance < threshold && distance < closestDistance) {
+            closestDistance = distance;
+            closestIndex = idx;
+          }
+        });
+        
+        if (closestDistance < threshold) {
+          setCenterCardIndex(closestIndex);
         }
       };
       
       slider.addEventListener('scroll', handleScroll);
-      return () => slider.removeEventListener('scroll', handleScroll);
+      
+      // Initial center detection
+      handleScroll();
+      
+      return () => {
+        slider.removeEventListener('scroll', handleScroll);
+      };
     }
-  }, [cardWidth, isTransitioning, teamMembers.length]);
+  }, [extendedMembers.length, getScrollPositionForIndex]);
 
-  // Mouse drag handlers with infinite loop
+  // Mouse drag handlers
   const handleMouseDown = (e: React.MouseEvent) => {
-    if (!sliderRef.current) return;
+    if (!sliderRef.current || isTransitioning) return;
     setIsDragging(true);
     setIsAutoPlay(false);
-    setStartX(e.pageX - sliderRef.current.offsetLeft);
+    setStartX(e.pageX);
     setScrollLeft(sliderRef.current.scrollLeft);
     sliderRef.current.style.cursor = 'grabbing';
+    sliderRef.current.style.scrollBehavior = 'auto';
   };
 
   const handleMouseMove = (e: React.MouseEvent) => {
     if (!isDragging || !sliderRef.current) return;
     e.preventDefault();
-    const x = e.pageX - sliderRef.current.offsetLeft;
-    const walk = (x - startX) * 1.5;
-    sliderRef.current.scrollLeft = scrollLeft - walk;
+    const x = e.pageX;
+    const walk = (startX - x) * 1.2;
+    sliderRef.current.scrollLeft = scrollLeft + walk;
   };
 
-  const handleMouseUp = () => {
+  const handleMouseUp = useCallback(() => {
     setIsDragging(false);
     if (sliderRef.current) {
       sliderRef.current.style.cursor = 'grab';
-      handleScrollEnd();
+      sliderRef.current.style.scrollBehavior = 'smooth';
     }
-    setTimeout(() => setIsAutoPlay(true), 2000);
-  };
+    setTimeout(() => setIsAutoPlay(true), 3000);
+  }, []);
 
-  const handleMouseLeave = () => {
+  const handleMouseLeave = useCallback(() => {
     if (isDragging) {
       setIsDragging(false);
       if (sliderRef.current) {
         sliderRef.current.style.cursor = 'grab';
-        handleScrollEnd();
+        sliderRef.current.style.scrollBehavior = 'smooth';
       }
     }
-    setTimeout(() => setIsAutoPlay(true), 2000);
-  };
+    setTimeout(() => setIsAutoPlay(true), 3000);
+  }, [isDragging]);
 
   // FALLBACK dihapus - hanya menampilkan data dari database admin
 
@@ -220,21 +258,39 @@ export default function TentangKamiPage() {
     fetchNews();
   }, []);
 
-  // Auto-scroll slider with infinite loop
+  // Auto-scroll with infinite loop
   useEffect(() => {
     if (!isAutoPlay || !sliderRef.current || isDragging || isTransitioning) return;
-    if (teamMembers.length === 0) return;
+    if (extendedMembers.length === 0 || totalSlides === 0) return;
     
     const slider = sliderRef.current;
     
-    const interval = setInterval(() => {
-      slider.scrollTo({ left: slider.scrollLeft + cardWidth, behavior: 'smooth' });
-      // Check for loop after scroll animation
-      setTimeout(() => handleScrollEnd(), 400);
+    const timer = setTimeout(() => {
+      if (!isTransitioning) {
+        setIsTransitioning(true);
+        const nextIndex = currentIndex + 1;
+        const scrollPos = getScrollPositionForIndex(nextIndex);
+        slider.scrollTo({ left: scrollPos, behavior: 'smooth' });
+        setCurrentIndex(nextIndex);
+        setCenterCardIndex(nextIndex);
+        
+        // If scrolling to clone, schedule jump to real slide
+        if (nextIndex === 0 || nextIndex === totalSlides + 1) {
+          setTimeout(() => {
+            jumpToRealSlide(nextIndex);
+          }, 600); // 600ms for scroll animation to complete
+        } else {
+          setTimeout(() => {
+            setIsTransitioning(false);
+          }, 600);
+        }
+      }
     }, 4000);
 
-    return () => clearInterval(interval);
-  }, [isAutoPlay, isDragging, isTransitioning, cardWidth, handleScrollEnd]);
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [isAutoPlay, isDragging, isTransitioning, currentIndex, cardWidth, extendedMembers.length, totalSlides, jumpToRealSlide, getScrollPositionForIndex]);
 
   return (
     <div className="tentang-kami-page">
@@ -341,29 +397,39 @@ export default function TentangKamiPage() {
               onMouseLeave={handleMouseLeave}
               onTouchStart={(e) => {
                 setIsAutoPlay(false);
+                setIsDragging(true);
                 setStartX(e.touches[0].clientX);
                 setScrollLeft(sliderRef.current?.scrollLeft || 0);
+                if (sliderRef.current) {
+                  sliderRef.current.style.scrollBehavior = 'auto';
+                }
               }}
               onTouchMove={(e) => {
                 if (!sliderRef.current) return;
                 const x = e.touches[0].clientX;
-                const walk = (startX - x) * 1.2;
+                const walk = (startX - x) * 1.0; // Natural 1:1 movement
                 sliderRef.current.scrollLeft = scrollLeft + walk;
               }}
               onTouchEnd={() => {
-                handleScrollEnd();
-                setTimeout(() => setIsAutoPlay(true), 2000);
+                setIsDragging(false);
+                if (sliderRef.current) {
+                  sliderRef.current.style.scrollBehavior = 'smooth';
+                }
+                setTimeout(() => setIsAutoPlay(true), 3000);
               }}
             >
-              {infiniteMembers.map((member) => (
-                <div key={member.id} className="team-card-compact">
+              {extendedMembers.map((member, idx) => (
+                <div 
+                  key={`${member.id}-${idx}`} 
+                  className={`team-card-compact ${idx === centerCardIndex ? 'center' : ''}`}
+                >
                   <div className="team-photo-compact">
                     <Image 
                       src={member.photo} 
                       alt={member.name} 
                       width={300} 
                       height={400} 
-                      style={{ objectFit: 'contain', objectPosition: 'center bottom' }}
+                      style={{ objectFit: 'contain', objectPosition: 'center center' }}
                     />
                   </div>
                   <div className="team-info-compact">
@@ -376,19 +442,29 @@ export default function TentangKamiPage() {
             
             {/* Scroll indicator dots */}
             <div className="slider-dots">
-              {teamMembers.map((_, idx) => (
-                <span 
-                  key={idx} 
-                  className={`slider-dot ${activeSlide === idx ? 'active' : ''}`}
-                  onClick={() => {
-                    if (sliderRef.current) {
-                      setActiveSlide(idx);
-                      // +1 to account for the clone at the beginning
-                      sliderRef.current.scrollTo({ left: (idx + 1) * cardWidth, behavior: 'smooth' });
-                    }
-                  }}
-                />
-              ))}
+              {teamMembers.map((_, idx) => {
+                // Calculate actual index from currentIndex (0=clone of last, 1-9=real, 10=clone of first)
+                const actualIndex = currentIndex === 0 ? totalSlides - 1 : 
+                                  currentIndex === totalSlides + 1 ? 0 : 
+                                  currentIndex - 1;
+                return (
+                  <span 
+                    key={idx} 
+                    className={`slider-dot ${actualIndex === idx ? 'active' : ''}`}
+                    onClick={() => {
+                      if (sliderRef.current && !isTransitioning) {
+                        setIsTransitioning(true);
+                        const targetIndex = idx + 1; // +1 because first real item is at index 1
+                        setCurrentIndex(targetIndex);
+                        setCenterCardIndex(targetIndex);
+                        const scrollPos = getScrollPositionForIndex(targetIndex);
+                        sliderRef.current.scrollTo({ left: scrollPos, behavior: 'smooth' });
+                        setTimeout(() => setIsTransitioning(false), 600);
+                      }
+                    }}
+                  />
+                );
+              })}
             </div>
           </div>
           )}
@@ -397,21 +473,30 @@ export default function TentangKamiPage() {
 
       {/* Berita Section - Hanya tampil jika ada data dari database */}
       {!loadingNews && newsData.length > 0 && (
-        <section className="news-section">
+        <section className="section" style={{ background: 'var(--bg)' }}>
           <div className="container">
             <div className="news-header">
               <div>
-                <h2 className="section-title-center">{newsCopy.title}</h2>
-                <p className="section-subtitle">{newsCopy.subtitle}</p>
+                <h2 className="h2" style={{ marginBottom: '8px' }}>
+                  {newsCopy.title}
+                </h2>
+                <p className="muted">
+                  {newsCopy.subtitle}
+                </p>
               </div>
+              <Link 
+                href="/berita" 
+                className="btn-barizta btn-barizta-sm"
+              >
+                {newsCopy.cta}
+              </Link>
             </div>
             <div className="news-grid">
-              {newsData.map((news) => (
-                <NewsCard key={news.id} news={news} />
-              ))}
-            </div>
-            <div className="news-footer">
-              <Link href="/berita" className="btn-barizta">{newsCopy.cta}</Link>
+              {loadingNews ? null : (
+                newsData.map((news) => (
+                  <NewsCard key={news.id} news={news} />
+                ))
+              )}
             </div>
           </div>
         </section>

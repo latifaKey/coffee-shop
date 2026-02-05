@@ -82,7 +82,7 @@ export default async function ToGoPage() {
     notes: s.notes,
     statusStay: s.statusStay as "SUDAH_STAY" | "BELUM_STAY",
     mapsUrl: s.mapsUrl,
-    contactWhatsapp: s.contactWhatsapp
+    coordinator: s.coordinator
   }));
 
   const settings = {
@@ -118,3 +118,4 @@ export default async function ToGoPage() {
     />
   );
 }
+

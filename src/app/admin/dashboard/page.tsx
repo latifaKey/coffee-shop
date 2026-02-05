@@ -4,8 +4,8 @@ import type { Metadata } from "next";
 import { getGreeting, formatDate } from "@/lib/utils";
 import "./dashboard.css";
 
-// Force dynamic rendering to prevent build-time database access
-export const dynamic = "force-dynamic";
+// Cache dashboard data for 30 seconds to improve performance
+export const revalidate = 30; // ISR: Revalidate every 30 seconds
 
 // Metadata untuk SEO
 export const metadata: Metadata = {
@@ -44,19 +44,20 @@ interface RecentNews {
 
 // Server Component - Data fetching di server
 async function getDashboardData() {
-  // Fetch all stats in parallel for better performance
-  const [
-    totalProducts,
-    activeNews,
-    unreadMessages,
-    totalMembers,
-    activeClasses,
-    totalPartnerships,
-    scheduledBTG,
-    recentEnrollments
-  ] = await Promise.all([
-    // Total produk
-    prisma.product.count(),
+  try {
+    // Fetch all stats in parallel for better performance
+    const [
+      totalProducts,
+      activeNews,
+      unreadMessages,
+      totalMembers,
+      activeClasses,
+      totalPartnerships,
+      scheduledBTG,
+      recentEnrollments
+    ] = await Promise.all([
+      // Total produk
+      prisma.product.count(),
     
     // Berita aktif (status = published)
     prisma.news.count({
@@ -95,47 +96,64 @@ async function getDashboardData() {
       }
     })
   ]);
-
   // Get recent activities
-  const [recentMessages, recentNews] = await Promise.all([
-    prisma.message.findMany({
-      take: 3,
-      orderBy: { createdAt: "desc" },
-      select: {
-        id: true,
-        name: true,
-        subject: true,
-        createdAt: true,
-        isRead: true
-      }
-    }),
-    
-    prisma.news.findMany({
-      take: 3,
-      orderBy: { createdAt: "desc" },
-      select: {
-        id: true,
-        title: true,
-        status: true,
-        createdAt: true
-      }
-    })
-  ]);
+    const [recentMessages, recentNews] = await Promise.all([
+      prisma.message.findMany({
+        take: 3,
+        orderBy: { createdAt: "desc" },
+        select: {
+          id: true,
+          name: true,
+          subject: true,
+          createdAt: true,
+          isRead: true
+        }
+      }),
+      
+      prisma.news.findMany({
+        take: 3,
+        orderBy: { createdAt: "desc" },
+        select: {
+          id: true,
+          title: true,
+          status: true,
+          createdAt: true
+        }
+      })
+    ]);
 
-  return {
-    stats: {
-      totalProducts,
-      activeNews,
-      unreadMessages,
-      totalMembers,
-      activeClasses,
-      totalPartnerships,
-      scheduledBTG,
-      recentEnrollments
-    },
-    recentMessages,
-    recentNews
-  };
+    return {
+      stats: {
+        totalProducts,
+        activeNews,
+        unreadMessages,
+        totalMembers,
+        activeClasses,
+        totalPartnerships,
+        scheduledBTG,
+        recentEnrollments
+      },
+      recentMessages,
+      recentNews
+    };
+  } catch (error) {
+    console.error("Error loading dashboard data:", error);
+    // Return default values if query fails
+    return {
+      stats: {
+        totalProducts: 0,
+        activeNews: 0,
+        unreadMessages: 0,
+        totalMembers: 0,
+        activeClasses: 0,
+        totalPartnerships: 0,
+        scheduledBTG: 0,
+        recentEnrollments: 0
+      },
+      recentMessages: [],
+      recentNews: []
+    };
+  }
 }
 
 // Status badge helper - sama dengan Member

@@ -16,7 +16,7 @@ interface Schedule {
   endTime: string;
   status: "scheduled" | "completed" | "cancelled";
   notes: string | null;
-  contactWhatsapp: string;
+  coordinator: string;
   statusStay: "SUDAH_STAY" | "BELUM_STAY"; // Field baru untuk status stay
   mapsUrl: string | null; // Field baru untuk URL Google Maps
 }
@@ -142,7 +142,7 @@ export default function BariztaToGo() {
 
   // Form states
   const [scheduleForm, setScheduleForm] = useState<Partial<Schedule>>({
-    date: "", location: "", startTime: "", endTime: "", status: "scheduled", notes: "", contactWhatsapp: "",
+    date: "", location: "", startTime: "", endTime: "", status: "scheduled", notes: "", coordinator: "",
     statusStay: "BELUM_STAY", mapsUrl: ""
   });
   
@@ -260,12 +260,12 @@ export default function BariztaToGo() {
           endTime: s.endTime,
           status: s.status,
           notes: s.notes || "",
-          contactWhatsapp: toLocalWhatsapp(s.contactWhatsapp),
+          coordinator: toLocalWhatsapp(s.coordinator),
           statusStay: s.statusStay || "BELUM_STAY",
           mapsUrl: s.mapsUrl || ""
         });
       } else {
-        setScheduleForm({ date: "", location: "", startTime: "", endTime: "", status: "scheduled", notes: "", contactWhatsapp: "", statusStay: "BELUM_STAY", mapsUrl: "" });
+        setScheduleForm({ date: "", location: "", startTime: "", endTime: "", status: "scheduled", notes: "", coordinator: "", statusStay: "BELUM_STAY", mapsUrl: "" });
       }
     } else if (activeTab === "menu") {
       if (item) {
@@ -544,9 +544,9 @@ export default function BariztaToGo() {
   const filteredSchedules = schedules
     .filter((s) => {
       const term = searchTerm.toLowerCase();
-      const contact = s.contactWhatsapp?.toLowerCase() || "";
-      const contactDisplay = formatWhatsappDisplay(s.contactWhatsapp).toLowerCase();
-      const normalizedContact = normalizeWhatsapp(s.contactWhatsapp);
+      const contact = s.coordinator?.toLowerCase() || "";
+      const contactDisplay = formatWhatsappDisplay(s.coordinator).toLowerCase();
+      const normalizedContact = normalizeWhatsapp(s.coordinator);
       const digitTerm = term.replace(/[^0-9]/g, "");
       const strippedDigitTerm = digitTerm.startsWith("0") ? digitTerm.slice(1) : digitTerm;
       const normalizedMatch = strippedDigitTerm
@@ -634,14 +634,14 @@ export default function BariztaToGo() {
                     <td>{schedule.location}</td>
                     <td>{schedule.startTime} - {schedule.endTime}</td>
                     <td>
-                      {schedule.contactWhatsapp ? (
+                      {schedule.coordinator ? (
                         <a
-                          href={`https://wa.me/${normalizeWhatsapp(schedule.contactWhatsapp)}`}
+                          href={`https://wa.me/${normalizeWhatsapp(schedule.coordinator)}`}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="wa-link-table"
                         >
-                          {formatWhatsappDisplay(schedule.contactWhatsapp)}
+                          {formatWhatsappDisplay(schedule.coordinator)}
                         </a>
                       ) : (
                         <span className="muted-text">-</span>
@@ -998,8 +998,8 @@ export default function BariztaToGo() {
                     <label>Kontak WhatsApp *</label>
                     <input
                       type="tel"
-                      value={scheduleForm.contactWhatsapp || ""}
-                      onChange={(e) => setScheduleForm({ ...scheduleForm, contactWhatsapp: e.target.value })}
+                      value={scheduleForm.coordinator || ""}
+                      onChange={(e) => setScheduleForm({ ...scheduleForm, coordinator: e.target.value })}
                       required
                       placeholder="Contoh: 0812 3456 7890"
                     />
@@ -1048,14 +1048,14 @@ export default function BariztaToGo() {
                   <div className="detail-row"><span className="detail-label">Waktu:</span><span className="detail-value">{(selectedItem as Schedule).startTime} - {(selectedItem as Schedule).endTime}</span></div>
                   <div className="detail-row">
                     <span className="detail-label">Kontak WA:</span>
-                    {(selectedItem as Schedule).contactWhatsapp ? (
+                    {(selectedItem as Schedule).coordinator ? (
                       <a
-                        href={`https://wa.me/${normalizeWhatsapp((selectedItem as Schedule).contactWhatsapp)}`}
+                        href={`https://wa.me/${normalizeWhatsapp((selectedItem as Schedule).coordinator)}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="wa-link-detail"
                       >
-                        {formatWhatsappDisplay((selectedItem as Schedule).contactWhatsapp)}
+                        {formatWhatsappDisplay((selectedItem as Schedule).coordinator)}
                       </a>
                     ) : (
                       <span className="detail-value muted-text">-</span>
@@ -1231,3 +1231,4 @@ export default function BariztaToGo() {
     </div>
   );
 }
+

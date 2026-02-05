@@ -116,3 +116,22 @@
     font-size: 0.9rem;
   }
 }
+
+/* News Detail Image - Article Style */
+.news-detail-image {
+  width: 100%;
+  height: auto;
+  max-height: 500px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+@media (max-width: 768px) {
+  .news-detail-image {
+    max-height: 350px;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+  }
+}

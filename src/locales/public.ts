@@ -186,7 +186,7 @@ const homeLocales: Record<PublicLang, HomeLocale> = {
     },
     news: {
       heading: "Berita Terbaru",
-      description: "Berita dan pembaruan terbaru dari BARIZTA.",
+      description: "Berita dan pembaruan terbaru dari BARIZTA Coffee",
       cta: "Baca Semua Berita →",
       fallback: [
         {
@@ -225,7 +225,7 @@ const homeLocales: Record<PublicLang, HomeLocale> = {
     },
     news: {
       heading: "Latest News",
-      description: "Latest news and updates from BARIZTA.",
+      description: "Latest news and updates from BARIZTA Coffee",
       cta: "Read All News →",
       fallback: [
         {

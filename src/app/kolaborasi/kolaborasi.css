@@ -4,15 +4,23 @@
   background: var(--bg);
 }
 
-/* Hero - Compact */
+/* Hero - Matching Berita Design */
 .kolab-hero {
   position: relative;
-  height: 280px;
-  background: linear-gradient(135deg, #2c1810 0%, #3e2723 50%, #4e342e 100%);
+  min-height: 380px;
+  background: linear-gradient(180deg, 
+    #3d2a1f 0%,
+    #352318 15%,
+    #2c1c13 35%,
+    #231610 60%,
+    #1c1310 80%,
+    #1a1410 100%
+  );
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  padding: 4rem 2rem;
 }
 
 .kolab-hero::before {
@@ -23,23 +31,35 @@
   right: 0;
   bottom: 0;
   background: 
-    radial-gradient(circle at 20% 30%, rgba(255, 107, 53, 0.15), transparent 40%),
-    radial-gradient(circle at 80% 70%, rgba(212, 165, 116, 0.1), transparent 40%);
-  animation: kolabHeroGlow 8s ease-in-out infinite;
+    radial-gradient(ellipse 100% 60% at 50% 40%, rgba(70, 45, 30, 0.4), transparent 60%),
+    radial-gradient(circle at 50% 30%, rgba(212, 165, 116, 0.06), transparent 50%);
+  pointer-events: none;
 }
 
-@keyframes kolabHeroGlow {
-  0%, 100% { opacity: 0.6; }
-  50% { opacity: 1; }
-}
-
-.kolab-hero-overlay {
+.kolab-hero::after {
+  content: '';
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(to bottom, rgba(44, 24, 16, 0.6), rgba(44, 24, 16, 0.85));
+  background: linear-gradient(
+    135deg,
+    transparent 0%,
+    rgba(212, 165, 116, 0.03) 50%,
+    transparent 100%
+  );
+  animation: kolabHeroGlow 8s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes kolabHeroGlow {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 1; }
+}
+
+.kolab-hero-overlay {
+  display: none;
 }
 
 .kolab-hero-content {
@@ -48,13 +68,14 @@
   text-align: center;
   color: white;
   padding: 0 2rem;
-  animation: kolabFadeInDown 0.8s ease-out;
+  max-width: 800px;
+  animation: kolabFadeInUp 0.8s ease-out;
 }
 
-@keyframes kolabFadeInDown {
+@keyframes kolabFadeInUp {
   from {
     opacity: 0;
-    transform: translateY(-30px);
+    transform: translateY(20px);
   }
   to {
     opacity: 1;
@@ -63,10 +84,11 @@
 }
 
 .kolab-hero-content .breadcrumb {
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   color: #d4a574;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
   display: block;
+  letter-spacing: 0.5px;
 }
 
 .kolab-hero-content .breadcrumb a {
@@ -75,30 +97,58 @@
 }
 
 .kolab-hero-content .breadcrumb a:hover {
-  color: #ffd7a8;
+  color: #e8c9a0;
+}
+
+.kolab-hero-content .breadcrumb .separator {
+  margin: 0 0.6rem;
+  opacity: 0.7;
 }
 
 .kolab-hero-content .breadcrumb .active {
-  color: #ffd7a8;
+  color: #e8c9a0;
 }
 
 .kolab-hero-content h1 {
-  font-size: 3rem;
+  font-size: 3.5rem;
   font-weight: 700;
-  color: #ffd7a8;
-  margin: 0.5rem 0;
-  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+  color: #e8c9a0;
+  margin: 0.75rem 0 1.25rem;
+  letter-spacing: 1px;
+  line-height: 1.2;
+  text-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
 }
 
 .kolab-hero-content p {
-  font-size: 1.1rem;
-  color: rgba(255, 255, 255, 0.9);
+  font-size: 1.15rem;
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.7;
 }
 
-/* Intro */
+/* Responsive Hero */
+@media (max-width: 768px) {
+  .kolab-hero {
+    min-height: 280px;
+    padding: 3rem 1.25rem;
+  }
+  
+  .kolab-hero-content h1 {
+    font-size: 2rem;
+  }
+}
+
+/* Intro - Dark Theme */
 .kolab-intro {
   padding: 4rem 0;
   text-align: center;
+  background: linear-gradient(180deg, 
+    #1a1410 0%,
+    #1c1612 15%,
+    #1e1814 35%,
+    #201a16 55%,
+    #221c18 75%,
+    #221c18 100%
+  );
 }
 
 .kolab-intro .container {
@@ -109,15 +159,15 @@
 
 .intro-badge {
   display: inline-block;
-  background: linear-gradient(135deg, rgba(139, 69, 19, 0.1), rgba(212, 165, 116, 0.15));
-  color: var(--primary);
+  background: linear-gradient(135deg, rgba(139, 69, 19, 0.2), rgba(212, 165, 116, 0.25));
+  color: #d4a574;
   padding: 0.5rem 1.5rem;
   border-radius: 50px;
   font-size: 0.85rem;
   font-weight: 600;
   letter-spacing: 2px;
   margin-bottom: 1.5rem;
-  border: 1px solid rgba(139, 69, 19, 0.2);
+  border: 1px solid rgba(212, 165, 116, 0.3);
 }
 
 .kolab-intro h2 {

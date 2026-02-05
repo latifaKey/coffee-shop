@@ -14,8 +14,16 @@ export default function AdminLoading() {
           marginTop: '1.5rem', 
           color: 'var(--muted)',
           fontSize: '0.95rem',
+          fontWeight: 500,
         }}>
-          Memuat data admin...
+          Memuat dashboard admin...
+        </p>
+        <p style={{ 
+          marginTop: '0.5rem', 
+          color: 'var(--muted)',
+          fontSize: '0.85rem',
+        }}>
+          Mengambil data dari database
         </p>
       </div>
     </div>

@@ -39,10 +39,11 @@ export async function GET(request: NextRequest) {
           endTime: true,
           status: true,
           notes: true,
-          contactWhatsapp: true,
+          coordinator: true,
           mapsUrl: true,
           statusStay: true,
           createdAt: true,
+          updatedAt: true,
         },
         orderBy: { date: "desc" },
         skip,
@@ -81,6 +82,7 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const { date, location, startTime, endTime, status, notes, contactWhatsapp, coordinator, statusStay, mapsUrl } = body;
 
+    // Accept both contactWhatsapp (legacy) and coordinator (new field name)
     const contact = contactWhatsapp ?? coordinator;
 
     if (!date || !location || !startTime || !endTime || !contact) {
@@ -106,7 +108,7 @@ export async function POST(request: NextRequest) {
         endTime,
         status: status || "scheduled",
         notes,
-        contactWhatsapp: normalizedWhatsapp,
+        coordinator: normalizedWhatsapp,
         statusStay: statusStay || "BELUM_STAY",
         mapsUrl: mapsUrl || null,
       },

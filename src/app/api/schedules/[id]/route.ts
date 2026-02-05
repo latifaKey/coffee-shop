@@ -64,6 +64,7 @@ export async function PATCH(
     if (status !== undefined) updateData.status = status;
     if (notes !== undefined) updateData.notes = notes;
 
+    // Accept both contactWhatsapp (legacy) and coordinator (new field name)
     const contact = contactWhatsapp ?? coordinator;
     if (contact !== undefined) {
       const normalized = normalizeWhatsapp(String(contact));
@@ -73,7 +74,7 @@ export async function PATCH(
           { status: 400 }
         );
       }
-      updateData.contactWhatsapp = normalized;
+      updateData.coordinator = normalized;
     }
 
     if (statusStay !== undefined) updateData.statusStay = statusStay;

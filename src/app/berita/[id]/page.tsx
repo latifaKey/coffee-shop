@@ -101,11 +101,11 @@ export default async function NewsDetailPage({ params, searchParams }: Props) {
             <article className="news-detail-main">
               {news.image ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={news.image} alt={news.title} style={{ width: "100%", height: "auto", borderRadius: 8, marginBottom: 16 }} />
+                <img src={news.image} alt={news.title} className="news-detail-image" />
               ) : (
                 // fallback to hero image so we don't show broken icon
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src="/images/hero/slide-menu.jpg" alt={news.title} style={{ width: "100%", height: "auto", borderRadius: 8, marginBottom: 16 }} />
+                <img src="/images/hero/slide-menu.jpg" alt={news.title} className="news-detail-image" />
               )}
               <div style={{ display: "flex", gap: 12, alignItems: "center", marginBottom: 8 }}>
                 <span className="muted" style={{ fontSize: 13 }}>{formattedDate}</span>

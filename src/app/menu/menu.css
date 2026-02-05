@@ -1,14 +1,22 @@
 /* Hero Section - Clean theme-aware implementation */
 
-/* Default (dark) theme hero - Compact */
+/* Default (dark) theme hero - Matching Berita Design */
 .hero-section {
   position: relative;
-  height: 280px;
-  background: linear-gradient(135deg, #2c1810 0%, #3e2723 50%, #4e342e 100%);
+  min-height: 380px;
+  background: linear-gradient(180deg, 
+    #3d2a1f 0%,
+    #352318 15%,
+    #2c1c13 35%,
+    #231610 60%,
+    #1c1310 80%,
+    #1a1410 100%
+  );
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  padding: 4rem 2rem;
   transition: background 0.4s ease;
   will-change: auto;
 }
@@ -18,35 +26,47 @@
   position: absolute;
   inset: 0;
   background: 
-    radial-gradient(circle at 20% 30%, rgba(255, 107, 53, 0.15), transparent 40%),
-    radial-gradient(circle at 80% 70%, rgba(212, 165, 116, 0.1), transparent 40%);
+    radial-gradient(ellipse 100% 60% at 50% 40%, rgba(70, 45, 30, 0.4), transparent 60%),
+    radial-gradient(circle at 50% 30%, rgba(212, 165, 116, 0.06), transparent 50%);
+  pointer-events: none;
+}
+
+.hero-section::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    transparent 0%,
+    rgba(212, 165, 116, 0.03) 50%,
+    transparent 100%
+  );
   animation: heroGlow 8s ease-in-out infinite;
   pointer-events: none;
 }
 
 /* Disable animations during theme initialization */
-.theme-init .hero-section::before {
+.theme-init .hero-section::before,
+.theme-init .hero-section::after {
   animation: none;
 }
 
 @keyframes heroGlow {
-  0%, 100% { opacity: 0.6; }
+  0%, 100% { opacity: 0; }
   50% { opacity: 1; }
 }
 
 .hero-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to bottom, rgba(44, 24, 16, 0.5), rgba(44, 24, 16, 0.8));
-  transition: background 0.4s ease;
+  display: none;
 }
 
 .hero-content {
   position: relative;
   z-index: 2;
   text-align: center;
-  animation: fadeInDown 0.8s ease-out;
-  padding: 0 1.5rem;
+  animation: fadeInUp 0.8s ease-out;
+  padding: 0 2rem;
+  max-width: 800px;
 }
 
 /* Disable animations during theme initialization */
@@ -56,16 +76,17 @@
   transform: none;
 }
 
-@keyframes fadeInDown {
-  from { opacity: 0; transform: translateY(-20px); }
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
 .breadcrumb {
   font-size: 0.95rem;
   color: #d4a574;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
   font-weight: 500;
+  letter-spacing: 0.5px;
 }
 
 .breadcrumb a {
@@ -75,33 +96,46 @@
 }
 
 .breadcrumb a:hover {
-  color: #ffd7a8;
+  color: #e8c9a0;
 }
 
 .breadcrumb .separator {
-  margin: 0 0.5rem;
-  opacity: 0.6;
+  margin: 0 0.6rem;
+  opacity: 0.7;
 }
 
 .breadcrumb .active {
-  color: #ffd7a8;
-  font-weight: 600;
+  color: #e8c9a0;
 }
 
 .hero-content h1 {
-  font-size: 3.2rem;
+  font-size: 3.5rem;
   font-weight: 700;
-  margin: 0 0 1rem;
-  color: #ffd7a8;
-  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.6);
-  letter-spacing: -0.02em;
+  margin: 0.75rem 0 1.25rem;
+  color: #e8c9a0;
+  letter-spacing: 1px;
   line-height: 1.2;
+  text-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
 }
 
 .hero-content p {
+  font-size: 1.15rem;
   color: rgba(255, 255, 255, 0.85);
-  font-size: 1.05rem;
-  line-height: 1.6;
+  line-height: 1.7;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Responsive Hero */
+@media (max-width: 768px) {
+  .hero-section {
+    min-height: 280px;
+    padding: 3rem 1.25rem;
+  }
+  
+  .hero-content h1 {
+    font-size: 2rem;
+  }
 }
 
 /* Light theme overrides */
@@ -144,19 +178,26 @@
   color: rgba(62, 33, 23, 0.8);
 }
 
-/* Dark theme explicit overrides - ensure dark theme is applied correctly */
+/* Dark theme explicit overrides - matching Berita design */
 [data-theme="dark"] .hero-section {
-  background: linear-gradient(135deg, #2c1810 0%, #3e2723 50%, #4e342e 100%);
+  background: linear-gradient(180deg, 
+    #3d2a1f 0%,
+    #352318 15%,
+    #2c1c13 35%,
+    #231610 60%,
+    #1c1310 80%,
+    #1a1410 100%
+  );
 }
 
 [data-theme="dark"] .hero-section::before {
   background: 
-    radial-gradient(circle at 20% 30%, rgba(255, 107, 53, 0.15), transparent 40%),
-    radial-gradient(circle at 80% 70%, rgba(212, 165, 116, 0.1), transparent 40%);
+    radial-gradient(ellipse 100% 60% at 50% 40%, rgba(70, 45, 30, 0.4), transparent 60%),
+    radial-gradient(circle at 50% 30%, rgba(212, 165, 116, 0.06), transparent 50%);
 }
 
 [data-theme="dark"] .hero-overlay {
-  background: linear-gradient(to bottom, rgba(44, 24, 16, 0.5), rgba(44, 24, 16, 0.8));
+  display: none;
 }
 
 [data-theme="dark"] .breadcrumb {
@@ -168,16 +209,16 @@
 }
 
 [data-theme="dark"] .breadcrumb a:hover {
-  color: #ffd7a8;
+  color: #e8c9a0;
 }
 
 [data-theme="dark"] .breadcrumb .active {
-  color: #ffd7a8;
+  color: #e8c9a0;
 }
 
 [data-theme="dark"] .hero-content h1 {
-  color: #ffd7a8;
-  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.6);
+  color: #e8c9a0;
+  text-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
 }
 
 [data-theme="dark"] .hero-content p {

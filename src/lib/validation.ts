@@ -142,7 +142,7 @@ export const scheduleSchema = z.object({
   endTime: z.string().regex(/^\d{2}:\d{2}$/, "Format waktu harus HH:MM"),
   status: z.enum(["scheduled", "completed", "cancelled"]).default("scheduled"),
   notes: z.string().optional(),
-  contactWhatsapp: z.string().min(10, "Nomor WhatsApp tidak valid"),
+  coordinator: z.string().min(10, "Nomor WhatsApp tidak valid"),
   mapsUrl: z.string().url("URL maps tidak valid").optional(),
 });
 

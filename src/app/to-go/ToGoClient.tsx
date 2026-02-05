@@ -32,7 +32,7 @@ interface Schedule {
   notes: string | null;
   statusStay: "SUDAH_STAY" | "BELUM_STAY";
   mapsUrl: string | null;
-  contactWhatsapp: string;
+  coordinator: string;
 }
 
 interface ToGoClientProps {
@@ -231,7 +231,7 @@ export default function ToGoClient({ menus, gallery, features, schedules, settin
 
             <div className="schedule-cards">
               {schedules.map((schedule) => {
-                const contactRaw = schedule.contactWhatsapp || settings.whatsapp;
+                const contactRaw = schedule.coordinator || settings.whatsapp;
                 const contactNumber = normalizeWhatsapp(contactRaw);
                 const canContact = Boolean(contactNumber);
 
@@ -370,3 +370,4 @@ export default function ToGoClient({ menus, gallery, features, schedules, settin
     </main>
   );
 }
+
